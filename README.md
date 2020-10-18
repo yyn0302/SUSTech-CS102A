@@ -1,4 +1,4 @@
-# CS02A_2020F_Proj
+# CS102A_2020F_Proj
 
 Subject
 ---
