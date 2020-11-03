@@ -9,3 +9,6 @@ https://www.cnblogs.com/baalhuo/p/5762135.html
 
 // 目前的思路是多上网找好看的样例并模仿，搭配现成的美化包（把swing自带的控件美化）
 // 做多几个版本的demo，基本上把各个包的控件都拿出来看看样式，确定风格
+
+https://sakai.sustech.edu.cn/access/content/group/c08d404a-205d-4d7f-a567-21ac2693be85/lab/ui-design.mp4
+// CS304 软件工程 教学视频，供参考
