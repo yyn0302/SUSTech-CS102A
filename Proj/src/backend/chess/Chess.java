@@ -1,7 +1,10 @@
 package backend.chess;
 
+import backend.chessboard.coordinate;
+
 public class Chess {
     chessStatic stat;
+    coordinate place;
 
 }
 
