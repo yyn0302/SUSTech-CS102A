@@ -30,8 +30,8 @@ public class musicStuff {
     }
 
     public static void main(String[] args) {
-        String filepath = "Proj/src/frontend/resources/theme1/Game.wav";
+        String filepath = "Incarnation.wav";
         musicStuff musicObject = new musicStuff();
-        musicObject.playMusic(filepath);
+        musicObject.playMusic("Incarnation.wav");
     }
 }
