@@ -1,8 +1,6 @@
 package aeroplanechess.listener;
 
-import aeroplanechess.model.ChessBoard;
-import aeroplanechess.model.ChessBoardLocation;
-import aeroplanechess.model.ChessPiece;
+import aeroplanechess.model.*;
 
 public interface ChessBoardListener extends Listener {
     void onChessPiecePlace(ChessBoardLocation location, ChessPiece piece);

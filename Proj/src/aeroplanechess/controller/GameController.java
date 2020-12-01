@@ -49,6 +49,7 @@ public class GameController implements InputListener, Listenable<GameStateListen
         listenerList.forEach(listener -> listener.onPlayerStartRound(currentPlayer));
     }
 
+    // FIXME: 2020/12/1 替换成摇两个骰子
     public int rollDice() {
         if (rolledNumber == null) {
             return rolledNumber = RandomUtil.nextInt(1, 6);
@@ -65,7 +66,7 @@ public class GameController implements InputListener, Listenable<GameStateListen
 
     @Override
     public void onPlayerClickSquare(ChessBoardLocation location, SquareComponent component) {
-        System.out.println("clicked " + location.getColor() + "," + location.getIndex());
+        System.out.println("clicked (" + location.getColor() + "," + location.getIndex() + ")");
     }
 
     @Override
@@ -74,6 +75,7 @@ public class GameController implements InputListener, Listenable<GameStateListen
             ChessPiece piece = model.getChessPieceAt(location);
             if (piece.getPlayer() == currentPlayer) {
                 model.moveChessPiece(location, rolledNumber);
+                // TODO: 2020/12/1 search background knowledge
                 listenerList.forEach(listener -> listener.onPlayerEndRound(currentPlayer));
                 nextPlayer();
                 listenerList.forEach(listener -> listener.onPlayerStartRound(currentPlayer));
