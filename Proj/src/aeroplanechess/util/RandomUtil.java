@@ -1,11 +1,11 @@
 package aeroplanechess.util;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public final class RandomUtil {
-    private static final Random RANDOM = new Random();
+    private static final SecureRandom RANDOM = new SecureRandom();
 
-    public static int nextInt(int begin, int end) {
-        return begin + RANDOM.nextInt(end - begin + 1);
+    public static int nextDice() {
+        return 1 + RANDOM.nextInt(6);
     }
 }
