@@ -31,7 +31,8 @@ public class GameFrame extends JFrame implements GameStateListener {
         JButton button = new JButton("roll");
         button.addActionListener((e) -> {
             if (diceSelectorComponent.isRandomDice()) {
-                int dice = controller.rollDice();
+                int dice = 1;
+//                int dice = controller.rollDice();
                 if (dice != -1) {
                     statusLabel.setText(String.format("[%s] Rolled a %c (%d)",
                             PLAYER_NAMES[controller.getCurrentPlayer()], '\u267F' + dice, dice));

@@ -50,11 +50,12 @@ public class GameController implements InputListener, Listenable<GameStateListen
     }
 
     // FIXME: 2020/12/1 替换成摇两个骰子
-    public int rollDice() {
+    public int[] rollDice() {
         if (rolledNumber == null) {
-            return rolledNumber = RandomUtil.nextInt(1, 6);
+            int[] rolledDices = {RandomUtil.nextDice(), RandomUtil.nextDice()};
+            return rolledDices;
         } else {
-            return -1;
+            return null;
         }
     }
 
