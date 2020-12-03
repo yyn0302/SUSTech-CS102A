@@ -1,7 +1,10 @@
 package cs102a.aeroplane.model;
 
+import javax.swing.*;
 import javax.swing.text.View;
 import java.util.ArrayList;
+
+import cs102a.aeroplane.presets.*;
 
 public class Aeroplane {
     private ChessBoard chessBoard;
@@ -9,31 +12,20 @@ public class Aeroplane {
     private int planeID;                // 飞机编号，0~15
     private int hangar;                 // 停机处
     private int boardCoordinate;        // 飞机所在位置0~97
-    private int state;                  // 飞机状态（在机场，飞行中, 完成飞行）
+    private PlaneState STATE;                  // 飞机状态（在机场，飞行中, 完成飞行）
     private float gridLength;           // 棋盘上一小格的长度
     private float xOffSet, yOffSet;     // 棋盘在屏幕X,Y方向下的偏移
-    private View planeView;        // 飞机的view
+
+    // FIXME: 2020/12/3 setX 只适用于安卓控件
+    private View planeView;             // 飞机的view
+
     private int selfColorPathIndex;     // 在己方路径上当前下标0~57
     private ArrayList<Integer> path;    // 飞行棋要走的路径
     private ArrayList<Integer> crack;   // 飞行中的碰撞类型
     private float targetX, targetY;     // 要去的坐标，用于迭子时偏移一点改变坐标
 
-//    this.selfColorPathIndex = -1;
-
+    // FIXME: 2020/12/3 参考完删除
     Aeroplane(ChessBoard chessBoard, int camp, int number, int index, float gridLength, float xOffSet, float yOffSet, View planeView){
-        this.board = chessBoard;
-        this.camp = camp;
-        this.number = number;
-        this.portIndex = index;
-        this.index = index;
-        this.status = Commdef.WAITING;
-        this.gridLength = gridLength;
-        this.xOffSet = xOffSet;
-        this.yOffSet = yOffSet;
-        this.planeView = planeView;
-        this.selfColorPathIndex = -1;
-        path = new ArrayList<Integer>();
-        crack = new ArrayList<Integer>();
         // 根据gridLength来改变棋子的大小
         ViewGroup.LayoutParams params = planeView.getLayoutParams();
         params.width = (int)(2*gridLength);
@@ -47,7 +39,23 @@ public class Aeroplane {
         planeView.setVisibility(View.VISIBLE);
     }
 
-    public Aeroplane() {
+    // TODO: 2020/12/3 完成constructor
+    public Aeroplane(ChessBoard chessBoard, int color, int planeID, int hangar, int boardCoordinate,
+                     int STATE, float gridLength, float xOffSet, float yOffSet, View planeView) {
+        this.chessBoard = chessBoard;
+        this.color = color;
+        this.planeID = planeID;
+        this.hangar = hangar;
+        this.boardCoordinate = boardCoordinate;
+        this.STATE = PlaneState.WAITING;
+        this.gridLength = gridLength;
+        this.xOffSet = xOffSet;
+        this.yOffSet = yOffSet;
+        this.planeView = planeView;
+        this.selfColorPathIndex = -1;       // 因为在机场
+        path = new ArrayList<Integer>();
+        crack = new ArrayList<Integer>();
+
     }
 
     // 骰子点数diceNumber应用在此飞机上
