@@ -4,6 +4,7 @@ public class BoardCoordinate {
     /**
      * 棋子所有能到达的位置
      * {a,b} 表示位置左上角在x方向下标为a，y方向下标为b的格
+     * xOffSet, yOffSet
      * 一共97个位置，按下列顺序编号
      */
     public static final int[][] COORDINATE = {

@@ -8,18 +8,24 @@ public class GameSaver extends Thread {
     // 在每走一步同时写入数据，追加到后面
     @Override
     public void run() {
+
+        this.setPriority(MAX_PRIORITY);     // 确保每一步被记录
+
         BufferedWriter bufferedWriter = null;
 
-        String fileDict = SystemSelect.isMacOS() ? SystemSelect.getMacPath() : SystemSelect.getWindowsPath();
+        String fileDict = SystemSelect.isMacOS() ? SystemSelect.getMacHistoryPath() : SystemSelect.getWindowsHistoryPath();
 
         String filePath = String.format("%s%d.aeroplane", fileDict,
                 Objects.requireNonNull(new File(fileDict).listFiles()).length + 1);
 
 
         // TODO: 2020/12/3 每一步写入的数据
-        String stepInfo = String.format("!!STEP %d\n" +
-                        "info",
-                1);
+        String stepInfo = String.format(
+                        "@@" +
+                        "@STEP %d\n" +
+                        "@LAST_MOVE_PLAYER %d" +
+                        "@FINISHED_PLANE_COUNT "
+                    1);
 
 
         try {
@@ -43,6 +49,7 @@ public class GameSaver extends Thread {
     // TODO: 2020/12/3 模块测试，记得删
     public static void main(String[] args) {
         Thread s = new GameSaver();
+        s.setPriority(10);
         s.start();
     }
 

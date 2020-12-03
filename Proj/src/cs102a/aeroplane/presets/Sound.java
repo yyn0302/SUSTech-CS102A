@@ -1,21 +1,30 @@
 package cs102a.aeroplane.presets;
 
-public enum Sound {
-    ONE_STEP(0),
-    JUMP(1),
-    JET(2),
-    CRACK(3),
-    FINISH(4),
-    GAME_START(5),
-    GAME_END(6);
+import java.io.File;
 
-    private int soundID;
+import cs102a.aeroplane.savegame.SystemSelect;
 
-    private Sound(int soundID) {
-        this.soundID = soundID;
+public class Sound {
+    private File musicFile;
+    private static String musicPath = SystemSelect.isMacOS() ?
+            SystemSelect.getMacMusicPath() : SystemSelect.getWindowsMusicPath();
+
+    public final static Sound ONE_STEP = new Sound();
+    public final static Sound JUMP = new Sound();
+    public final static Sound JET = new Sound();
+    public final static Sound CRACK = new Sound();
+    public final static Sound FINISH = new Sound();
+    public final static Sound GAME_READY = new Sound(new File(String.format("%sutil_start_game.wav",musicPath)));
+    public final static Sound GAMING = new Sound();
+    public final static Sound GAME_END = new Sound();
+
+
+    Sound(File musicFile) {
+        this.musicFile = musicFile;
     }
 
-    public int getSoundID() {
-        return soundID;
+    public File getMusicFile() {
+        return musicFile;
     }
+
 }

@@ -1,7 +1,7 @@
 package cs102a.aeroplane.model;
 
-import javax.swing.*;
 import javax.swing.text.View;
+import javax.swing.text.html.ImageView;
 import java.util.ArrayList;
 
 import cs102a.aeroplane.presets.*;
@@ -12,12 +12,12 @@ public class Aeroplane {
     private int planeID;                // 飞机编号，0~15
     private int hangar;                 // 停机处
     private int boardCoordinate;        // 飞机所在位置0~97
-    private PlaneState STATE;                  // 飞机状态（在机场，飞行中, 完成飞行）
+    private int state;                  // 飞机状态（在机场，飞行中, 完成飞行）
     private float gridLength;           // 棋盘上一小格的长度
     private float xOffSet, yOffSet;     // 棋盘在屏幕X,Y方向下的偏移
 
     // FIXME: 2020/12/3 setX 只适用于安卓控件
-    private View planeView;             // 飞机的view
+//    private View planeView;             // 飞机的view
 
     private int selfColorPathIndex;     // 在己方路径上当前下标0~57
     private ArrayList<Integer> path;    // 飞行棋要走的路径
@@ -47,7 +47,7 @@ public class Aeroplane {
         this.planeID = planeID;
         this.hangar = hangar;
         this.boardCoordinate = boardCoordinate;
-        this.STATE = PlaneState.WAITING;
+        this.state = PlaneState.WAITING;
         this.gridLength = gridLength;
         this.xOffSet = xOffSet;
         this.yOffSet = yOffSet;
@@ -61,13 +61,16 @@ public class Aeroplane {
     // 骰子点数diceNumber应用在此飞机上
     public void receiveDiceNumber(int diceNumber){
         // 把飞机view提到布局最高层，从而实现飞过其他棋子时覆盖它们
-        planeView.bringToFront();
+        PlaneView.bringToFront();
         // 根据是否在机场来确定要走的步数，因为从机场起飞只能停在出发点
         int steps;
         if(isInAirport()) steps = 1;
         else steps = diceNumber;
-        // 当前状态改为飞行
-        status = Commdef.FLYING;
+
+        // 当前状态改为准备上场
+        // 再投一次骰子
+        state = PlaneState.WAITING;
+
         // 调用setPath来获取要走的路径（注意：最后要回到机场比如撞子或到终点的情况，经过setPath后path的最后不会添加停机处的index）
         setPath(steps);
         // 离开当前位置时把当前位置的其他飞机重新调整位置
@@ -76,40 +79,19 @@ public class Aeroplane {
         move();
     }
 
-    /* 规则
-    1) 开局
-    系统随机判定一个玩家第一个掷骰子，然后以他为基准按顺时针方向轮流掷骰。
-    2) 起飞
-    传统的规则只有在掷得6点方可起飞。掷得6点可以再掷骰子一次，确定棋子的前进步数；
-    3) 连投奖励
-    在游戏进行过程中，掷得两者之和大于10的游戏者可以连续投掷骰子，直至显示点数不是6点或游戏结束。
-    4) 迭子
-    己方的棋子走至同一格内，可迭在一起，这类情况称为“迭子”。敌方的棋子不能在迭子上面飞过；
-    当敌方的棋子正好停留在“迭子”上方时，敌方棋子与2架迭子棋子同时返回停机坪。若其它游戏者所掷点数大于他的棋子与迭子的相差步数，则多余格数为由迭子处返回的格数；
-    当其它游戏者所掷点数是6而且大于他得棋子与迭子的相差步数时，那么其它游戏者的棋子可以停于迭子上面，但是当该游戏者依照规则自动再掷点的时候，服务器自动走刚才停于迭子上面的棋子。
-    如果棋子在准备通过虚线时有其他棋子停留在虚线和通往终点线路的交叉点时：A、如果对方是一个棋子，则将该棋子逐回基地，本方棋子继续行进到对岸；B、如果对方是两个棋子重叠则该棋子不能穿越虚线、必须绕行。
-    5) 撞子
-    棋子在行进过程中走至一格时，若已有敌方棋子停留，可将敌方的棋子逐回基地。
-    6) 跳子
-    棋子在地图行走时，如果停留在和自己颜色相同格子，可以向前一个相同颜色格子作跳跃。
-    7) 飞棋
-    棋子若行进到颜色相同而有虚线连接的一格，可照虚线箭头指示的路线，通过虚线到前方颜色相同的的一格后，再跳至下一个与棋子颜色相同的格内；若棋子是由上一个颜色相同的格子跳至颜色相同而有虚线连接的一格内，则棋子照虚线箭头指示的路线，通过虚线到前方颜色相同的的一格后，棋子就不再移动。
-    8) 终点
-    “终点”就是游戏棋子的目的地。当玩家有棋子到达本格时候，表示到达终点，不能再控制该棋子。 玩家要刚好走到终点处才能算“到达”，如果玩家扔出的骰子点数无法刚好走到终点，棋子将往回退多出来的点数。
-     */
 
     public void setPath(int steps){
         for(int i = 1; i <= steps; i++){
             // 先判断往前走一步会不会越过终点
             if(selfColorPathIndex + i < Commdef.PATH_LENGTH){
                 // 如果不会，先走为敬
-                path.add(Commdef.COLOR_PATH[camp][selfColorPathIndex + i]);
+                path.add(General.BoardCoordinate[camp][selfColorPathIndex + i]);
                 // 判断往前走一步会不会碰上其他方的迭子
                 if(board.isOverlap(Commdef.COLOR_PATH[camp][selfColorPathIndex + i])){
                     // 如果碰上其他方的迭子，判断是不是刚好会停在迭子的位置
                     if(i == steps){
                         // 如果会刚好停在其他方迭子的位置，增加一个同归于尽的碰撞，再结束path的设置
-                        crack.add(Commdef.DOWN_TOGETHER);
+                        crack.add(PlaneState.CRACK_OTHER_STACK);
                         break;
                     }
                     if (board.getDiceNumber() == 6) {
@@ -438,7 +420,7 @@ public class Aeroplane {
 
     // 发生撞子时调用（对自己的参数进行调整）
     public void crackByPlane(){
-        this.status = Commdef.WAITING;
+        this.state = PlaneState.WAITING;
         index = portIndex;
         this.selfColorPathIndex = -1;
         path.clear();
@@ -480,28 +462,12 @@ public class Aeroplane {
 
     // 飞机到达终点完成任务时调用
     public void finishTask(){
-        this.status = Commdef.FINISHED;
+        this.state = PlaneState.FINISH;
         index = portIndex;
         this.selfColorPathIndex = -1;
-        path.clear();
-        crack.clear();
         planeView.setBackgroundResource(R.drawable.finished);
         planeView.setX(getXFromIndex(index));
         planeView.setY(getYFromIndex(index));
     }
-
-    public int getCamp() {
-        return camp;
-    }
-    public int getNumber() {
-        return number;
-    }
-    public int getIndex(){
-        return index;
-    }
-    public int getStatus(){
-        return status;
-    }
-    public ImageView getPlaneView() { return planeView; }
 
 }

@@ -1,36 +1,48 @@
 package cs102a.aeroplane.model;
 
+
+import cs102a.aeroplane.presets.GameState;
+import cs102a.aeroplane.presets.Hangar;
+
+import javax.swing.*;
+import javax.swing.text.html.ImageView;
+
+
 public class ChessBoard {
-    private int status;             // 状态（游戏未开始，游戏已开始，游戏结束）
-    private int turn;               // 当前回合
+    private GameState state;             // 状态（游戏未开始，游戏已开始，游戏结束）
+    private int stepCnt;               // 当前回合
     private float screenWidth;      // 屏幕宽度
     private float boardLength;      // 棋盘宽度
     private float gridLength;       // 棋盘上一小格的宽度
     private float xOffSet;          // 棋盘在屏幕X方向即右方向的偏移
     private float yOffSet;          // 棋盘在屏幕Y方向即下方向的偏移
+
     private ImageView boardView;    // 棋盘view
     private ImageView diceView;     // 骰子view
     private ImageView arrowView;    // 指示当前回合的箭头
-    private TextView tipView;       // 提示view
-    private int diceNumber;         // 骰子点数
-    private Airplane[] planes;      // 16架飞机
+
+    // FIXME: 2020/12/3 不知道popupmenu合不合适
+    private JPopupMenu tipView;       // 提示view
+
+    private int[] diceNumbers;         // 骰子点数
+    private Aeroplane[] planes;      // 16架飞机
     private int markPlane;          // 被标记的飞机，下次自动走，在迭在别人迭子上时用
-    private int winner;             // 胜利者
+    private int winnerIndex;             // 胜利者
     private TextView[] playerViews; // 4个玩家信息view
-    private SoundPool sp;           // 音效池
+//    private SoundPool sp;           // 音效池
     private HashMap<Integer, Integer> soundMap; // 音效类型到音效id的映射
-    private int gameType;           // 游戏类型，单机、联网
+    private GameState gameType;           // 游戏类型，单机、联网
     private int[] playerType;       // 四个玩家类型，人类、AI
     private int myCamp;             // 自己阵营
 
-    Board(ImageView boardView, ImageView diceView, ImageView arrowView, TextView tipView, float screenWidth, TextView[] playerViews, SoundPool sp, HashMap<Integer, Integer> soundMap) {
-        this.status = Commdef.GAME_NOT_START;
+    ChessBoard(ImageView boardView, ImageView diceView, ImageView arrowView, JPopupMenu tipView, float screenWidth, TextView[] playerViews, SoundPool sp, HashMap<Integer, Integer> soundMap) {
+        this.state = GameState.GAME_READY;
         this.screenWidth = screenWidth;
         this.boardView = boardView;
         this.diceView = diceView;
         this.arrowView = arrowView;
         this.tipView = tipView;
-        this.sp = sp;
+//        this.sp = sp;
         this.soundMap = soundMap;
         boardLength = (int) (screenWidth / 18) * 18;
         gridLength = boardLength / 36;
@@ -54,23 +66,23 @@ public class ChessBoard {
 
     // 初始化飞机
     public void initPlanes(ImageView[] planeViews) {
-        planes = new Airplane[]{
-                new Airplane(this, Commdef.BLUE, 0, 0, gridLength, xOffSet, yOffSet, planeViews[0]),
-                new Airplane(this, Commdef.BLUE, 1, 1, gridLength, xOffSet, yOffSet, planeViews[1]),
-                new Airplane(this, Commdef.BLUE, 2, 2, gridLength, xOffSet, yOffSet, planeViews[2]),
-                new Airplane(this, Commdef.BLUE, 3, 3, gridLength, xOffSet, yOffSet, planeViews[3]),
-                new Airplane(this, Commdef.GREEN, 4, 5, gridLength, xOffSet, yOffSet, planeViews[4]),
-                new Airplane(this, Commdef.GREEN, 5, 6, gridLength, xOffSet, yOffSet, planeViews[5]),
-                new Airplane(this, Commdef.GREEN, 6, 7, gridLength, xOffSet, yOffSet, planeViews[6]),
-                new Airplane(this, Commdef.GREEN, 7, 8, gridLength, xOffSet, yOffSet, planeViews[7]),
-                new Airplane(this, Commdef.RED, 8, 10, gridLength, xOffSet, yOffSet, planeViews[8]),
-                new Airplane(this, Commdef.RED, 9, 11, gridLength, xOffSet, yOffSet, planeViews[9]),
-                new Airplane(this, Commdef.RED, 10, 12, gridLength, xOffSet, yOffSet, planeViews[10]),
-                new Airplane(this, Commdef.RED, 11, 13, gridLength, xOffSet, yOffSet, planeViews[11]),
-                new Airplane(this, Commdef.YELLOW, 12, 15, gridLength, xOffSet, yOffSet, planeViews[12]),
-                new Airplane(this, Commdef.YELLOW, 13, 16, gridLength, xOffSet, yOffSet, planeViews[13]),
-                new Airplane(this, Commdef.YELLOW, 14, 17, gridLength, xOffSet, yOffSet, planeViews[14]),
-                new Airplane(this, Commdef.YELLOW, 15, 18, gridLength, xOffSet, yOffSet, planeViews[15]),
+        planes = new Aeroplane[]{
+                new Aeroplane(this, Hangar.BLUE, 0, 0, gridLength, xOffSet, yOffSet, planeViews[0]),
+                new Aeroplane(this, Hangar.BLUE, 1, 1, gridLength, xOffSet, yOffSet, planeViews[1]),
+                new Aeroplane(this, Hangar.BLUE, 2, 2, gridLength, xOffSet, yOffSet, planeViews[2]),
+                new Aeroplane(this, Hangar.BLUE, 3, 3, gridLength, xOffSet, yOffSet, planeViews[3]),
+                new Aeroplane(this, Hangar.GREEN, 4, 5, gridLength, xOffSet, yOffSet, planeViews[4]),
+                new Aeroplane(this, Hangar.GREEN, 5, 6, gridLength, xOffSet, yOffSet, planeViews[5]),
+                new Aeroplane(this, Hangar.GREEN, 6, 7, gridLength, xOffSet, yOffSet, planeViews[6]),
+                new Aeroplane(this, Hangar.GREEN, 7, 8, gridLength, xOffSet, yOffSet, planeViews[7]),
+                new Aeroplane(this, Hangar.RED, 8, 10, gridLength, xOffSet, yOffSet, planeViews[8]),
+                new Aeroplane(this, Hangar.RED, 9, 11, gridLength, xOffSet, yOffSet, planeViews[9]),
+                new Aeroplane(this, Hangar.RED, 10, 12, gridLength, xOffSet, yOffSet, planeViews[10]),
+                new Aeroplane(this, Hangar.RED, 11, 13, gridLength, xOffSet, yOffSet, planeViews[11]),
+                new Aeroplane(this, Hangar.YELLOW, 12, 15, gridLength, xOffSet, yOffSet, planeViews[12]),
+                new Aeroplane(this, Hangar.YELLOW, 13, 16, gridLength, xOffSet, yOffSet, planeViews[13]),
+                new Aeroplane(this, Hangar.YELLOW, 14, 17, gridLength, xOffSet, yOffSet, planeViews[14]),
+                new Aeroplane(this, Hangar.YELLOW, 15, 18, gridLength, xOffSet, yOffSet, planeViews[15]),
         };
     }
 
@@ -84,7 +96,7 @@ public class ChessBoard {
         playerType = new int[]{Commdef.HUMAN, Commdef.HUMAN, Commdef.HUMAN, Commdef.HUMAN};
         // 如果是联网模式，还要初始化myCamp
 
-        status = Commdef.GAME_START;
+        state = Commdef.GAME_START;
         // 还原飞机位置
         for (Airplane plane : planes) {
             plane.restore();
@@ -102,7 +114,7 @@ public class ChessBoard {
     public void gameEnd() {
         winner = turn;
         showInfo("恭喜" + Commdef.campName[winner] + "获得胜利!!");
-        status = Commdef.GAME_END;
+        state = Commdef.GAME_END;
 
         // 联网模式还要广播获胜消息
         if (gameType == Commdef.ONLINE_GAME) {
@@ -211,22 +223,22 @@ public class ChessBoard {
                                 // 一秒后停止逐帧动画
                                 diceAnim.stop();
                                 Random rand = new Random();
-                                diceNumber = rand.nextInt(6) + 1;
+                                diceNumbers = rand.nextInt(6) + 1;
                                 // 根据随机的骰子点数来设置要显示的骰子图片
-                                if (diceNumber == 1) diceView.setBackgroundResource(R.drawable.dice1);
-                                else if (diceNumber == 2) diceView.setBackgroundResource(R.drawable.dice2);
-                                else if (diceNumber == 3) diceView.setBackgroundResource(R.drawable.dice3);
-                                else if (diceNumber == 4) diceView.setBackgroundResource(R.drawable.dice4);
-                                else if (diceNumber == 5) diceView.setBackgroundResource(R.drawable.dice5);
-                                else if (diceNumber == 6) diceView.setBackgroundResource(R.drawable.dice6);
+                                if (diceNumbers == 1) diceView.setBackgroundResource(R.drawable.dice1);
+                                else if (diceNumbers == 2) diceView.setBackgroundResource(R.drawable.dice2);
+                                else if (diceNumbers == 3) diceView.setBackgroundResource(R.drawable.dice3);
+                                else if (diceNumbers == 4) diceView.setBackgroundResource(R.drawable.dice4);
+                                else if (diceNumbers == 5) diceView.setBackgroundResource(R.drawable.dice5);
+                                else if (diceNumbers == 6) diceView.setBackgroundResource(R.drawable.dice6);
 
                                 // 连投奖励
-                                if (diceNumber == 6) showInfo("获得一次投骰子机会");
+                                if (diceNumbers == 6) showInfo("获得一次投骰子机会");
 
                                 ArrayList<Integer> outsidePlanes = new ArrayList<Integer>();
                                 // 如果是迭在别人迭子上则自动走那个棋子
                                 if (markPlane != -1) {
-                                    planes[markPlane].receiveDiceNumber(diceNumber);
+                                    planes[markPlane].receiveDiceNumber(diceNumbers);
                                     markPlane = -1;
                                 } else {
                                     // 是否全在机场
@@ -239,7 +251,7 @@ public class ChessBoard {
                                     // 是否是起飞的点数，可以在Commdef.TAKE_OFF_NUMBER进行修改
                                     boolean ableToTakeOff = false;
                                     for (int each : Commdef.TAKE_OFF_NUMBER) {
-                                        if (each == diceNumber) {
+                                        if (each == diceNumbers) {
                                             ableToTakeOff = true;
                                             break;
                                         }
@@ -302,7 +314,7 @@ public class ChessBoard {
             gameEnd();
         } else {
             // 游戏没有结束
-            if (diceNumber == 6) { // 如果抛到点数为6，下一个回合还是当前阵营
+            if (diceNumbers == 6) { // 如果抛到点数为6，下一个回合还是当前阵营
                 beginTurn();
             } else {               // 否则下一个回合为顺时针下一阵营
                 turn = (turn + 1) % Commdef.PLAYER_NUM;
@@ -379,8 +391,8 @@ public class ChessBoard {
         int streamID = sp.play(soundMap.get(soundId), 0.8f, 0.8f, 1, 0, 1.0f);
     }
 
-    public int getDiceNumber() {
-        return diceNumber;
+    public int getDiceNumbers() {
+        return diceNumbers;
     }
 
     public ImageView getBoardView() {

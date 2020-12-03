@@ -1,29 +1,29 @@
 package cs102a.aeroplane.presets;
 
-public enum GameState {
+public class GameState {
     // 整体游戏状态
-    LOCAL_4P(0, 4, 0),
-    LOCAL_1P3C(0, 1, 3),
-    LOCAL_2P2C(0, 2, 2),
-    LOCAL_3P1C(0, 3, 1),
+    public static final GameState LOCAL_1P = new GameState(false, 1, 3);
+    public static final GameState LOCAL_2P = new GameState(false, 2, 2);
+    public static final GameState LOCAL_3P = new GameState(false, 3, 1);
+    public static final GameState LOCAL_4P = new GameState(false, 4, 0);
 
-    ONLINE_4P(1, 4, 0),
-    ONLINE_1P3C(1, 1, 3),
-    ONLINE_2P2C(1, 2, 2),
-    ONLINE_3P1C(1, 3, 1),
+    public static final GameState ONLINE_1P = new GameState(true, 1, 3);
+    public static final GameState ONLINE_2P = new GameState(true, 2, 2);
+    public static final GameState ONLINE_3P = new GameState(true, 3, 1);
+    public static final GameState ONLINE_4P = new GameState(true, 4, 0);
 
 
     // 玩家状态
-    PEOPLE(true),
-    COMPUTER(false),
+    public static final GameState IS_PEOPLE=new GameState(true);
+    public static final GameState IS_COMPUTER=new GameState(true);
 
     // 游戏状态
-    GAME_READY(0),
-    GAME_START(1),
-    GAME_END(2);
+    public static final GameState GAME_READY=new GameState(0);
+    public static final GameState GAME_START=new GameState(1);
+    public static final GameState GAME_END=new GameState(2);
 
 
-    private int isOnline;       // 本地游戏 0, 在线游戏 1
+    private boolean isOnline;   // 本地游戏, 在线游戏
     private int peopleCnt;      // 本场玩家中，人的数量 1-4
     private int computerCnt;    // 本场玩家中，AI的数量 0-3
 
@@ -31,7 +31,7 @@ public enum GameState {
 
     private int gameStat;
 
-    GameState(int isOnline, int peopleCnt, int computerCnt) {
+    GameState(boolean isOnline, int peopleCnt, int computerCnt) {
         this.isOnline = isOnline;
         this.peopleCnt = peopleCnt;
         this.computerCnt = computerCnt;
@@ -45,7 +45,7 @@ public enum GameState {
         this.gameStat = gameStat;
     }
 
-    public int getIsOnline() {
+    public boolean isOnline() {
         return isOnline;
     }
 
