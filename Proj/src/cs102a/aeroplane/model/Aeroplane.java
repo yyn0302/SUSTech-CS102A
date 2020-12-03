@@ -1,23 +1,27 @@
 package cs102a.aeroplane.model;
 
+import javax.swing.text.View;
+import java.util.ArrayList;
+
 public class Aeroplane {
-    private Board board;                // 调用棋盘方法，是board的一个引用
-    private int camp;                   // 飞机阵营
-    private int number;                 // 飞机编号，0~15
-    private int portIndex;              // 停机处
-    private int index;                  // 飞机所在位置0~97
-    private int status;                 // 飞机状态（在机场，飞行中, 完成飞行）
+    private ChessBoard chessBoard;
+    private int color;                  // 飞机颜色
+    private int planeID;                // 飞机编号，0~15
+    private int hangar;                 // 停机处
+    private int boardCoordinate;        // 飞机所在位置0~97
+    private int state;                  // 飞机状态（在机场，飞行中, 完成飞行）
     private float gridLength;           // 棋盘上一小格的长度
-    private float xOffSet;              // 棋盘在屏幕X方向即右方向的偏移
-    private float yOffSet;              // 棋盘在屏幕Y方向即下方向的偏移
-    private ImageView planeView;        // 飞机的view
-    private int curStep;                // 在己方路径上当前下标0~57
+    private float xOffSet, yOffSet;     // 棋盘在屏幕X,Y方向下的偏移
+    private View planeView;        // 飞机的view
+    private int selfColorPathIndex;     // 在己方路径上当前下标0~57
     private ArrayList<Integer> path;    // 飞行棋要走的路径
     private ArrayList<Integer> crack;   // 飞行中的碰撞类型
     private float targetX, targetY;     // 要去的坐标，用于迭子时偏移一点改变坐标
 
-    Airplane(Board board, int camp, int number, int index, float gridLength, float xOffSet, float yOffSet, ImageView planeView){
-        this.board = board;
+//    this.selfColorPathIndex = -1;
+
+    Aeroplane(ChessBoard chessBoard, int camp, int number, int index, float gridLength, float xOffSet, float yOffSet, View planeView){
+        this.board = chessBoard;
         this.camp = camp;
         this.number = number;
         this.portIndex = index;
@@ -27,7 +31,7 @@ public class Aeroplane {
         this.xOffSet = xOffSet;
         this.yOffSet = yOffSet;
         this.planeView = planeView;
-        this.curStep = -1;
+        this.selfColorPathIndex = -1;
         path = new ArrayList<Integer>();
         crack = new ArrayList<Integer>();
         // 根据gridLength来改变棋子的大小
@@ -41,6 +45,9 @@ public class Aeroplane {
         planeView.setX(getXFromIndex(index));
         planeView.setY(getYFromIndex(index));
         planeView.setVisibility(View.VISIBLE);
+    }
+
+    public Aeroplane() {
     }
 
     // 骰子点数diceNumber应用在此飞机上
@@ -65,9 +72,9 @@ public class Aeroplane {
     1) 开局
     系统随机判定一个玩家第一个掷骰子，然后以他为基准按顺时针方向轮流掷骰。
     2) 起飞
-    传统的规则只有在掷得6点方可起飞，为了提高游戏的激烈程度，增加掷得5点就可以将飞机送入起飞平台。掷得6点可以再掷骰子一次，确定棋子的前进步数；
+    传统的规则只有在掷得6点方可起飞。掷得6点可以再掷骰子一次，确定棋子的前进步数；
     3) 连投奖励
-    在游戏进行过程中，掷得6点的游戏者可以连续投掷骰子，直至显示点数不是6点或游戏结束。
+    在游戏进行过程中，掷得两者之和大于10的游戏者可以连续投掷骰子，直至显示点数不是6点或游戏结束。
     4) 迭子
     己方的棋子走至同一格内，可迭在一起，这类情况称为“迭子”。敌方的棋子不能在迭子上面飞过；
     当敌方的棋子正好停留在“迭子”上方时，敌方棋子与2架迭子棋子同时返回停机坪。若其它游戏者所掷点数大于他的棋子与迭子的相差步数，则多余格数为由迭子处返回的格数；
@@ -86,11 +93,11 @@ public class Aeroplane {
     public void setPath(int steps){
         for(int i = 1; i <= steps; i++){
             // 先判断往前走一步会不会越过终点
-            if(curStep + i < Commdef.PATH_LENGTH){
+            if(selfColorPathIndex + i < Commdef.PATH_LENGTH){
                 // 如果不会，先走为敬
-                path.add(Commdef.COLOR_PATH[camp][curStep + i]);
+                path.add(Commdef.COLOR_PATH[camp][selfColorPathIndex + i]);
                 // 判断往前走一步会不会碰上其他方的迭子
-                if(board.isOverlap(Commdef.COLOR_PATH[camp][curStep + i])){
+                if(board.isOverlap(Commdef.COLOR_PATH[camp][selfColorPathIndex + i])){
                     // 如果碰上其他方的迭子，判断是不是刚好会停在迭子的位置
                     if(i == steps){
                         // 如果会刚好停在其他方迭子的位置，增加一个同归于尽的碰撞，再结束path的设置
@@ -103,7 +110,7 @@ public class Aeroplane {
                         break;
                     } else {
                         // 如果骰子点数不为6并且与其他方迭子的距离小于点数，那么要往回退剩余步数，如果回退时又碰上另外的其他方迭子就在此前进，如此反复直至用完步数
-                        int tempStep = curStep + i; // 在己方路径上的下标
+                        int tempStep = selfColorPathIndex + i; // 在己方路径上的下标
                         int count = steps - i;      // 剩余步数
                         int direction = -1;         // 往回走还是往前走，-1往回走
                         while(count > 0){
@@ -128,7 +135,7 @@ public class Aeroplane {
             else{
                 // 如果往前走一步会越过终点，那么往回退剩余步数，这个过程中不可能会发生碰撞，不做判断
                 for (int j = 1; j <= steps - i + 1; j++) {
-                    path.add(Commdef.COLOR_PATH[camp][curStep + i - j - 1]);
+                    path.add(Commdef.COLOR_PATH[camp][selfColorPathIndex + i - j - 1]);
                 }
                 // 结束path设置
                 break;
@@ -136,7 +143,7 @@ public class Aeroplane {
 
             // 能到这里说明棋子走完步数都没有碰上其他方的迭子
             if(i == steps){
-                int mIndex = Commdef.COLOR_PATH[camp][curStep + i];
+                int mIndex = Commdef.COLOR_PATH[camp][selfColorPathIndex + i];
                 // 如果最后一步上有其他人的飞机就增加一个横扫其他人的碰撞
                 if(board.hasOtherPlane(mIndex)) crack.add(Commdef.SWEEP_OTHERS);
                 // 最后一步是不是大跳
@@ -360,7 +367,7 @@ public class Aeroplane {
                 }
                 if (!path.isEmpty()) move();
                 else {
-                    curStep = getStepFromIndex(index);
+                    selfColorPathIndex = getStepFromIndex(index);
                     path.clear();
                     crack.clear();
                     // 如果最后一步到达终点，飞机完成任务
@@ -425,7 +432,7 @@ public class Aeroplane {
     public void crackByPlane(){
         this.status = Commdef.WAITING;
         index = portIndex;
-        this.curStep = -1;
+        this.selfColorPathIndex = -1;
         path.clear();
         crack.clear();
         // 做个动画让它飞回停机处
@@ -455,7 +462,7 @@ public class Aeroplane {
     public void restore(){
         status = Commdef.WAITING;
         index = portIndex;
-        curStep = -1;
+        selfColorPathIndex = -1;
         path.clear();
         crack.clear();
         planeView.setRotation(Commdef.POSITION_ANGLE[index]);
@@ -467,7 +474,7 @@ public class Aeroplane {
     public void finishTask(){
         this.status = Commdef.FINISHED;
         index = portIndex;
-        this.curStep = -1;
+        this.selfColorPathIndex = -1;
         path.clear();
         crack.clear();
         planeView.setBackgroundResource(R.drawable.finished);

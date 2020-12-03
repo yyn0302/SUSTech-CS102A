@@ -59,6 +59,12 @@ public class BoardCoordinate {
             0                                           // 终点
     };
 
+    // 骰子大小所占格数
+    public static final int DICE_GRID_NUM = 6;
+
+    // 所有格子数
+    public static final int GIRD_NUM = 97;
+
     public static final int UP = 0;
     public static final int DOWN = 1;
     public static final int LEFT = 2;
@@ -84,6 +90,9 @@ public class BoardCoordinate {
             UP, UP, UP, UP, UP, UP,
             UP
     };
+
+    // 迭子时两个棋子之间相差的格子数, 用于正确显示出来
+    public static final float STACK_DISTANCE = 0.5f;
 
     // 圆圈路径上的各色方块编号
     public static final int[] BLUE_GRID = {21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61, 65, 69};
