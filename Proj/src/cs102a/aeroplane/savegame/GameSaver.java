@@ -22,7 +22,7 @@ public class GameSaver extends Thread {
 
         // TODO: 2020/12/3 每一步写入的数据
         String stepInfo = String.format(
-                        "@@\n" +
+                        "@@@\n" +
                         "@STEP %d\n" +
                         "@LAST_MOVE_PLAYER %d\n" +
                         "@FINISHED_PLANE_COUNT ",
