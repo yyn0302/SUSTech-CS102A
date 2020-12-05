@@ -25,7 +25,7 @@ public class ChessBoard implements ChessBoardInterface {
     private JPopupMenu tipView;       // 提示view
 
     private int[] diceNumbers;         // 骰子点数
-    private Aeroplane[] planes;      // 16架飞机
+    private originPlane[] planes;      // 16架飞机
     private int markPlane;          // 被标记的飞机，下次自动走，在迭在别人迭子上时用
     private int winnerIndex;             // 胜利者
     private TextView[] playerViews; // 4个玩家信息view
@@ -66,23 +66,23 @@ public class ChessBoard implements ChessBoardInterface {
 
     // 初始化飞机
     public void initPlanes(ImageView[] planeViews) {
-        planes = new Aeroplane[]{
-                new Aeroplane(this, Hangar.BLUE, 0, 0, gridLength, xOffSet, yOffSet, planeViews[0]),
-                new Aeroplane(this, Hangar.BLUE, 1, 1, gridLength, xOffSet, yOffSet, planeViews[1]),
-                new Aeroplane(this, Hangar.BLUE, 2, 2, gridLength, xOffSet, yOffSet, planeViews[2]),
-                new Aeroplane(this, Hangar.BLUE, 3, 3, gridLength, xOffSet, yOffSet, planeViews[3]),
-                new Aeroplane(this, Hangar.GREEN, 4, 5, gridLength, xOffSet, yOffSet, planeViews[4]),
-                new Aeroplane(this, Hangar.GREEN, 5, 6, gridLength, xOffSet, yOffSet, planeViews[5]),
-                new Aeroplane(this, Hangar.GREEN, 6, 7, gridLength, xOffSet, yOffSet, planeViews[6]),
-                new Aeroplane(this, Hangar.GREEN, 7, 8, gridLength, xOffSet, yOffSet, planeViews[7]),
-                new Aeroplane(this, Hangar.RED, 8, 10, gridLength, xOffSet, yOffSet, planeViews[8]),
-                new Aeroplane(this, Hangar.RED, 9, 11, gridLength, xOffSet, yOffSet, planeViews[9]),
-                new Aeroplane(this, Hangar.RED, 10, 12, gridLength, xOffSet, yOffSet, planeViews[10]),
-                new Aeroplane(this, Hangar.RED, 11, 13, gridLength, xOffSet, yOffSet, planeViews[11]),
-                new Aeroplane(this, Hangar.YELLOW, 12, 15, gridLength, xOffSet, yOffSet, planeViews[12]),
-                new Aeroplane(this, Hangar.YELLOW, 13, 16, gridLength, xOffSet, yOffSet, planeViews[13]),
-                new Aeroplane(this, Hangar.YELLOW, 14, 17, gridLength, xOffSet, yOffSet, planeViews[14]),
-                new Aeroplane(this, Hangar.YELLOW, 15, 18, gridLength, xOffSet, yOffSet, planeViews[15]),
+        planes = new originPlane[]{
+                new originPlane(this, Hangar.BLUE, 0, 0, gridLength, xOffSet, yOffSet, planeViews[0]),
+                new originPlane(this, Hangar.BLUE, 1, 1, gridLength, xOffSet, yOffSet, planeViews[1]),
+                new originPlane(this, Hangar.BLUE, 2, 2, gridLength, xOffSet, yOffSet, planeViews[2]),
+                new originPlane(this, Hangar.BLUE, 3, 3, gridLength, xOffSet, yOffSet, planeViews[3]),
+                new originPlane(this, Hangar.GREEN, 4, 5, gridLength, xOffSet, yOffSet, planeViews[4]),
+                new originPlane(this, Hangar.GREEN, 5, 6, gridLength, xOffSet, yOffSet, planeViews[5]),
+                new originPlane(this, Hangar.GREEN, 6, 7, gridLength, xOffSet, yOffSet, planeViews[6]),
+                new originPlane(this, Hangar.GREEN, 7, 8, gridLength, xOffSet, yOffSet, planeViews[7]),
+                new originPlane(this, Hangar.RED, 8, 10, gridLength, xOffSet, yOffSet, planeViews[8]),
+                new originPlane(this, Hangar.RED, 9, 11, gridLength, xOffSet, yOffSet, planeViews[9]),
+                new originPlane(this, Hangar.RED, 10, 12, gridLength, xOffSet, yOffSet, planeViews[10]),
+                new originPlane(this, Hangar.RED, 11, 13, gridLength, xOffSet, yOffSet, planeViews[11]),
+                new originPlane(this, Hangar.YELLOW, 12, 15, gridLength, xOffSet, yOffSet, planeViews[12]),
+                new originPlane(this, Hangar.YELLOW, 13, 16, gridLength, xOffSet, yOffSet, planeViews[13]),
+                new originPlane(this, Hangar.YELLOW, 14, 17, gridLength, xOffSet, yOffSet, planeViews[14]),
+                new originPlane(this, Hangar.YELLOW, 15, 18, gridLength, xOffSet, yOffSet, planeViews[15]),
         };
     }
 
