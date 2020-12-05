@@ -10,6 +10,7 @@ public class GameSaver extends Thread {
     public void run() {
 
         this.setPriority(MAX_PRIORITY);     // 确保每一步被记录
+        this.setDaemon(true);
 
         BufferedWriter bufferedWriter = null;
 
@@ -21,10 +22,10 @@ public class GameSaver extends Thread {
 
         // TODO: 2020/12/3 每一步写入的数据
         String stepInfo = String.format(
-                        "@@" +
+                        "@@@\n" +
                         "@STEP %d\n" +
-                        "@LAST_MOVE_PLAYER %d" +
-                        "@FINISHED_PLANE_COUNT "
+                        "@LAST_MOVE_PLAYER %d\n" +
+                        "@FINISHED_PLANE_COUNT ",
                     1);
 
 

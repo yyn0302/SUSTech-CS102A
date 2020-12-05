@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import cs102a.aeroplane.presets.*;
 
-public class Aeroplane {
+public class Aeroplane implements AeroplaneInterface {
     private ChessBoard chessBoard;
     private int color;                  // 飞机颜色
     private int planeID;                // 飞机编号，0~15

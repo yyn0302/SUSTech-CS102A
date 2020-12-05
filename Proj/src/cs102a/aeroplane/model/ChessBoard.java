@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.text.html.ImageView;
 
 
-public class ChessBoard {
+public class ChessBoard implements ChessBoardInterface {
     private GameState state;             // 状态（游戏未开始，游戏已开始，游戏结束）
     private int stepCnt;               // 当前回合
     private float screenWidth;      // 屏幕宽度
