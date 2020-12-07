@@ -14,8 +14,8 @@ public class GameState {
 
 
     // 玩家状态
-    public static final GameState IS_PEOPLE=new GameState(true);
-    public static final GameState IS_COMPUTER=new GameState(true);
+//    public static final GameState IS_PEOPLE=new GameState(true);
+//    public static final GameState IS_COMPUTER=new GameState(true);
 
     // 游戏状态
     public static final GameState GAME_READY=new GameState(0);
@@ -27,7 +27,7 @@ public class GameState {
     private int peopleCnt;      // 本场玩家中，人的数量 1-4
     private int computerCnt;    // 本场玩家中，AI的数量 0-3
 
-    private boolean isPeople;   // 操作者是人，否则为AI
+//    private boolean isPeople;   // 操作者是人，否则为AI
 
     private int gameStat;
 
@@ -37,9 +37,9 @@ public class GameState {
         this.computerCnt = computerCnt;
     }
 
-    GameState(boolean isPeople) {
-        this.isPeople = isPeople;
-    }
+//    GameState(boolean isPeople) {
+//        this.isPeople = isPeople;
+//    }
 
     GameState(int gameStat) {
         this.gameStat = gameStat;
@@ -57,9 +57,9 @@ public class GameState {
         return computerCnt;
     }
 
-    public boolean isPeople() {
-        return isPeople;
-    }
+//    public boolean isPeople() {
+//        return isPeople;
+//    }
 
     public int getGameStat() {
         return gameStat;

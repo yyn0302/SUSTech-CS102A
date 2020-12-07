@@ -1,16 +1,20 @@
 package cs102a.aeroplane.model;
 
 
+import cs102a.aeroplane.musicfx.MusicPlayer;
+import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.GameState;
 import cs102a.aeroplane.presets.Hangar;
+import cs102a.aeroplane.presets.Sound;
 
 import javax.swing.*;
 import javax.swing.text.html.ImageView;
+import java.util.HashMap;
+import java.util.Random;
 
-
-public class ChessBoard implements ChessBoardInterface {
+public class ChessBoard  {
     private GameState state;             // 状态（游戏未开始，游戏已开始，游戏结束）
-    private int stepCnt;               // 当前回合
+    private int nowPlayer;               // 当前回合
     private float screenWidth;      // 屏幕宽度
     private float boardLength;      // 棋盘宽度
     private float gridLength;       // 棋盘上一小格的宽度
@@ -18,30 +22,29 @@ public class ChessBoard implements ChessBoardInterface {
     private float yOffSet;          // 棋盘在屏幕Y方向即下方向的偏移
 
     private ImageView boardView;    // 棋盘view
-    private ImageView diceView;     // 骰子view
-    private ImageView arrowView;    // 指示当前回合的箭头
+//    private ImageView diceView;     // 骰子view
+//    private ImageView arrowView;    // 指示当前回合的箭头
 
     // FIXME: 2020/12/3 不知道popupmenu合不合适
-    private JPopupMenu tipView;       // 提示view
-
-    private int[] diceNumbers;         // 骰子点数
-    private originPlane[] planes;      // 16架飞机
+//    private JPopupMenu tipView;       // 提示view
+//    private int[] diceNumbers;         // 骰子点数
+    private Aeroplane[] planes;      // 16架飞机
     private int markPlane;          // 被标记的飞机，下次自动走，在迭在别人迭子上时用
     private int winnerIndex;             // 胜利者
-    private TextView[] playerViews; // 4个玩家信息view
+//    private TextView[] playerViews; // 4个玩家信息view
 //    private SoundPool sp;           // 音效池
     private HashMap<Integer, Integer> soundMap; // 音效类型到音效id的映射
     private GameState gameType;           // 游戏类型，单机、联网
     private int[] playerType;       // 四个玩家类型，人类、AI
-    private int myCamp;             // 自己阵营
+//    private int myCamp;             // 自己阵营
 
-    ChessBoard(ImageView boardView, ImageView diceView, ImageView arrowView, JPopupMenu tipView, float screenWidth, TextView[] playerViews, SoundPool sp, HashMap<Integer, Integer> soundMap) {
+    ChessBoard(ImageView boardView, ImageView diceView, ImageView arrowView, JPopupMenu tipView, float screenWidth, /*TextView[] playerViews, SoundPool sp,*/ HashMap<Integer, Integer> soundMap) {
         this.state = GameState.GAME_READY;
         this.screenWidth = screenWidth;
         this.boardView = boardView;
-        this.diceView = diceView;
-        this.arrowView = arrowView;
-        this.tipView = tipView;
+//        this.diceView = diceView;
+//        this.arrowView = arrowView;
+//        this.tipView = tipView;
 //        this.sp = sp;
         this.soundMap = soundMap;
         boardLength = (int) (screenWidth / 18) * 18;
@@ -52,42 +55,42 @@ public class ChessBoard implements ChessBoardInterface {
         boardParams.height = (int) boardLength;
         boardView.setLayoutParams(boardParams);
         // 调整提示框大小
-        ViewGroup.LayoutParams tipParams = tipView.getLayoutParams();
-        tipParams.width = (int) boardLength;
-        tipParams.height = (int) (boardLength * 0.5);
-        tipView.setLayoutParams(tipParams);
+//        ViewGroup.LayoutParams tipParams = tipView.getLayoutParams();
+//        tipParams.width = (int) boardLength;
+//        tipParams.height = (int) (boardLength * 0.5);
+//        tipView.setLayoutParams(tipParams);
 
-        this.playerViews = new TextView[4];
-        this.playerViews[0] = playerViews[0];
-        this.playerViews[1] = playerViews[1];
-        this.playerViews[2] = playerViews[2];
-        this.playerViews[3] = playerViews[3];
+//        this.playerViews = new TextView[4];
+//        this.playerViews[0] = playerViews[0];
+//        this.playerViews[1] = playerViews[1];
+//        this.playerViews[2] = playerViews[2];
+//        this.playerViews[3] = playerViews[3];
     }
 
     // 初始化飞机
     public void initPlanes(ImageView[] planeViews) {
-        planes = new originPlane[]{
-                new originPlane(this, Hangar.BLUE, 0, 0, gridLength, xOffSet, yOffSet, planeViews[0]),
-                new originPlane(this, Hangar.BLUE, 1, 1, gridLength, xOffSet, yOffSet, planeViews[1]),
-                new originPlane(this, Hangar.BLUE, 2, 2, gridLength, xOffSet, yOffSet, planeViews[2]),
-                new originPlane(this, Hangar.BLUE, 3, 3, gridLength, xOffSet, yOffSet, planeViews[3]),
-                new originPlane(this, Hangar.GREEN, 4, 5, gridLength, xOffSet, yOffSet, planeViews[4]),
-                new originPlane(this, Hangar.GREEN, 5, 6, gridLength, xOffSet, yOffSet, planeViews[5]),
-                new originPlane(this, Hangar.GREEN, 6, 7, gridLength, xOffSet, yOffSet, planeViews[6]),
-                new originPlane(this, Hangar.GREEN, 7, 8, gridLength, xOffSet, yOffSet, planeViews[7]),
-                new originPlane(this, Hangar.RED, 8, 10, gridLength, xOffSet, yOffSet, planeViews[8]),
-                new originPlane(this, Hangar.RED, 9, 11, gridLength, xOffSet, yOffSet, planeViews[9]),
-                new originPlane(this, Hangar.RED, 10, 12, gridLength, xOffSet, yOffSet, planeViews[10]),
-                new originPlane(this, Hangar.RED, 11, 13, gridLength, xOffSet, yOffSet, planeViews[11]),
-                new originPlane(this, Hangar.YELLOW, 12, 15, gridLength, xOffSet, yOffSet, planeViews[12]),
-                new originPlane(this, Hangar.YELLOW, 13, 16, gridLength, xOffSet, yOffSet, planeViews[13]),
-                new originPlane(this, Hangar.YELLOW, 14, 17, gridLength, xOffSet, yOffSet, planeViews[14]),
-                new originPlane(this, Hangar.YELLOW, 15, 18, gridLength, xOffSet, yOffSet, planeViews[15]),
+        planes = new Aeroplane[]{
+                new Aeroplane(this, Hangar.BLUE, 0, 0, gridLength, xOffSet, yOffSet, planeViews[0]),
+                new Aeroplane(this, Hangar.BLUE, 1, 1, gridLength, xOffSet, yOffSet, planeViews[1]),
+                new Aeroplane(this, Hangar.BLUE, 2, 2, gridLength, xOffSet, yOffSet, planeViews[2]),
+                new Aeroplane(this, Hangar.BLUE, 3, 3, gridLength, xOffSet, yOffSet, planeViews[3]),
+                new Aeroplane(this, Hangar.GREEN, 4, 5, gridLength, xOffSet, yOffSet, planeViews[4]),
+                new Aeroplane(this, Hangar.GREEN, 5, 6, gridLength, xOffSet, yOffSet, planeViews[5]),
+                new Aeroplane(this, Hangar.GREEN, 6, 7, gridLength, xOffSet, yOffSet, planeViews[6]),
+                new Aeroplane(this, Hangar.GREEN, 7, 8, gridLength, xOffSet, yOffSet, planeViews[7]),
+                new Aeroplane(this, Hangar.RED, 8, 10, gridLength, xOffSet, yOffSet, planeViews[8]),
+                new Aeroplane(this, Hangar.RED, 9, 11, gridLength, xOffSet, yOffSet, planeViews[9]),
+                new Aeroplane(this, Hangar.RED, 10, 12, gridLength, xOffSet, yOffSet, planeViews[10]),
+                new Aeroplane(this, Hangar.RED, 11, 13, gridLength, xOffSet, yOffSet, planeViews[11]),
+                new Aeroplane(this, Hangar.YELLOW, 12, 15, gridLength, xOffSet, yOffSet, planeViews[12]),
+                new Aeroplane(this, Hangar.YELLOW, 13, 16, gridLength, xOffSet, yOffSet, planeViews[13]),
+                new Aeroplane(this, Hangar.YELLOW, 14, 17, gridLength, xOffSet, yOffSet, planeViews[14]),
+                new Aeroplane(this, Hangar.YELLOW, 15, 18, gridLength, xOffSet, yOffSet, planeViews[15]),
         };
     }
 
     // 开始游戏
-    public void gameStart() {
+    public void startGame() {
         playSound(Commdef.GAME_START_SOUND);
         // 禁止点击棋子
         forbidClick();
@@ -102,9 +105,9 @@ public class ChessBoard implements ChessBoardInterface {
             plane.restore();
         }
         // 随机决定哪方先开始
-        Random rand = new Random();
-        turn = rand.nextInt(4);
-        showInfo(Commdef.campName[turn] + "开始");
+        Random rd = new Random();
+        nowPlayer = rd.nextInt(4);
+        showInfo(Commdef.campName[nowPlayer] + "开始");
         markPlane = -1;
         winner = -1;
         beginTurn();
@@ -112,8 +115,8 @@ public class ChessBoard implements ChessBoardInterface {
 
     // 结束游戏
     public void gameEnd() {
-        winner = turn;
-        showInfo("恭喜" + Commdef.campName[winner] + "获得胜利!!");
+        winner = nowPlayer;
+//        showInfo("恭喜" + Commdef.campName[winner] + "获得胜利!!");
         state = Commdef.GAME_END;
 
         // 联网模式还要广播获胜消息
@@ -137,7 +140,7 @@ public class ChessBoard implements ChessBoardInterface {
         int planeNum = 0;
         float indexX = getXFromIndex(index);
         float indexY = getYFromIndex(index);
-        for (Airplane plane : planes) {
+        for (Aeroplane plane : planes) {
             if (plane.getIndex() == index && plane.getNumber() != number) {
                 float adjustX = 0, adjustY = 0;
                 switch (Commdef.OVERLAP_DIRECTION[index]) {
@@ -335,7 +338,7 @@ public class ChessBoard implements ChessBoardInterface {
 
     // 禁止点击任何棋子并清除动画效果（因为可以飞的飞机会跑一个不断缩放的动画来提醒）
     public void forbidClick() {
-        for (Airplane plane : planes) {
+        for (Aeroplane plane : planes) {
             plane.getPlaneView().setClickable(false);
             plane.getPlaneView().clearAnimation();
         }
@@ -355,7 +358,7 @@ public class ChessBoard implements ChessBoardInterface {
 
     // 判断index上有没有其他方的棋子
     public boolean hasOtherPlane(int index) {
-        for (Airplane plane : planes) {
+        for (Aeroplane plane : planes) {
             if (plane.getIndex() == index && plane.getCamp() != turn) return true;
         }
         return false;
@@ -364,7 +367,7 @@ public class ChessBoard implements ChessBoardInterface {
     // 获取index上的飞机数目
     public int planeNumOnIndex(int index) {
         int planeNum = 0;
-        for (Airplane plane : planes) {
+        for (Aeroplane plane : planes) {
             if (plane.getIndex() == index) {
                 planeNum++;
             }
@@ -373,38 +376,42 @@ public class ChessBoard implements ChessBoardInterface {
     }
 
     // 提示
-    public void showInfo(String sentence) {
-        tipView.setText(sentence);
-        tipView.bringToFront();
-        tipView.setVisibility(View.VISIBLE);
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                // 一秒后消失
-                tipView.setVisibility(View.GONE);
-            }
-
-        }, 1000);   // 等待一秒后执行
-    }
+//    public void showInfo(String sentence) {
+//        tipView.setText(sentence);
+//        tipView.bringToFront();
+//        tipView.setVisibility(View.VISIBLE);
+//        new Handler().postDelayed(new Runnable() {
+//            public void run() {
+//                // 一秒后消失
+//                tipView.setVisibility(View.GONE);
+//            }
+//
+//        }, 1000);   // 等待一秒后执行
+//    }
 
     // 播放音效
-    public void playSound(int soundId) {
-        int streamID = sp.play(soundMap.get(soundId), 0.8f, 0.8f, 1, 0, 1.0f);
+    public void playSound(Sound sound,boolean isLoop) {
+//        int streamID = sp.play(soundMap.get(soundId), 0.8f, 0.8f, 1, 0, 1.0f);
+        MusicPlayer player = new MusicPlayer(sound);
+//        player.setVolume(6f);
+        player.setLoop(isLoop);
+        player.play();
     }
 
-    public int getDiceNumbers() {
-        return diceNumbers;
-    }
+//    public int getDiceNumbers() {
+//        return diceNumbers;
+//    }
 
     public ImageView getBoardView() {
         return boardView;
     }
 
     public float getXFromIndex(int index) {
-        return xOffSet + gridLength * Commdef.POSITIONS[index][0];
+        return xOffSet + gridLength * BoardCoordinate.COORDINATE[index][0];
     }
 
     public float getYFromIndex(int index) {
-        return yOffSet + gridLength * Commdef.POSITIONS[index][1];
+        return yOffSet + gridLength * BoardCoordinate.COORDINATE[index][1];
     }
 
     public void setXOffSet(float xOffSet) {
@@ -414,27 +421,29 @@ public class ChessBoard implements ChessBoardInterface {
     public void setYOffSet(float yOffSet) {
         this.yOffSet = yOffSet;
         // 调整骰子大小
-        ViewGroup.LayoutParams diceParams = diceView.getLayoutParams();
-        diceParams.width = (int) (yOffSet * 0.4);
-        diceParams.height = (int) (yOffSet * 0.4);
-        diceView.setLayoutParams(diceParams);
-        // 调整箭头大小
-        ViewGroup.LayoutParams arrowParams = arrowView.getLayoutParams();
-        arrowParams.width = (int) (yOffSet * 0.4);
-        arrowParams.height = (int) (yOffSet * 0.4);
-        arrowView.setLayoutParams(arrowParams);
-        // 调整玩家信息框的大小
-        for (int i = 0; i < 4; i++) {
-            ViewGroup.LayoutParams playerParams = playerViews[i].getLayoutParams();
-            playerParams.width = (int) (yOffSet * 1.4);
-            playerParams.height = (int) (yOffSet);
-            playerViews[i].setLayoutParams(playerParams);
-        }
+//        ViewGroup.LayoutParams diceParams = diceView.getLayoutParams();
+//        diceParams.width = (int) (yOffSet * 0.4);
+//        diceParams.height = (int) (yOffSet * 0.4);
+//        diceView.setLayoutParams(diceParams);
+//        // 调整箭头大小
+//        ViewGroup.LayoutParams arrowParams = arrowView.getLayoutParams();
+//        arrowParams.width = (int) (yOffSet * 0.4);
+//        arrowParams.height = (int) (yOffSet * 0.4);
+//        arrowView.setLayoutParams(arrowParams);
+//        // 调整玩家信息框的大小
+//        for (int i = 0; i < 4; i++) {
+//            ViewGroup.LayoutParams playerParams = playerViews[i].getLayoutParams();
+//            playerParams.width = (int) (yOffSet * 1.4);
+//            playerParams.height = (int) (yOffSet);
+//            playerViews[i].setLayoutParams(playerParams);
+//        }
     }
-
 
     public void setMarkPlane(int number) {
         markPlane = number;
     }
 
+    public void adjustPosition() {
+
+    }
 }

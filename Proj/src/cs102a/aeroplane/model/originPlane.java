@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import cs102a.aeroplane.presets.*;
 
-public class originPlane implements AeroplaneInterface {
+public class Aeroplane implements AeroplaneInterface {
    private ChessBoard chessBoard;
    private int color;                  // 飞机颜色
    private int planeID;                // 飞机编号，0~15
@@ -23,8 +23,9 @@ public class originPlane implements AeroplaneInterface {
    private ArrayList<Integer> path;    // 飞行棋要走的路径
    private ArrayList<Integer> crack;   // 飞行中的碰撞类型
    private float targetX, targetY;     // 要去的坐标，用于迭子时偏移一点改变坐标
+    private int index;
 
-   // FIXME: 2020/12/3 参考完删除
+    // FIXME: 2020/12/3 参考完删除
    originPlane(ChessBoard chessBoard, int camp, int number, int index, float gridLength, float xOffSet, float yOffSet, View planeView){
        // 根据gridLength来改变棋子的大小
        ViewGroup.LayoutParams params = planeView.getLayoutParams();
@@ -401,11 +402,11 @@ public class originPlane implements AeroplaneInterface {
    // 等待被点击飞行
    public void getReadyToFly(){
        // 做一个不断重复的缩放动画，告诉玩家可以移动的棋子
-       ScaleAnimation scaleAnim = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f, Animation.ABSOLUTE, planeView.getX()+gridLength, Animation.ABSOLUTE, planeView.getY()+gridLength);
-       scaleAnim.setDuration(500);     //设置动画持续时间
-       scaleAnim.setRepeatCount(-1);   //设置重复次数，-1无限循环
-       scaleAnim.setRepeatMode(Animation.REVERSE); // 逆序重复
-       scaleAnim.setFillAfter(false);              // 不用停在最后一帧
+    //    ScaleAnimation scaleAnim = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f, Animation.ABSOLUTE, planeView.getX()+gridLength, Animation.ABSOLUTE, planeView.getY()+gridLength);
+    //    scaleAnim.setDuration(500);     //设置动画持续时间
+    //    scaleAnim.setRepeatCount(-1);   //设置重复次数，-1无限循环
+    //    scaleAnim.setRepeatMode(Animation.REVERSE); // 逆序重复
+    //    scaleAnim.setFillAfter(false);              // 不用停在最后一帧
        planeView.startAnimation(scaleAnim);
        planeView.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -470,4 +471,11 @@ public class originPlane implements AeroplaneInterface {
        planeView.setY(getYFromIndex(index));
    }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
 }

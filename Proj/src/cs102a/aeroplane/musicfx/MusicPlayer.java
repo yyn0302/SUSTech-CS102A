@@ -1,5 +1,7 @@
 package cs102a.aeroplane.musicfx;
 
+import cs102a.aeroplane.presets.Sound;
+
 import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -8,23 +10,26 @@ import java.io.IOException;
 
 /**
  * 根据jdk底层API实现的音乐播放器
- *
- * @author passerbyYSQ
- * @功能 1、只支持wav，且只能播放一首
+ * <p>
+ * // * @author passerbyYSQ
+ * // * @功能 1、只支持wav，且只能播放一首
  * 2、可循环播放，随时停止（并非暂停）
  * 3、支持一定范围内的音量调节
  * <p>
  * 参考博客:
  * https://blog.csdn.net/qq_21907023/article/details/96174077
  * https://blog.csdn.net/fuckcdn/article/details/83725725
- * @create 2020年7月20日 下午4:05:50
+ * // * @create 2020年7月20日 下午4:05:50
  */
 public class MusicPlayer {
+
+
+    //@usage:构造
 
     private File file;                  // wav文件的路径
     private boolean isLoop = false;     // 是否循环播放
     private boolean isPlaying;          // 是否正在播放
-    private float newVolume = 7;        // FloatControl.Type.MASTER_GAIN的值(可用于调节音量)
+//    private float newVolume = 7;        // FloatControl.Type.MASTER_GAIN的值(可用于调节音量)
 
     private playSoundThread playSoundThread;
 
@@ -48,8 +53,8 @@ public class MusicPlayer {
 //		}
 //	}
 
-    public MusicPlayer(String musicPath) {
-        file = new File(musicPath);
+    public MusicPlayer(Sound sound) {
+        this.file = sound.getMusicFile();
     }
 
     // 播放音乐
@@ -79,14 +84,15 @@ public class MusicPlayer {
 
     /**
      * -80.0~6.0206测试,越小音量越小
+     * <p>
+     * //     * @param newVolume
      *
-     * @param newVolume
      * @return 返回当前对象
      */
-    public MusicPlayer setVolume(float newVolume) {
-        this.newVolume = newVolume;
-        return this;
-    }
+//    public MusicPlayer setVolume(float newVolume) {
+//        this.newVolume = newVolume;
+//        return this;
+//    }
 
     // 异步播放线程
     private class playSoundThread extends Thread {
@@ -107,12 +113,12 @@ public class MusicPlayer {
                     sourceDataLine = AudioSystem.getSourceDataLine(format);
                     sourceDataLine.open();
                     // 必须open之后
-                    if (newVolume != 7) {
-                        FloatControl control = (FloatControl) sourceDataLine.getControl(FloatControl.Type.MASTER_GAIN);
-//						System.out.println(control.getMaximum());
-//						System.out.println(control.getMinimum());
-                        control.setValue(newVolume);
-                    }
+//                    if (newVolume != 7) {
+//                        FloatControl control = (FloatControl) sourceDataLine.getControl(FloatControl.Type.MASTER_GAIN);
+////						System.out.println(control.getMaximum());
+////						System.out.println(control.getMinimum());
+//                        control.setValue(newVolume);
+//                    }
 
                     sourceDataLine.start();
                     byte[] buf = new byte[512];
