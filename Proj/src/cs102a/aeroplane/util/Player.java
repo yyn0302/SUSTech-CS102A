@@ -13,7 +13,6 @@ public class Player {
             // TODO: 2020/12/4 传入popup中用户输入的值，原始的String即可
             // FIXME: 2020/12/4 删除调试用例
             String cheat = "";
-
             while (true) {
                 int cheatNum;
                 boolean hasError = false;
@@ -55,6 +54,7 @@ public class Player {
                         rollResult[1], rollResult[0], rollResult[1] / rollResult[0]));
             // TODO: 2020/12/4 把这个list传给前端，选择一个并把值传回来
             // 前端对应选项传回的int
+            CustomerChoice.CreateButton(possibleChoice);
             int ans = 0;
             return ans;
         }
@@ -62,4 +62,5 @@ public class Player {
    /* public int[] getrollResult(int[] rollResult){
      return rollResult;
     }*/
+
 }

@@ -25,7 +25,6 @@ JComboBox<Integer>Choices=new JComboBox<Integer>();
             }
             Choices.addItemListener(new ItemListener() {
                 public void itemStateChanged(ItemEvent e) {
-
                     switch (e.getStateChange()){
                            case 1 :
                                break;
@@ -58,12 +57,13 @@ JComboBox<Integer>Choices=new JComboBox<Integer>();
         //显示骰子，显示下拉菜单让用户选择
         else {
 JButton 确定JButton=new JButton("确定");
-
-
+JFrame frame = new JFrame("选择前进步数");
+JPanel jPanel = new JPanel();
+jPanel.setLayout( new GridLayout(4,1));
         }
     }
-
-    public void CreateButton(ArrayList<String>list){
+//创建JButtons选项
+    public static void CreateButton(ArrayList<String>list){
         for(int i=0;i <list.size();i++){
             JButton[]jButtons=new JButton[list.size()];
             jButtons[i].setText(list.get(i));
