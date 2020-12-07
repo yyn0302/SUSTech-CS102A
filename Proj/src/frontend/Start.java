@@ -1,6 +1,7 @@
 package frontend;
 
-import cs102a.aeroplane.model.GameInfo;
+import cs102a.aeroplane.GameInfo;
+
 
 import javax.swing.*;
 import java.awt.*;

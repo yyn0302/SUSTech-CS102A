@@ -1,13 +1,13 @@
 package cs102a.aeroplane.util;
 
 import cs102a.aeroplane.GameInfo;
+import frontend.CustomerChoice;
 
 import java.util.ArrayList;
 
 public class Player {
 
     public static int askPlayerStep(int[] rollResult) {
-
         if (GameInfo.isIsCheatMode()) {
 
             // TODO: 2020/12/4 传入popup中用户输入的值，原始的String即可
@@ -33,6 +33,7 @@ public class Player {
             }
         } else {
             //获取这个Arraylist
+
             ArrayList<String> possibleChoice = new ArrayList<>();
             if (rollResult[0] + rollResult[1] <= 12)
                 possibleChoice.add(String.format("%d + %d = %d",
@@ -58,4 +59,7 @@ public class Player {
             return ans;
         }
     }
+   /* public int[] getrollResult(int[] rollResult){
+     return rollResult;
+    }*/
 }
