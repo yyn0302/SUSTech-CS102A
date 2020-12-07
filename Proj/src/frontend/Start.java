@@ -1,5 +1,7 @@
 package frontend;
 
+import cs102a.aeroplane.model.GameInfo;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,10 +11,12 @@ public class Start  {
     public static void main(String[] args) {
         //设置窗口
         JFrame jf1=new JFrame("设置");
-        jf1.setBounds(100,50,800,600);
+        jf1.setSize(800,600);
         JPanel jp1=new BackgroundPanel((new ImageIcon("src\\开始图片.jpg").getImage()));
         jp1.setOpaque(false);
         JButton jb1=new JButton("主题");
+        JButton jb2=new JButton("正常模式");
+        JButton jb3 = new JButton("作弊模式");
         //主题的选择
         jb1.addActionListener(new ActionListener() {
             @Override
@@ -40,7 +44,20 @@ public class Start  {
                 jf2.setVisible(true);
             }
         });
-        jp1.add(jb1);
+        //模式的选择
+        jb2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameInfo.setIsCheatMode(false);
+            }});
+        jb3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameInfo.setIsCheatMode(true);
+            }});
+        jp1.add(jb1);jp1.add(jb2);jp1.add(jb3);
+        jp1.setLayout( new GridLayout(3,1,10,30));
+        jp1.setPreferredSize(new Dimension(150,150));
         jf1.add(jp1);
         jf1.setDefaultCloseOperation(jf1.EXIT_ON_CLOSE);
         //开始窗口

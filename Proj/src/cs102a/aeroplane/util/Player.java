@@ -32,6 +32,7 @@ public class Player {
                 }
             }
         } else {
+            //获取这个Arraylist
             ArrayList<String> possibleChoice = new ArrayList<>();
             if (rollResult[0] + rollResult[1] <= 12)
                 possibleChoice.add(String.format("%d + %d = %d",
@@ -51,7 +52,6 @@ public class Player {
             if ((rollResult[1] / (float) rollResult[0]) % 1f == 0f)
                 possibleChoice.add(String.format("%d / %d = %d",
                         rollResult[1], rollResult[0], rollResult[1] / rollResult[0]));
-
             // TODO: 2020/12/4 把这个list传给前端，选择一个并把值传回来
             // 前端对应选项传回的int
             int ans = 0;
