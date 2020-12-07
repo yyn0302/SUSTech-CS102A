@@ -26,29 +26,29 @@ JComboBox<Integer>Choices=new JComboBox<Integer>();
             Choices.addItemListener(new ItemListener() {
                 public void itemStateChanged(ItemEvent e) {
                     switch (e.getStateChange()){
-                           case 1 :
+                           case 1 :GiveBackAnInt(1);
                                break;
-                           case 2 :
+                           case 2 :GiveBackAnInt(2);
                                break;
-                           case 3 :
+                           case 3 :GiveBackAnInt(3);
                                break;
-                               case 4 :
+                               case 4 :GiveBackAnInt(4);
                                    break;
-                                   case 5 :
+                                   case 5 :GiveBackAnInt(5);
                                        break;
-                                       case 6 :
+                                       case 6 :GiveBackAnInt(6);
                                            break;
-                                           case 7 :
+                                           case 7 :GiveBackAnInt(7);
                                                break;
-                                               case 8 :
+                                               case 8 :GiveBackAnInt(8);
                                                    break;
-                                                   case 9 :
+                                                   case 9 :GiveBackAnInt(9);
                                                        break;
-                                                       case 10 :
+                                                       case 10 :GiveBackAnInt(10);
                                                            break;
-                                                           case 11 :
+                                                           case 11 :GiveBackAnInt(11);
                                                                break;
-                                                               case 12 :
+                                                               case 12 :GiveBackAnInt(12);
                                                                    break;
                     }
                 }
@@ -70,9 +70,14 @@ jPanel.setLayout( new GridLayout(4,1));
             jButtons[i].addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
+                    //像后端回传选中的数字
+                GiveBackAnInt();
                 }
             });
         }
+    }
+    //向后端回传一个Integer
+    public static void GiveBackAnInt(int i){
+
     }
  }
