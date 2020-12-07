@@ -61,7 +61,7 @@ public class originPlane implements AeroplaneInterface {
    // 骰子点数diceNumber应用在此飞机上
    public void receiveDiceNumber(int diceNumber){
        // 把飞机view提到布局最高层，从而实现飞过其他棋子时覆盖它们
-       PlaneView.bringToFront();
+//       PlaneView.bringToFront();
        // 根据是否在机场来确定要走的步数，因为从机场起飞只能停在出发点
        int steps;
        if(isInAirport()) steps = 1;
@@ -89,11 +89,11 @@ public class originPlane implements AeroplaneInterface {
                // 判断往前走一步会不会碰上其他方的迭子
                if(board.isOverlap(Commdef.COLOR_PATH[camp][selfColorPathIndex + i])){
                    // 如果碰上其他方的迭子，判断是不是刚好会停在迭子的位置
-                   if(i == steps){
-                       // 如果会刚好停在其他方迭子的位置，增加一个同归于尽的碰撞，再结束path的设置
-                       crack.add(PlaneState.CRACK_OTHER_STACK);
-                       break;
-                   }
+//                   if(i == steps){
+//                       // 如果会刚好停在其他方迭子的位置，增加一个同归于尽的碰撞，再结束path的设置
+//                       crack.add(PlaneState.CRACK_OTHER_STACK);
+//                       break;
+//                   }
                    if (board.getDiceNumber() == 6) {
                        // 如果骰子点数为6并且与其他方迭子的距离小于6，那么按照规则要停在其他方的迭子上并再一次抛骰子决定前进步数，所以在board上对这架飞机进行标记，结束path设置
                        board.setMarkPlane(number);
