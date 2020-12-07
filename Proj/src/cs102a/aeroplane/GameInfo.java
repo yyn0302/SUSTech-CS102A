@@ -17,4 +17,27 @@ public class GameInfo {
     // 根据这个判断popup是放几个按钮还是放输入框
     private static boolean isCheatMode = false;
 
+    public static int getHumanPlayerCnt() {
+        return HumanPlayerCnt;
+    }
+
+    public static void setHumanPlayerCnt(int humanPlayerCnt) {
+        HumanPlayerCnt = humanPlayerCnt;
+    }
+
+    private static int HumanPlayerCnt = 4;
+
+    public static boolean isIsOnlineGame() {
+        return isOnlineGame;
+    }
+
+    public static void setIsOnlineGame(boolean isOnlineGame) {
+        GameInfo.isOnlineGame = isOnlineGame;
+    }
+
+    private static boolean isOnlineGame = false;
+
+
+
+
 }

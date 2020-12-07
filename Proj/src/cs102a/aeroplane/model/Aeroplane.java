@@ -47,6 +47,14 @@ public class Aeroplane {
         this.planeView = planeView;
     }
 
+    public int getColor() {
+        return color;
+    }
+
+    public int getState() {
+        return state;
+    }
+
     public int getNumber() {
         return number;
     }
@@ -134,7 +142,6 @@ public class Aeroplane {
         }
     }
 
-    @Override
     public int isSameColorGrid(int index) {
         int result = -1;
         for (int i = 0; i < BoardCoordinate.COLOR_GRID[color].length; i++) {
@@ -147,7 +154,6 @@ public class Aeroplane {
         return result;
     }
 
-    @Override
     public int isJetGrid(int index) {
         int result = -1;
         if (index == BoardCoordinate.COLOR_JET[color][0])
@@ -155,19 +161,16 @@ public class Aeroplane {
         return result;
     }
 
-    @Override
     public void move() {
 
     }
 
-    @Override
     public boolean isInAirport() {
         if (state != PlaneState.ON_BOARD) return true;
         else return false;
     }
 
     // 通过index获取在自己路径上的下标
-    @Override
     public int getStepFromIndex(int index) {
         int step = -1;
         for (int i = 0; i < BoardCoordinate.COLOR_PATH[color].length; i++) {
@@ -180,28 +183,26 @@ public class Aeroplane {
     }
 
     // 通过index来获取在屏幕上的x坐标
-    @Override
     public float getXFromIndex(int index) {
         return xOffSet + gridLength * BoardCoordinate.COORDINATE[index][0];
     }
 
-    @Override
     public float getYFromIndex(int index) {
         return yOffSet + gridLength * BoardCoordinate.COORDINATE[index][1];
     }
 
-    @Override
     public void crackByPlane() {
 
     }
 
-    @Override
     public void resetGame() {
 
     }
 
-    @Override
     public void finishTask() {
 
+    }
+
+    public void restore() {
     }
 }
