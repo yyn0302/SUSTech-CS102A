@@ -1,6 +1,6 @@
 package cs102a.aeroplane.util;
 
-import cs102a.aeroplane.model.GameInfo;
+import cs102a.aeroplane.GameInfo;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package cs102a.aeroplane.model;
+package cs102a.aeroplane;
 
 public class GameInfo {
     // TODO: 2020/12/4 开始界面中用户的设置要传入这里
