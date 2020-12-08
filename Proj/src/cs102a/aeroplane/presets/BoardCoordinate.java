@@ -35,6 +35,14 @@ public class BoardCoordinate {
             {17, 17}                                                      // 终点
     };
 
+    // 各色飞机编号数组
+    public static int[][] COLOR_PLANE = {
+            {0, 1, 2, 3},       // 蓝
+            {4, 5, 6, 7},       // 绿
+            {8, 9 ,10, 11},     // 红
+            {12, 13, 14, 15}    // 黄
+    };
+
     // 棋子图片在每格需要旋转的角度
     public static final int[] REVOLVE_ANGLE = {
             0, 0, 0, 0, 0,
