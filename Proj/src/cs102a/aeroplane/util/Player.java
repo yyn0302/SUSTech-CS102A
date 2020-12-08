@@ -6,6 +6,15 @@ import frontend.CustomerChoice;
 import java.util.ArrayList;
 
 public class Player {
+    private static int cheatNum;
+
+    public static int getCheatNum() {
+        return cheatNum;
+    }
+
+    public static void setCheatNum(int cheatNum) {
+        Player.cheatNum = cheatNum;
+    }
 
     public static int askPlayerStep(int[] rollResult) {
         if (GameInfo.isIsCheatMode()) {
@@ -14,7 +23,6 @@ public class Player {
             // FIXME: 2020/12/4 删除调试用例
             String cheat = "";
             while (true) {
-                int cheatNum;
                 boolean hasError = false;
                 try {
                     cheatNum = Integer.parseInt(cheat);

@@ -1,6 +1,5 @@
 package cs102a.aeroplane.model;
 
-
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.musicfx.MusicPlayer;
 import cs102a.aeroplane.presets.*;
@@ -10,7 +9,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class ChessBoard {
-    private GameState state;             // 状态（游戏未开始，游戏已开始，游戏结束）
+    private int state;             // 状态（游戏未开始，游戏已开始，游戏结束）
     private int nowPlayer;               // 当前回合
     private float screenWidth;      // 屏幕宽度
     private float boardLength;      // 棋盘宽度

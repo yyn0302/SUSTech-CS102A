@@ -3,19 +3,12 @@ package cs102a.aeroplane.savegame;
 import java.io.*;
 import java.util.Objects;
 
-public class GameSaver extends Thread {
-
-    // 在每走一步同时写入数据，追加到后面
-    @Override
-    public void run() {
-
-        this.setPriority(MAX_PRIORITY);     // 确保每一步被记录
-        this.setDaemon(true);
-
+public class GameSaver {
+    public void recordStep() {
         BufferedWriter bufferedWriter = null;
 
-        String fileDict = SystemSelect.isMacOS() ? SystemSelect.getMacHistoryPath() : SystemSelect.getWindowsHistoryPath();
-
+        String fileDict = SystemSelect.isMacOS() ?
+                SystemSelect.getMacHistoryPath() : SystemSelect.getWindowsHistoryPath();
         String filePath = String.format("%s%d.aeroplane", fileDict,
                 Objects.requireNonNull(new File(fileDict).listFiles()).length + 1);
 
@@ -23,17 +16,32 @@ public class GameSaver extends Thread {
         // TODO: 2020/12/3 每一步写入的数据
         String stepInfo = String.format(
                         "@@@\n" +
-                        "@STEP %d\n" +
-                        "@LAST_MOVE_PLAYER %d\n" +
-                        "@FINISHED_PLANE_COUNT ",
-                    1);
-
+                        "@STEP=%d\n" +
+                        "@MOVING_PLAYER=%d\n" +
+                        "@@PLANE_POSITION\n" +
+                        "PLANE1,%d,%d\n" +
+                        "PLANE2,%d,%d\n" +
+                        "PLANE3,%d,%d\n" +
+                        "PLANE4,%d,%d\n" +
+                        "PLANE5,%d,%d\n" +
+                        "PLANE6,%d,%d\n" +
+                        "PLANE7,%d,%d\n" +
+                        "PLANE8,%d,%d\n" +
+                        "PLANE9,%d,%d\n" +
+                        "PLANE10,%d,%d\n" +
+                        "PLANE11,%d,%d\n" +
+                        "PLANE12,%d,%d\n" +
+                        "PLANE13,%d,%d\n" +
+                        "PLANE14,%d,%d\n" +
+                        "PLANE15,%d,%d\n" +
+                        "PLANE16,%d,%d\n",
+                1);
 
         try {
-            bufferedWriter = new BufferedWriter(
-                    new OutputStreamWriter(
-                            new FileOutputStream(new File(filePath), true)));
-            bufferedWriter.write(stepInfo);     // 追加单步数据
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(new File(filePath), true)));
+            // 追加单步数据
+            bufferedWriter.write(stepInfo);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -45,13 +53,4 @@ public class GameSaver extends Thread {
             }
         }
     }
-
-
-    // TODO: 2020/12/3 模块测试，记得删
-    public static void main(String[] args) {
-        Thread s = new GameSaver();
-        s.setPriority(10);
-        s.start();
-    }
-
 }

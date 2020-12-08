@@ -11,11 +11,11 @@ public class GameState {
 //    public static final GameState ONLINE_2P = new GameState(true, 2, 2);
 //    public static final GameState ONLINE_3P = new GameState(true, 3, 1);
 //    public static final GameState ONLINE_4P = new GameState(true, 4, 0);
-    public static final int ONLINE=1;
-    public static final int LOCAL=0;
+    public static final int LOCAL = 0;
+    public static final int ONLINE = 1;
 
-    public static final int COMPUTER=1;
-    public static final int HUMAN=0;
+    public static final int HUMAN = 0;
+    public static final int COMPUTER = 1;
 
 
     // 玩家状态
@@ -23,50 +23,53 @@ public class GameState {
 //    public static final GameState IS_COMPUTER=new GameState(true);
 
     // 游戏状态
-    public static final GameState GAME_READY=new GameState(0);
-    public static final GameState GAME_START=new GameState(1);
-    public static final GameState GAME_END=new GameState(2);
+    public static final int GAME_READY = 0;
+    public static final int GAME_START = 1;
+    public static final int GAME_END = 2;
+//    public static final GameState GAME_READY=new GameState(0);
+//    public static final GameState GAME_START=new GameState(1);
+//    public static final GameState GAME_END=new GameState(2);
 
 
-    private boolean isOnline;   // 本地游戏, 在线游戏
-    private int peopleCnt;      // 本场玩家中，人的数量 1-4
-    private int computerCnt;    // 本场玩家中，AI的数量 0-3
+//    private boolean isOnline;   // 本地游戏, 在线游戏
+//    private int peopleCnt;      // 本场玩家中，人的数量 1-4
+//    private int computerCnt;    // 本场玩家中，AI的数量 0-3
 
 //    private boolean isPeople;   // 操作者是人，否则为AI
 
-    private int gameStat;
+//    private int gameStat;
 
-    GameState(boolean isOnline, int peopleCnt, int computerCnt) {
-        this.isOnline = isOnline;
-        this.peopleCnt = peopleCnt;
-        this.computerCnt = computerCnt;
-    }
+//    GameState(boolean isOnline, int peopleCnt, int computerCnt) {
+//        this.isOnline = isOnline;
+//        this.peopleCnt = peopleCnt;
+//        this.computerCnt = computerCnt;
+//    }
 
 //    GameState(boolean isPeople) {
 //        this.isPeople = isPeople;
 //    }
 
-    GameState(int gameStat) {
-        this.gameStat = gameStat;
-    }
-
-    public boolean isOnline() {
-        return isOnline;
-    }
-
-    public int getPeopleCnt() {
-        return peopleCnt;
-    }
-
-    public int getComputerCnt() {
-        return computerCnt;
-    }
+//    GameState(int gameStat) {
+//        this.gameStat = gameStat;
+//    }
+//
+//    public boolean isOnline() {
+//        return isOnline;
+//    }
+//
+//    public int getPeopleCnt() {
+//        return peopleCnt;
+//    }
+//
+//    public int getComputerCnt() {
+//        return computerCnt;
+//    }
 
 //    public boolean isPeople() {
 //        return isPeople;
 //    }
 
-    public int getGameStat() {
-        return gameStat;
-    }
+//    public int getGameStat() {
+//        return gameStat;
+//    }
 }
