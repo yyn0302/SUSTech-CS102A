@@ -57,9 +57,19 @@ JComboBox<Integer>Choices=new JComboBox<Integer>();
         //显示骰子，显示下拉菜单让用户选择
         else {
 JButton 确定JButton=new JButton("确定");
+            确定JButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+
+                }
+            });
 JFrame frame = new JFrame("选择前进步数");
 JPanel jPanel = new JPanel();
 jPanel.setLayout( new GridLayout(4,1));
+jPanel.setPreferredSize(new Dimension(150,150));
+frame.add(jPanel, BorderLayout.CENTER);
+frame.setSize(400,400);
+frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+frame.setVisible(true);
         }
     }
 //创建JButtons选项
@@ -71,7 +81,7 @@ jPanel.setLayout( new GridLayout(4,1));
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     //像后端回传选中的数字
-                GiveBackAnInt();
+                GiveBackAnInt(1);
                 }
             });
         }
