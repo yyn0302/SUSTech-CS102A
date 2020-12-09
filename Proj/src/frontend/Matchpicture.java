@@ -31,8 +31,6 @@ public class Matchpicture {
         ImageIcon pic6 = new ImageIcon(path + "6.jpg");
 
         switch (point) {
-            case 1:
-                return pic1;
             case 2:
                 return pic2;
             case 3:
