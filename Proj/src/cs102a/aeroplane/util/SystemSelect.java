@@ -1,4 +1,4 @@
-package cs102a.aeroplane.savegame;
+package cs102a.aeroplane.util;
 
 public class SystemSelect {
     // 判断操作系统，适配windows和macos

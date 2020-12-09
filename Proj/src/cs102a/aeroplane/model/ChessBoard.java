@@ -8,9 +8,11 @@ import cs102a.aeroplane.presets.Hangar;
 import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.util.Dice;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.logging.Handler;
 
 public class ChessBoard {
     private int state;              // 状态（游戏未开始，游戏已开始，游戏结束）
@@ -348,14 +350,8 @@ public class ChessBoard {
                     } else {
                         // 不是起飞点数则只有在外面的飞机可以飞
                         if (outsidePlanes.isEmpty()) {
-                            showInfo("无法起飞");
-                            new Handler().postDelayed(new Runnable() {
-                                public void run() {
-                                    nowPlayer = (nowPlayer + 1) % Hangar.PLAYER_NUM;
-                                    beginTurn();
-                                }
-
-                            }, 1000);   // 等待一秒后执行
+                            nowPlayer = (nowPlayer + 1) % 4;
+                            beginTurn();
                         } else {
                             for (Integer i : outsidePlanes) {
                                 planes[i].getReadyToFly();

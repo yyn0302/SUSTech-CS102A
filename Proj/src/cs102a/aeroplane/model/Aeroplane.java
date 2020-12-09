@@ -4,12 +4,13 @@ import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.Hangar;
 import cs102a.aeroplane.presets.PlaneState;
-import cs102a.aeroplane.savegame.SystemSelect;
 import cs102a.aeroplane.util.Dice;
 import cs102a.aeroplane.util.Player;
+import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class Aeroplane {
 
@@ -121,8 +122,7 @@ public class Aeroplane {
     }
 
     public boolean isInAirport() {
-        boolean b = state == PlaneState.IN_HANGAR;
-        return b;
+        return state == PlaneState.IN_HANGAR;
     }
 
     protected void backToHangar() {
@@ -208,6 +208,11 @@ public class Aeroplane {
             battlingSelfNumber = Dice.roll();
             battlingOpposingNumber = Dice.roll();
             // TODO: 2020/12/7 前端提示自己摇了多少，对方摇了多少
+            try {
+                TimeUnit.SECONDS.sleep(20);
+                ;
+            } catch (InterruptedException e) {
+            }
             return battlingSelfNumber > battlingOpposingNumber;
         }
     }
@@ -279,11 +284,11 @@ public class Aeroplane {
         }
         this.planeView.setIcon(new ImageIcon(iconPathWhenFinish.toString()));
         backToHangar();
-        state=PlaneState.FINISH;
+        state = PlaneState.FINISH;
     }
 
     public void restore() {
-        StringBuilder iconPath=new StringBuilder();
+        StringBuilder iconPath = new StringBuilder();
         iconPath.append(SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath());
         iconPath.append(GameInfo.getTheme() == 1 ? "plane_theme1_" : "plane_");
         switch (color) {
