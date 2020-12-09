@@ -17,6 +17,9 @@ public class ChessBoard {
     private float xOffSet;          // 棋盘在屏幕X方向即右方向的偏移
     private float yOffSet;          // 棋盘在屏幕Y方向即下方向的偏移
 
+    int[] rollResult;
+    private int continueRoll;
+
     private ImageView boardView;    // 棋盘view
 //    private ImageView diceView;     // 骰子view
 //    private ImageView arrowView;    // 指示当前回合的箭头
@@ -66,6 +69,7 @@ public class ChessBoard {
 //        this.playerViews[1] = playerViews[1];
 //        this.playerViews[2] = playerViews[2];
 //        this.playerViews[3] = playerViews[3];
+        continueRoll=0;
     }
 
     // 初始化飞机
@@ -324,6 +328,8 @@ public class ChessBoard {
 
     }
 
+
+
     // 结束回合
     public void endTurn() {
         // 检查游戏是否结束
@@ -331,10 +337,21 @@ public class ChessBoard {
             gameEnd();
         } else {
             // 游戏没有结束
-            if (diceNumbers == 6) { // 如果抛到点数为6，下一个回合还是当前阵营
-                beginTurn();
+            if (rollResult[0] + rollResult[1] >= 10) {
+                if (continueRoll < 3) {
+                    continueRoll++;
+                    beginTurn();
+                } else {
+                    for (Aeroplane p : planes) {
+                        if (p.getNumber() == markPlane) {
+                            p.backToHangar();
+                            break;
+                        }
+                    }
+                    continueRoll = 0;
+                }
             } else {               // 否则下一个回合为顺时针下一阵营
-                turn = (turn + 1) % Commdef.PLAYER_NUM;
+                nowPlayer = (nowPlayer + 1) % GameInfo.getHumanPlayerCnt();
                 beginTurn();
             }
         }
@@ -342,7 +359,7 @@ public class ChessBoard {
 
     // 横扫其他方的飞机
     // FIXME: 2020/12/8 可能改规则
-    public void sweepOthers(int index) {
+    public void sweepOthersOnSelfColorGrid(int index) {
         for (Aeroplane plane : planes) {
             if (plane.getIndex() == index && plane.getColor() != nowPlayer) {
 //                showInfo("撞子啦");
@@ -352,12 +369,12 @@ public class ChessBoard {
     }
 
     // 禁止点击任何棋子并清除动画效果（因为可以飞的飞机会跑一个不断缩放的动画来提醒）
-    public void forbidClick() {
-        for (Aeroplane plane : planes) {
-            plane.getPlaneView().setClickable(false);
-            plane.getPlaneView().clearAnimation();
-        }
-    }
+//    public void forbidClick() {
+//        for (Aeroplane plane : planes) {
+////            plane.getPlaneView().setClickable(false);
+//            plane.getPlaneView().clearAnimation();
+//        }
+//    }
 
     // 判断index上有没有其他方的迭子
     public boolean isOverlap(int index) {

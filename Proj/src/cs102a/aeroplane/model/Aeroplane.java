@@ -68,6 +68,7 @@ public class Aeroplane {
     }
 
 //    @Override
+// FIXME: 2020/12/9 核对源代码进行更改
     public void rollAndConfirmStep() {
         planeView.bringToFront();
         // FIXME: 2020/12/7 把飞机view提到布局最高层，从而实现飞过其他棋子时覆盖它们
@@ -91,18 +92,18 @@ public class Aeroplane {
         move();
 
 
-        if (rollResult[0] + rollResult[1] >= 10) {
-            if (continueRoll < 3) {
-                rollAndConfirmStep();
-                continueRoll++;
-            } else {
-                backToHangar();
-                continueRoll = 0;
-            }
-        }
+//        if (rollResult[0] + rollResult[1] >= 10) {
+//            if (continueRoll < 3) {
+//                rollAndConfirmStep();
+//                continueRoll++;
+//            } else {
+//                backToHangar();
+//                continueRoll = 0;
+//            }
+//        }
     }
 
-    private void backToHangar() {
+    protected void backToHangar() {
         this.state = PlaneState.IN_HANGAR;
         this.step = 0;
     }
