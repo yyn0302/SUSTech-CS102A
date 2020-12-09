@@ -10,6 +10,17 @@ public class SystemSelect {
     private final static String macMusicPath = "Proj/src/cs102a/aeroplane/resources/audio/";
     private final static String windowsMusicPath = "Proj\\src\\cs102a\\aeroplane\\resources\\audio\\";
 
+    public static String getMacImagePath() {
+        return macImagePath;
+    }
+
+    public static String getWindowsImagePath() {
+        return windowsImagePath;
+    }
+
+    private final static String macImagePath = "Proj/src/cs102a/aeroplane/resources/image/";
+    private final static String windowsImagePath = "Proj\\src\\cs102a\\aeroplane\\resources\\image\\";
+
 
     public static boolean isMacOS() {
         return OS.contains("mac");
