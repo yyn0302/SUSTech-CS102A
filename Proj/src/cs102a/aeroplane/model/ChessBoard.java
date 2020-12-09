@@ -454,12 +454,21 @@ public class ChessBoard {
     }
 
     // 判断index上有没有其他方的棋子
-    public boolean hasSingleOtherPlane(int index) {
+    public boolean hasOtherPlane(int index) {
         for (Aeroplane plane : planes) {
             if (plane.getIndex() == index && plane.getColor() != nowPlayer) return true;
         }
         return false;
     }
+
+    public ArrayList<Aeroplane> getOppoPlanes(int index) {
+        ArrayList<Aeroplane> p = new ArrayList<>();
+        for (Aeroplane plane : planes) {
+            if (plane.getIndex() == index && plane.getColor() != nowPlayer) p.add(plane);
+        }
+        return p;
+    }
+
 
     // 获取index上的飞机数目
     public int planeNumOnIndex(int index) {
@@ -498,7 +507,7 @@ public class ChessBoard {
 //    public int getDiceNumbers() {
 //        return diceNumbers;
 //    }
-    
+
     public float getXFromIndex(int index) {
         return xOffSet + gridLength * BoardCoordinate.COORDINATE[index][0];
     }

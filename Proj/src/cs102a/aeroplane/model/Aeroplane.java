@@ -32,7 +32,7 @@ public class Aeroplane {
     private float yOffSet;              // 棋盘在屏幕Y方向即下方向的偏移
 
     private ArrayList<Integer> path;
-    private ArrayList<Integer> crack;   // 飞行中的碰撞类型
+//    private ArrayList<Integer> crack;   // 飞行中的碰撞类型
 
 
     public Aeroplane(ChessBoard chessBoard, int color, int number, int index, float gridLength, float xOffSet, float yOffSet) {
@@ -81,10 +81,6 @@ public class Aeroplane {
 
     public ArrayList<Integer> getPath() {
         return path;
-    }
-
-    public ArrayList<Integer> getCrack() {
-        return crack;
     }
 
     public int getState() {
@@ -142,16 +138,18 @@ public class Aeroplane {
                 // 不过终点，先移动再判断特殊规则
                 path.add(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i]);
 
-                // 判断这一步会不会碰上其他方的迭子
-                if (chessBoard.isOverlap(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i])) {
+                // 判断这一步会不会碰上其他方
+                if (chessBoard.hasOtherPlane(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i])) {
 
-                    // 如果碰上其他方的迭子，判断是不是刚好会停在迭子的位置
+                    // 如果碰上其他方，判断是不是刚好会停在迭子的位置
                     if (i == steps) {
 
                         // 如果会刚好停在其他方迭子的位置，增加一个同归于尽的碰撞，再结束path的设置
                         if (isWinnerInBattling()) {
-                            crack.add(PlaneState.CRACK_OTHER_STACK);
-                            break;
+                            for(Aeroplane p:chessBoard.getOppoPlanes(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i]))
+                            p.backToHangar();
+                        }else{
+                            backToHangar();
                         }
                     }
 
@@ -160,15 +158,34 @@ public class Aeroplane {
         }
     }
 
+
+    private int battlingSelfNumber;
+    private int battlingOpposingNumber;
+    private boolean battlingCheatChoice;
+
+    public int getBattlingSelfNumber() {
+        return battlingSelfNumber;
+    }
+
+    public int getBattlingOpposingNumber() {
+        return battlingOpposingNumber;
+    }
+
+    public void setBattlingCheatChoice(boolean battlingCheatChoice) {
+        this.battlingCheatChoice = battlingCheatChoice;
+    }
+
+    // TODO: 2020/12/7 若是作弊模式，直接两个按钮选择在这局中想赢或者输，回传按钮值
+    // 做一个battle弹窗，基于CustomerChoice改动
     private boolean isWinnerInBattling() {
         if (GameInfo.isIsCheatMode()) {
             // TODO: 2020/12/7 若是作弊模式，直接两个按钮选择在这局中想赢或者输，回传按钮值
-            return false;
+            return battlingCheatChoice;
         } else {
-            int self = Dice.roll();
-            int opposing = Dice.roll();
-            // TODO: 2020/12/7 前端展示弹窗，两者摇骰子
-            return self > opposing;
+            battlingSelfNumber = Dice.roll();
+            battlingOpposingNumber = Dice.roll();
+            // TODO: 2020/12/7 前端提示自己摇了多少，对方摇了多少
+            return battlingSelfNumber > battlingOpposingNumber;
         }
     }
 
