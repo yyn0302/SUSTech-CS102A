@@ -16,7 +16,7 @@ public class Aeroplane {
     private int state;
     private int step;
 
-    private int continueRoll;
+    //    private int continueRoll;
     private int selfPathIndex;          // 自己该走完的57格
     private int color;
 
@@ -71,9 +71,9 @@ public class Aeroplane {
         return color;
     }
 
-    public int getContinueRoll() {
-        return continueRoll;
-    }
+//    public int getContinueRoll() {
+//        return continueRoll;
+//    }
 
     public ChessBoard getChessBoard() {
         return chessBoard;
@@ -116,7 +116,7 @@ public class Aeroplane {
         }
 
         // 离开当前位置时把当前位置的其他飞机重新调整位置
-        chessBoard.adjustPosition(index, number);
+        chessBoard.adjustPosition(path.get(path.size() - 1), number);
         move();
     }
 
@@ -131,33 +131,56 @@ public class Aeroplane {
     }
 
     public void setPath(int steps) {
-        for (int i = 1; i <= steps; i++) {
-            // 判断往前走i步会不会越过终点
-            if (selfPathIndex + i < BoardCoordinate.PATH_LENGTH) {
+        // 不过终点，先移动再判断特殊规则
+        if (selfPathIndex + steps < BoardCoordinate.PATH_LENGTH) {
 
-                // 不过终点，先移动再判断特殊规则
-                path.add(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i]);
+            // 判断这一步会不会碰上其他方
+            if (chessBoard.hasOtherPlane(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps])) {
 
-                // 判断这一步会不会碰上其他方
-                if (chessBoard.hasOtherPlane(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i])) {
-
-                    // 如果碰上其他方，判断是不是刚好会停在迭子的位置
-                    if (i == steps) {
-
-                        // 如果会刚好停在其他方迭子的位置，增加一个同归于尽的碰撞，再结束path的设置
+                // 不是自己格子，battle
+                if (!isSameColorGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps])) {
+                    for (Aeroplane p : chessBoard.getOppoPlanes(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps])) {
                         if (isWinnerInBattling()) {
-                            for(Aeroplane p:chessBoard.getOppoPlanes(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i]))
                             p.backToHangar();
-                        }else{
-                            backToHangar();
+                        } else {
+                            this.backToHangar();
+                            break;
                         }
+                        if (this.state != PlaneState.IN_HANGAR)
+                            path.add(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps]);
                     }
+                } else {
+                    // 是自己格子，无条件赶走对方
+                    for (Aeroplane p : chessBoard.getOppoPlanes(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps]))
+                        p.backToHangar();
 
+                    // 且跳到下一个同色格子，赶走这个格子的对方
+                    for (Aeroplane p : chessBoard.getOppoPlanes(getNextGridWhenOnSelfColorGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps])))
+                        p.backToHangar();
+                    chessBoard.adjustPosition(getNextGridWhenOnSelfColorGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps]), number);
+                    move();
+
+                    if (isJetGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps]) != -1) {
+                        chessBoard.adjustPosition(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps], number);
+                        for (Aeroplane p : chessBoard.getOppoPlanes(BoardCoordinate.COLOR_JET[color][1]))
+                            p.backToHangar();
+                        move();
+                    }
                 }
+
             }
+        } else {
+
         }
     }
 
+
+    private boolean isSameColorGrid(int index) {
+        for (int i : BoardCoordinate.COLOR_GRID[color]) {
+            if (i == BoardCoordinate.COLOR_PATH[color][index]) return true;
+        }
+        return false;
+    }
 
     private int battlingSelfNumber;
     private int battlingOpposingNumber;
@@ -189,7 +212,7 @@ public class Aeroplane {
         }
     }
 
-    public int isSameColorGrid(int index) {
+    public int getNextGridWhenOnSelfColorGrid(int index) {
         int result = -1;
         for (int i = 0; i < BoardCoordinate.COLOR_GRID[color].length; i++) {
             if (index == BoardCoordinate.COLOR_GRID[color][i]
@@ -213,38 +236,72 @@ public class Aeroplane {
     }
 
     // 通过index获取在自己路径上的下标
-    public int getStepFromIndex(int index) {
-        int step = -1;
-        for (int i = 0; i < BoardCoordinate.COLOR_PATH[color].length; i++) {
-            if (index == BoardCoordinate.COLOR_PATH[color][i]) {
-                step = i;
-                break;
-            }
-        }
-        return step;
-    }
+//    public int getStepFromIndex(int index) {
+//        int step = -1;
+//        for (int i = 0; i < BoardCoordinate.COLOR_PATH[color].length; i++) {
+//            if (index == BoardCoordinate.COLOR_PATH[color][i]) {
+//                step = i;
+//                break;
+//            }
+//        }
+//        return step;
+//    }
 
     // 通过index来获取在屏幕上的x坐标
-    public float getXFromIndex(int index) {
-        return xOffSet + gridLength * BoardCoordinate.COORDINATE[index][0];
-    }
+//    public float getXFromIndex(int index) {
+//        return xOffSet + gridLength * BoardCoordinate.COORDINATE[index][0];
+//    }
+//
+//    public float getYFromIndex(int index) {
+//        return yOffSet + gridLength * BoardCoordinate.COORDINATE[index][1];
+//    }
 
-    public float getYFromIndex(int index) {
-        return yOffSet + gridLength * BoardCoordinate.COORDINATE[index][1];
-    }
-
-    public void crackByPlane() {
-
-    }
-
-    public void resetGame() {
-
-    }
+//    public void crackByPlane() {
+//
+//    }
 
     public void finishTask() {
-
+        StringBuilder iconPathWhenFinish = new StringBuilder();
+        iconPathWhenFinish.append(SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath());
+        switch (color) {
+            case Hangar.BLUE:
+                iconPathWhenFinish.append("blue.png");
+                break;
+            case Hangar.GREEN:
+                iconPathWhenFinish.append("green.png");
+                break;
+            case Hangar.RED:
+                iconPathWhenFinish.append("red.png");
+                break;
+            case Hangar.YELLOW:
+                iconPathWhenFinish.append("yellow.png");
+                break;
+        }
+        this.planeView.setIcon(new ImageIcon(iconPathWhenFinish.toString()));
+        backToHangar();
+        state=PlaneState.FINISH;
     }
 
     public void restore() {
+        StringBuilder iconPath=new StringBuilder();
+        iconPath.append(SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath());
+        iconPath.append(GameInfo.getTheme() == 1 ? "plane_theme1_" : "plane_");
+        switch (color) {
+            case Hangar.BLUE:
+                iconPath.append("blue.png");
+                break;
+            case Hangar.GREEN:
+                iconPath.append("green.png");
+                break;
+            case Hangar.RED:
+                iconPath.append("red.png");
+                break;
+            case Hangar.YELLOW:
+                iconPath.append("yellow.png");
+                break;
+        }
+        this.planeView.setIcon(new ImageIcon(iconPath.toString()));
+        backToHangar();
+        path.clear();
     }
 }

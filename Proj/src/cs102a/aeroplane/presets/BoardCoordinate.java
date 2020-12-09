@@ -101,7 +101,7 @@ public class BoardCoordinate {
     };
 
     // 迭子时两个棋子之间相差的格子数, 用于正确显示出来
-    public static final float STACK_DISTANCE = 0.5f;
+    public static final float STACK_DISTANCE = 0.2f;
 
     // 圆圈路径上的各色方块编号
     public static final int[] BLUE_GRID = {21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61, 65, 69};
