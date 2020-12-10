@@ -9,6 +9,7 @@ import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.util.Dice;
 
 import javax.swing.*;
+import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
