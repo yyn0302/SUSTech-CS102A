@@ -20,6 +20,6 @@ public class GameLoader {
         String filePath = String.format("%s%d.aeroplane", fileDict, fileNumber);
 
         Scanner sc = new Scanner(new File(filePath));
-        int
+//        int
     }
 }

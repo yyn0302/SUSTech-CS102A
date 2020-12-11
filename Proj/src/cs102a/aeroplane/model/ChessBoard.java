@@ -8,12 +8,9 @@ import cs102a.aeroplane.presets.Hangar;
 import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.util.Dice;
 
-import javax.swing.*;
-import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.logging.Handler;
 
 public class ChessBoard {
     private int state;              // 状态（游戏未开始，游戏已开始，游戏结束）
@@ -45,8 +42,9 @@ public class ChessBoard {
     private int[] playerType;                       // 四个玩家类型，人类、AI
     private int myCamp;                             // 自己阵营
 
-    ChessBoard(/*ImageView boardView, ImageView diceView, ImageView arrowView, JPopupMenu tipView, float screenWidth, TextView[] playerViews, SoundPool sp,*/
-            /*HashMap<Integer, Integer> soundMap*/) {
+//    ChessBoard(/*ImageView boardView, ImageView diceView, ImageView arrowView, JPopupMenu tipView, float screenWidth, TextView[] playerViews, SoundPool sp,*/
+//            /*HashMap<Integer, Integer> soundMap*/) {
+    ChessBoard() {
         this.state = GameState.GAME_READY;
         // FIXME: 2020/12/8 把目标窗口大小赋值给 screenWidth
         this.screenWidth = screenWidth;
@@ -81,22 +79,22 @@ public class ChessBoard {
     public void initPlanes() {
 //    public void initPlanes(ImageView[] planeViews) {
         planes = new Aeroplane[]{
-                new Aeroplane(this, Hangar.BLUE, 0, 0, gridLength, xOffSet, yOffSet),//, planeViews[0]),
-                new Aeroplane(this, Hangar.BLUE, 1, 1, gridLength, xOffSet, yOffSet),//, planeViews[1]),
-                new Aeroplane(this, Hangar.BLUE, 2, 2, gridLength, xOffSet, yOffSet),//, planeViews[2]),
-                new Aeroplane(this, Hangar.BLUE, 3, 3, gridLength, xOffSet, yOffSet),//, planeViews[3]),
-                new Aeroplane(this, Hangar.GREEN, 4, 5, gridLength, xOffSet, yOffSet),//, planeViews[4]),
-                new Aeroplane(this, Hangar.GREEN, 5, 6, gridLength, xOffSet, yOffSet),//, planeViews[5]),
-                new Aeroplane(this, Hangar.GREEN, 6, 7, gridLength, xOffSet, yOffSet),//, planeViews[6]),
-                new Aeroplane(this, Hangar.GREEN, 7, 8, gridLength, xOffSet, yOffSet),//, planeViews[7]),
-                new Aeroplane(this, Hangar.RED, 8, 10, gridLength, xOffSet, yOffSet),//, planeViews[8]),
-                new Aeroplane(this, Hangar.RED, 9, 11, gridLength, xOffSet, yOffSet),//, planeViews[9]),
-                new Aeroplane(this, Hangar.RED, 10, 12, gridLength, xOffSet, yOffSet),//, planeViews[10]),
-                new Aeroplane(this, Hangar.RED, 11, 13, gridLength, xOffSet, yOffSet),//, planeViews[11]),
-                new Aeroplane(this, Hangar.YELLOW, 12, 15, gridLength, xOffSet, yOffSet),//, planeViews[12]),
-                new Aeroplane(this, Hangar.YELLOW, 13, 16, gridLength, xOffSet, yOffSet),//, planeViews[13]),
-                new Aeroplane(this, Hangar.YELLOW, 14, 17, gridLength, xOffSet, yOffSet),//, planeViews[14]),
-                new Aeroplane(this, Hangar.YELLOW, 15, 18, gridLength, xOffSet, yOffSet)//, planeViews[15]),
+                new Aeroplane(this, Hangar.BLUE, 0, 0, gridLength, xOffSet, yOffSet),// planeViews[0]),
+                new Aeroplane(this, Hangar.BLUE, 1, 1, gridLength, xOffSet, yOffSet),// planeViews[1]),
+                new Aeroplane(this, Hangar.BLUE, 2, 2, gridLength, xOffSet, yOffSet),// planeViews[2]),
+                new Aeroplane(this, Hangar.BLUE, 3, 3, gridLength, xOffSet, yOffSet),// planeViews[3]),
+                new Aeroplane(this, Hangar.GREEN, 4, 5, gridLength, xOffSet, yOffSet),// planeViews[4]),
+                new Aeroplane(this, Hangar.GREEN, 5, 6, gridLength, xOffSet, yOffSet),// planeViews[5]),
+                new Aeroplane(this, Hangar.GREEN, 6, 7, gridLength, xOffSet, yOffSet),// planeViews[6]),
+                new Aeroplane(this, Hangar.GREEN, 7, 8, gridLength, xOffSet, yOffSet),// planeViews[7]),
+                new Aeroplane(this, Hangar.RED, 8, 10, gridLength, xOffSet, yOffSet),// planeViews[8]),
+                new Aeroplane(this, Hangar.RED, 9, 11, gridLength, xOffSet, yOffSet),// planeViews[9]),
+                new Aeroplane(this, Hangar.RED, 10, 12, gridLength, xOffSet, yOffSet),// planeViews[10]),
+                new Aeroplane(this, Hangar.RED, 11, 13, gridLength, xOffSet, yOffSet),// planeViews[11]),
+                new Aeroplane(this, Hangar.YELLOW, 12, 15, gridLength, xOffSet, yOffSet),// planeViews[12]),
+                new Aeroplane(this, Hangar.YELLOW, 13, 16, gridLength, xOffSet, yOffSet),// planeViews[13]),
+                new Aeroplane(this, Hangar.YELLOW, 14, 17, gridLength, xOffSet, yOffSet),// planeViews[14]),
+                new Aeroplane(this, Hangar.YELLOW, 15, 18, gridLength, xOffSet, yOffSet)// planeViews[15]),
         };
     }
 
@@ -166,7 +164,7 @@ public class ChessBoard {
         float indexX = getXFromIndex(index);
         float indexY = getYFromIndex(index);
         for (Aeroplane plane : planes) {
-            if (plane.getIndex() == index && plane.getNumber() != number) {
+            if (plane.getGeneralGridIndex() == index && plane.getNumber() != number) {
                 float adjustX = 0, adjustY = 0;
                 switch (BoardCoordinate.OVERLAP_DIRECTION[index]) {
                     case BoardCoordinate.UP:
@@ -401,7 +399,7 @@ public class ChessBoard {
                     for (Aeroplane p : planes) {
                         for (int i : movedPlanes) {
                             if (p.getNumber() == i) {
-                                p.backToHangar();
+                                p.backToHangarForInit();
                                 break;
                             }
                         }
@@ -453,7 +451,7 @@ public class ChessBoard {
     // 判断index上有没有其他方的棋子
     public boolean hasOtherPlane(int index) {
         for (Aeroplane plane : planes) {
-            if (plane.getIndex() == index && plane.getColor() != nowPlayer) return true;
+            if (plane.getGeneralGridIndex() == index && plane.getColor() != nowPlayer) return true;
         }
         return false;
     }
@@ -461,7 +459,7 @@ public class ChessBoard {
     public ArrayList<Aeroplane> getOppoPlanes(int index) {
         ArrayList<Aeroplane> p = new ArrayList<>();
         for (Aeroplane plane : planes) {
-            if (plane.getIndex() == index && plane.getColor() != nowPlayer) p.add(plane);
+            if (plane.getGeneralGridIndex() == index && plane.getColor() != nowPlayer) p.add(plane);
         }
         return p;
     }
@@ -470,7 +468,7 @@ public class ChessBoard {
     public int planeNumOnIndex(int index) {
         int planeNum = 0;
         for (Aeroplane plane : planes) {
-            if (plane.getIndex() == index) {
+            if (plane.getGeneralGridIndex() == index) {
                 planeNum++;
             }
         }

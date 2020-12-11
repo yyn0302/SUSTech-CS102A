@@ -4,6 +4,7 @@ import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.Hangar;
 import cs102a.aeroplane.presets.PlaneState;
+import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.util.Dice;
 import cs102a.aeroplane.util.Player;
 import cs102a.aeroplane.util.SystemSelect;
@@ -15,35 +16,32 @@ import java.util.concurrent.TimeUnit;
 public class Aeroplane {
 
     private int state;
-    private int step;
+    private final int color;
+    private final int number;           // 飞机编号，0~15
 
-    //    private int continueRoll;
     private int selfPathIndex;          // 自己该走完的57格
-    private int color;
+    private int generalGridIndex;       // 飞机所在位置0~97
 
-    private int number;                 // 飞机编号，0~15
-    private int index;                  // 飞机所在位置0~97
-
+    private float targetX, targetY;
+    private final float gridLength, xOffSet, yOffSet;
 
     private JButton planeView;
-
-    private ChessBoard chessBoard;
-    private float gridLength;           // 棋盘上一小格的长度
-    private float xOffSet;              // 棋盘在屏幕X方向即右方向的偏移
-    private float yOffSet;              // 棋盘在屏幕Y方向即下方向的偏移
+    private final ChessBoard chessBoard;
 
     private ArrayList<Integer> path;
-//    private ArrayList<Integer> crack;   // 飞行中的碰撞类型
 
-
-    public Aeroplane(ChessBoard chessBoard, int color, int number, int index, float gridLength, float xOffSet, float yOffSet) {
+    public Aeroplane(ChessBoard chessBoard, int color, int number, int generalGridIndex, float gridLength, float xOffSet, float yOffSet) {
         this.chessBoard = chessBoard;
         this.color = color;
         this.number = number;
-        this.index = index;
+        this.generalGridIndex = generalGridIndex;
         this.gridLength = gridLength;
         this.xOffSet = xOffSet;
         this.yOffSet = yOffSet;
+
+        selfPathIndex = -1;
+        state = PlaneState.IN_HANGAR;
+        path = new ArrayList<>();
 
         // 飞机的view实际上是JButton，每次只有己方未完成的飞机可以点击
         // TODO: 2020/12/9 add code 可以点击
@@ -65,6 +63,7 @@ public class Aeroplane {
                 iconPath.append("yellow.png");
                 break;
         }
+        planeView = new JButton();
         this.planeView.setIcon(new ImageIcon(iconPath.toString()));
     }
 
@@ -96,21 +95,21 @@ public class Aeroplane {
         return planeView;
     }
 
-    public int getIndex() {
-        return index;
+    public int getGeneralGridIndex() {
+        return generalGridIndex;
     }
 
     // FIXME: 2020/12/9 核对源代码进行更改
     //  @frontend
-    public void receiveDiceNumber(int[] rollResult) {
-        // planeView.bringToFront();
-        // FIXME: 2020/12/7 把飞机view提到布局最高层，从而实现飞过其他棋子时覆盖它们
+    public void receiveDiceNumber(int[] rollResult) throws Exception {
+        planeView.bringToFront();
+//         FIXME: 2020/12/7 把飞机view提到布局最高层，从而实现飞过其他棋子时覆盖它们
 
         if (isInAirport()) {
             if (rollResult[0] == 6 || rollResult[1] == 6) {
                 state = PlaneState.WAITING;
                 setPath(1);
-            } else return;
+            } else throw new Exception("不满足起飞条件，无法选择移动此飞机！");
         } else if (state == PlaneState.WAITING || state == PlaneState.ON_BOARD) {
             if (state == PlaneState.WAITING) state = PlaneState.ON_BOARD;
             setPath(Player.askPlayerStep(rollResult));
@@ -125,59 +124,110 @@ public class Aeroplane {
         return state == PlaneState.IN_HANGAR;
     }
 
-    protected void backToHangar() {
+    protected void backToHangarDueToCrash() {
         this.state = PlaneState.IN_HANGAR;
-        this.step = 0;
+        this.generalGridIndex = 0;
+        this.path.add(0);
+        chessBoard.playSound(Sound.CRACK, false);
+    }
+
+    protected void backToHangarWhenFinish() {
+        this.state = PlaneState.IN_HANGAR;
+        this.generalGridIndex = 0;
+        this.path.clear();
+        chessBoard.playSound(Sound.FINISH_ONE_PLANE, false);
+    }
+
+    protected void backToHangarForInit() {
+        this.state = PlaneState.IN_HANGAR;
+        this.generalGridIndex = 0;
+        this.path.clear();
     }
 
     public void setPath(int steps) {
-        // 不过终点，先移动再判断特殊规则
-        if (selfPathIndex + steps < BoardCoordinate.PATH_LENGTH) {
-
-            // 判断这一步会不会碰上其他方
-            if (chessBoard.hasOtherPlane(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps])) {
-
-                // 不是自己格子，battle
-                if (!isSameColorGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps])) {
-                    for (Aeroplane p : chessBoard.getOppoPlanes(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps])) {
-                        if (isWinnerInBattling()) {
-                            p.backToHangar();
+        for (int i = 1; i <= steps; i++) {
+            // 不过终点，先移动再判断特殊规则
+            if (selfPathIndex + i < BoardCoordinate.PATH_LENGTH) {
+                path.add(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i]);
+                // 判断这一步会不会碰上其他方
+                if (chessBoard.hasOtherPlane(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i])) {
+                    if (i == steps) {
+                        // 不是自己格子，battle
+                        if (!isSameColorGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps])) {
+                            for (Aeroplane p : chessBoard.getOppoPlanes(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps])) {
+                                if (isWinnerInBattling()) {
+                                    p.backToHangarDueToCrash();
+                                } else {
+                                    this.backToHangarDueToCrash();
+                                    break;
+                                }
+                                if (this.state != PlaneState.IN_HANGAR)
+                                    path.add(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps]);
+                            }
                         } else {
-                            this.backToHangar();
-                            break;
+                            // 是自己格子，无条件赶走对方
+                            for (Aeroplane p : chessBoard.getOppoPlanes(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps]))
+                                p.backToHangarDueToCrash();
+
+                            // 且跳到下一个同色格子，赶走这个格子的对方
+                            for (Aeroplane p : chessBoard.getOppoPlanes(isJetGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps]) == -1 ?
+                                    getNextGridWhenOnSelfColorGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps]) :
+                                    isJetGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps])))
+                                p.backToHangarDueToCrash();
+
+                            if (isJetGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps]) != -1) {
+                                chessBoard.adjustPosition(isJetGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps]), number);
+                                for (Aeroplane p : chessBoard.getOppoPlanes(BoardCoordinate.COLOR_JET[color][1]))
+                                    p.backToHangarDueToCrash();
+                            } else {
+                                chessBoard.adjustPosition(getNextGridWhenOnSelfColorGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps]), number);
+                            }
+                            move();
                         }
-                        if (this.state != PlaneState.IN_HANGAR)
-                            path.add(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps]);
-                    }
-                } else {
-                    // 是自己格子，无条件赶走对方
-                    for (Aeroplane p : chessBoard.getOppoPlanes(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps]))
-                        p.backToHangar();
-
-                    // 且跳到下一个同色格子，赶走这个格子的对方
-                    for (Aeroplane p : chessBoard.getOppoPlanes(getNextGridWhenOnSelfColorGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps])))
-                        p.backToHangar();
-                    chessBoard.adjustPosition(getNextGridWhenOnSelfColorGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps]), number);
-                    move();
-
-                    if (isJetGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps]) != -1) {
-                        chessBoard.adjustPosition(BoardCoordinate.COLOR_PATH[color][selfPathIndex + steps], number);
-                        for (Aeroplane p : chessBoard.getOppoPlanes(BoardCoordinate.COLOR_JET[color][1]))
-                            p.backToHangar();
-                        move();
                     }
                 }
+            } else {
+                for (int j = 1; j <= steps - i + 1; j++) {
+                    path.add(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i - j - 1]);
+                    // 判断这一步会不会碰上其他方
+                    if (chessBoard.hasOtherPlane(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i - j - 1])) {
+                        if (j == steps - i + 1) {
+                            // 不是自己格子，battle
+                            if (!isSameColorGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i - j - 1])) {
+                                for (Aeroplane p : chessBoard.getOppoPlanes(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i - j - 1])) {
+                                    if (isWinnerInBattling()) {
+                                        p.backToHangarDueToCrash();
+                                    } else {
+                                        this.backToHangarDueToCrash();
+                                        break;
+                                    }
+                                    if (this.state != PlaneState.IN_HANGAR)
+                                        path.add(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i - j - 1]);
+                                }
+                            } else {
+                                // 是自己格子，无条件赶走对方
+                                for (Aeroplane p : chessBoard.getOppoPlanes(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i - j - 1]))
+                                    p.backToHangarDueToCrash();
 
+                                // 且跳到下一个同色格子，赶走这个格子的对方
+                                for (Aeroplane p : chessBoard.getOppoPlanes(isJetGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i - j - 1])))
+                                    p.backToHangarDueToCrash();
+
+                                chessBoard.adjustPosition(getNextGridWhenOnSelfColorGrid(BoardCoordinate.COLOR_PATH[color][selfPathIndex + i - j - 1]), number);
+                                move();
+                            }
+                        }
+                    }
+                }
             }
-        } else {
+
 
         }
     }
 
-
     private boolean isSameColorGrid(int index) {
         for (int i : BoardCoordinate.COLOR_GRID[color]) {
-            if (i == BoardCoordinate.COLOR_PATH[color][index]) return true;
+            if (i == index) return true;
         }
         return false;
     }
@@ -210,7 +260,6 @@ public class Aeroplane {
             // TODO: 2020/12/7 前端提示自己摇了多少，对方摇了多少
             try {
                 TimeUnit.SECONDS.sleep(20);
-                ;
             } catch (InterruptedException e) {
             }
             return battlingSelfNumber > battlingOpposingNumber;
@@ -236,21 +285,119 @@ public class Aeroplane {
         return result;
     }
 
+    // FIXME: 2020/12/11 旋转图片，布局坐标调整（可能由chessBoard负责）
     public void move() {
+        generalGridIndex = path.get(path.size() - 1);
+        // 根据要去的下一个位置调整飞机角度
+        planeView.setRotation(BoardCoordinate.REVOLVE_ANGLE[generalGridIndex]);
+        // FIXME: 2020/12/11 旋转图片
+        // FIXME: 2020/12/11 控件旋转
 
+//        planeView.setRotation(BoardCoordinate.REVOLVE_ANGLE[generalGridIndex]);
+        // 如果最后一步上没有碰撞发生
+//        if (path.size() == 1 && (crack.isEmpty() || crack.get(0) == BoardCoordinate.NO_CRACK)) {
+        int planeNum = chessBoard.planeNumOnIndex(generalGridIndex);    // 获取最后一步位置上的飞机数目
+        // 根据飞机数目对要去的坐标进行调整，避免几个棋子完全叠在一起看不到
+        if (planeNum > 1) {
+            switch (BoardCoordinate.OVERLAP_DIRECTION[generalGridIndex]) {
+                case BoardCoordinate.UP:
+                    targetX = getXFromIndex(generalGridIndex);
+                    targetY = getYFromIndex(generalGridIndex) - BoardCoordinate.STACK_DISTANCE * gridLength * (planeNum - 1);
+                    break;
+                case BoardCoordinate.DOWN:
+                    targetX = getXFromIndex(generalGridIndex);
+                    targetY = getYFromIndex(generalGridIndex) + BoardCoordinate.STACK_DISTANCE * gridLength * (planeNum - 1);
+                    break;
+                case BoardCoordinate.LEFT:
+                    targetX = getXFromIndex(generalGridIndex) - BoardCoordinate.STACK_DISTANCE * gridLength * (planeNum - 1);
+                    targetY = getYFromIndex(generalGridIndex);
+                    break;
+                case BoardCoordinate.RIGHT:
+                    targetX = getXFromIndex(generalGridIndex) + BoardCoordinate.STACK_DISTANCE * gridLength * (planeNum - 1);
+                    targetY = getYFromIndex(generalGridIndex);
+                    break;
+            }
+        } else {
+            targetX = getXFromIndex(generalGridIndex);
+            targetY = getYFromIndex(generalGridIndex);
+        }
+//        } else {
+//            targetX = getXFromIndex(generalGridIndex);
+//            targetY = getYFromIndex(generalGridIndex);
+//        }
+//        TranslateAnimation anim = new TranslateAnimation(0, targetX - planeView.getX(), 0, targetY - planeView.getY());
+//        anim.setDuration(500);
+//        anim.setAnimationListener(new Animation.AnimationListener() {
+//            @Override
+//            public void onAnimationStart(Animation animation) {
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animation animation) {
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//                planeView.clearAnimation();
+//                path.remove(0);
+//                planeView.setX(targetX);
+//                planeView.setY(targetY);
+//                // 现在path.size()表示还要走的步数
+////                if (path.size() < crack.size()) {
+////                    int crackType = crack.get(0);
+////                    crack.remove(0);
+////                    // 根据碰撞类型执行不同操作
+////                    switch (crackType) {
+////                        case Commdef.NO_CRACK:
+////                            break;
+////                        case Commdef.SWEEP_OTHERS:
+////                            chessBoard.sweepOthers(index);
+////                            break;
+////                        case Commdef.DOWN_TOGETHER:
+////                            // 同归于尽的话在path中增加停机处
+////                            chessBoard.sweepOthers(index);
+////                            path.add(portIndex);
+////                            break;
+////                        case Commdef.JET_CRACK:
+////                            chessBoard.sweepOthers(Commdef.COLOR_JET[camp][1]);
+////                            break;
+////                        case Commdef.JET_CRACK_AND_SWEEP_OTHERS:
+////                            chessBoard.sweepOthers(Commdef.COLOR_JET[camp][1]);
+////                            chessBoard.sweepOthers(index);
+////                            break;
+////                        case Commdef.JET_CRACK_AND_DOWN_TOGETHER:
+////                            chessBoard.sweepOthers(Commdef.COLOR_JET[camp][1]);
+////                            chessBoard.sweepOthers(index);
+////                            path.add(portIndex);
+////                            break;
+////                    }
+////                }
+//                if (!path.isEmpty()) move();
+//                else {
+//                    selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
+//                    path.clear();
+//                    crack.clear();
+        // 如果最后一步到达终点，飞机完成任务
+        if (generalGridIndex == BoardCoordinate.COLOR_DESTINATION[color]) finishTask();
+        // 结束回合
+        chessBoard.endTurn();
+//                }
+//            }
+//        });
+//        planeView.startAnimation(anim);
     }
 
-    // 通过index获取在自己路径上的下标
-//    public int getStepFromIndex(int index) {
-//        int step = -1;
-//        for (int i = 0; i < BoardCoordinate.COLOR_PATH[color].length; i++) {
-//            if (index == BoardCoordinate.COLOR_PATH[color][i]) {
-//                step = i;
-//                break;
-//            }
-//        }
-//        return step;
-//    }
+    //     通过index获取在自己路径上的下标
+    public int getSelfPathIndexFromGeneralIndex(int index) {
+        int step = -1;
+        for (int i = 0; i < BoardCoordinate.COLOR_PATH[color].length; i++) {
+            if (index == BoardCoordinate.COLOR_PATH[color][i]) {
+                step = i;
+                break;
+            }
+        }
+        return step;
+    }
 
     // 通过index来获取在屏幕上的x坐标
 //    public float getXFromIndex(int index) {
@@ -264,6 +411,17 @@ public class Aeroplane {
 //    public void crackByPlane() {
 //
 //    }
+
+    // 通过index来获取在屏幕上的x坐标
+    public float getXFromIndex(int index) {
+        return xOffSet + gridLength * BoardCoordinate.COORDINATE[index][0];
+    }
+
+    // 通过index来获取在屏幕上的y坐标
+    public float getYFromIndex(int index) {
+        return yOffSet + gridLength * BoardCoordinate.COORDINATE[index][1];
+    }
+
 
     public void finishTask() {
         StringBuilder iconPathWhenFinish = new StringBuilder();
@@ -283,7 +441,7 @@ public class Aeroplane {
                 break;
         }
         this.planeView.setIcon(new ImageIcon(iconPathWhenFinish.toString()));
-        backToHangar();
+        backToHangarWhenFinish();
         state = PlaneState.FINISH;
     }
 
@@ -306,7 +464,7 @@ public class Aeroplane {
                 break;
         }
         this.planeView.setIcon(new ImageIcon(iconPath.toString()));
-        backToHangar();
+        backToHangarDueToCrash();
         path.clear();
     }
 }
