@@ -21,4 +21,16 @@ public class Client {
         }
         return output;
     }
+
+    public static void getAndApplyChange() {
+//        加标识符
+    }
+
+    public static void updateRecordedChange() {
+
+    }
+
+    public static void notifyNewWinner() {
+
+    }
 }

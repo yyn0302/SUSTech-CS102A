@@ -2,6 +2,7 @@ package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.musicfx.MusicPlayer;
+import cs102a.aeroplane.online.Client;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.GameState;
 import cs102a.aeroplane.presets.Hangar;
@@ -42,7 +43,7 @@ public class ChessBoard {
     private int[] playerType;                       // 四个玩家类型，人类、AI
     private int myCamp;                             // 自己阵营
 
-//    ChessBoard(/*ImageView boardView, ImageView diceView, ImageView arrowView, JPopupMenu tipView, float screenWidth, TextView[] playerViews, SoundPool sp,*/
+    //    ChessBoard(/*ImageView boardView, ImageView diceView, ImageView arrowView, JPopupMenu tipView, float screenWidth, TextView[] playerViews, SoundPool sp,*/
 //            /*HashMap<Integer, Integer> soundMap*/) {
     ChessBoard() {
         this.state = GameState.GAME_READY;
@@ -98,6 +99,10 @@ public class ChessBoard {
         };
     }
 
+    public ArrayList<Integer> getMovedPlanes() {
+        return movedPlanes;
+    }
+
     // 开始游戏
     // FIXME: 2020/12/9 本地游戏颜色与服务器交流得到
     public void startGame() {
@@ -112,6 +117,8 @@ public class ChessBoard {
             else playerType[i] = GameState.COMPUTER;
         }
         // 如果是联网模式，还要初始化myCamp xxxx
+
+
         // FIXME: 2020/12/9 本地游戏颜色与服务器交流得到
 //        if(GameInfo.isIsOnlineGame())myCamp=
 
@@ -131,6 +138,7 @@ public class ChessBoard {
         beginTurn();
     }
 
+
     // 结束游戏
     // TODO: 2020/12/8 socket 广播游戏结束
     public void recordOnePlayerEnd() {
@@ -145,6 +153,7 @@ public class ChessBoard {
 // TODO: 2020/12/8 socket 广播游戏结束
         }
     }
+
 
     // 检查游戏是否结束
     public boolean checkGameEnd() {
@@ -192,6 +201,15 @@ public class ChessBoard {
         }
     }
 
+
+    private static boolean hasPressedButton = false;
+
+    // TODO: 2020/12/11 按按钮改变boolean值
+    public static void setHasPressedButton(boolean hasPressedButton) {
+        ChessBoard.hasPressedButton = hasPressedButton;
+    }
+
+
     // 开始回合
     public void beginTurn() {
         // 调整骰子的位置
@@ -206,16 +224,14 @@ public class ChessBoard {
         ;
         // 根据游戏类型和玩家类型做判断
         // 当前是单机游戏
-        if (GameInfo.isIsOnlineGame()) {
+        if (!GameInfo.isIsOnlineGame()) {
             // 如果当前回合是AI
             if (playerType[nowPlayer] == GameState.COMPUTER) {
-                // TODO: 2020/12/8 add code
-                // 自动转骰子获取点数diceNumber，如果能走就根据AI策略获取要走的飞机编号，Commdef.COLOR_PLANE[turn]是当前回合四架飞机的编号
-                // 通过diceNumber来做转骰子动画，有选择的飞机编号则通过调用飞机的receiveDiceNumber来自动移动
+                ComputerAgent.agentTakeOver();
             }
             // 当前回合是玩家
             else {
-                //                // FIXME: 2020/12/9 调整箭头位置
+                //                // FIXM1E: 2020/12/9 调整箭头位置
 ////                if (nowPlayer == Hangar.BLUE || nowPlayer == Hangar.GREEN) {
 ////                    arrowView.setX((float) (playerViews[nowPlayer].getX() + playerViews[nowPlayer].getWidth() * 1.01));
 ////                    arrowView.setY((float) (playerViews[nowPlayer].getY() + playerViews[nowPlayer].getHeight() * 0.3));
@@ -317,34 +333,98 @@ public class ChessBoard {
 //                // FIXME: 2020/12/8 更改具体listener代码
 //            }
 //        }
+                while (!hasPressedButton) {
+                    if (hasPressedButton) break;
+                }
+                hasPressedButton = false;
                 int[] rollResult = {Dice.roll(), Dice.roll()};
 
                 ArrayList<Integer> outsidePlanes = new ArrayList<Integer>();
-                // 如果是迭在别人迭子上则自动走那个棋子
-                if (markPlane != -1) {
-                    planes[markPlane].receiveDiceNumber(rollResult);
-                    markPlane = -1;
+//                // 如果是迭在别人迭子上则自动走那个棋子
+//                if (markPlane != -1) {
+//                    planes[markPlane].receiveDiceNumber(rollResult);
+//                    markPlane = -1;
+//                } else {
+                ;
+                // 是否全在机场
+                for (int i : BoardCoordinate.COLOR_PLANE[nowPlayer]) {
+                    if (!planes[i].isInAirport() && !planes[i].isFinished()) {
+                        // 添加在外面的飞机number
+                        outsidePlanes.add(i);
+                    }
+                }
+
+                boolean ableToTakeOff = rollResult[0] == 6 || rollResult[1] == 6;
+                if (ableToTakeOff) {
+                    // 是起飞的点数则当前回合的所有飞机都可飞
+                    for (int i : BoardCoordinate.COLOR_PLANE[nowPlayer]) {
+                        if (!planes[i].isFinished())
+                            try {
+                                planes[i].getReadyToFly();
+                            } catch (Exception e) {
+                                planes[i].getPlaneView().setEnabled(false);
+                            }
+                    }
                 } else {
+                    // 不是起飞点数则只有在外面的飞机可以飞
+                    if (outsidePlanes.isEmpty()) {
+                        nowPlayer = (nowPlayer + 1) % 4;
+                        beginTurn();
+                    } else {
+                        for (Integer i : outsidePlanes) {
+                            try {
+                                planes[i].getReadyToFly();
+                            } catch (Exception e) {
+                                planes[i].getPlaneView().setEnabled(false);
+                            }
+                        }
+                        outsidePlanes.clear();
+                    }
+                }
+            }
+        }
+
+        // 联机模式，在己方看来其他三个是人是AI都一样，在他们回合都是要等待diceNumber和飞机编号
+        else {
+            if (nowPlayer == myCamp) { //己方回合
+                if (playerType[myCamp] == GameState.COMPUTER) {    // 己方为AI
+                    ComputerAgent.agentTakeOver();
+                } else {   // 己方为人类
+                    // TODO: 2020/12/8 add code
+                    // 同上等待点击骰子获取diceNumber，能走就等待点击飞机
+                    // 从上一步获取骰子点数diceNumber和选择的飞机编号（没有则-1）发送给其他三位玩家
+
+                    while (!hasPressedButton) {
+                        if (hasPressedButton) break;
+                    }
+                    hasPressedButton = false;
+                    int[] rollResult = {Dice.roll(), Dice.roll()};
+
+                    ArrayList<Integer> outsidePlanes = new ArrayList<Integer>();
+//                // 如果是迭在别人迭子上则自动走那个棋子
+//                if (markPlane != -1) {
+//                    planes[markPlane].receiveDiceNumber(rollResult);
+//                    markPlane = -1;
+//                } else {
+                    ;
                     // 是否全在机场
                     for (int i : BoardCoordinate.COLOR_PLANE[nowPlayer]) {
-                        if (!planes[i].isInAirport()) {
-                            // 添加在外面的飞机
+                        if (!planes[i].isInAirport() && !planes[i].isFinished()) {
+                            // 添加在外面的飞机number
                             outsidePlanes.add(i);
                         }
                     }
-                    // 是否是起飞的点数，可以在Commdef.TAKE_OFF_NUMBER进行修改
-                    boolean ableToTakeOff = false;
-                    for (int each : Hangar.TAKE_OFF_NUMBER) {
-                        if (each == diceNumbers) {
-                            ableToTakeOff = true;
-                            break;
-                        }
-                    }
+
+                    boolean ableToTakeOff = rollResult[0] == 6 || rollResult[1] == 6;
                     if (ableToTakeOff) {
                         // 是起飞的点数则当前回合的所有飞机都可飞
-                        for (int i : Hangar.COLOR_PLANE[nowPlayer]) {
-                            if (planes[i].getStatus() != Hangar.FINISHED)
-                                planes[i].getReadyToFly();
+                        for (int i : BoardCoordinate.COLOR_PLANE[nowPlayer]) {
+                            if (!planes[i].isFinished())
+                                try {
+                                    planes[i].getReadyToFly();
+                                } catch (Exception e) {
+                                    planes[i].getPlaneView().setEnabled(false);
+                                }
                         }
                     } else {
                         // 不是起飞点数则只有在外面的飞机可以飞
@@ -353,48 +433,50 @@ public class ChessBoard {
                             beginTurn();
                         } else {
                             for (Integer i : outsidePlanes) {
-                                planes[i].getReadyToFly();
+                                try {
+                                    planes[i].getReadyToFly();
+                                } catch (Exception e) {
+                                    planes[i].getPlaneView().setEnabled(false);
+                                }
                             }
                             outsidePlanes.clear();
                         }
                     }
-                }
-            }
-        }
-        // 联机模式，在己方看来其他三个是人是AI都一样，在他们回合都是要等待diceNumber和飞机编号
-        else {
-            if (nowPlayer == myCamp) { //己方回合
-                if (playerType[myCamp] == GameState.COMPUTER) {    // 己方为AI
-                    // TODO: 2020/12/8 add code
-                    // 自动转骰子获取点数diceNumber，如果能走就根据AI策略获取要走的飞机编号，Commdef.COLOR_PLANE[turn]是当前回合四架飞机的编号
-                    // 通过diceNumber来做转骰子动画，有选择的飞机编号则通过调用飞机的receiveDiceNumber来自动移动
-                } else {   // 己方为人类
-                    // TODO: 2020/12/8 add code
-                    // 同上等待点击骰子获取diceNumber，能走就等待点击飞机
-                    // 从上一步获取骰子点数diceNumber和选择的飞机编号（没有则-1）发送给其他三位玩家
+
+
+                    Client.updateRecordedChange();
                 }
             } else {   // 其他玩家回合
-                // TODO: 2020/12/8 add code
-                // socket 传回
-                // 等待别人发来的diceNumber和飞机编号，handler消息传递？
-                // 通过diceNumber来做转骰子动画，飞机编号不是-1则通过调用飞机的receiveDiceNumber来自动移动
+                Client.getAndApplyChange();
             }
         }
+    }
 
+    public void forbidClick() {
+        for (Aeroplane p : planes) {
+            p.getPlaneView().setEnabled(false);
+            p.getPlaneView().addActionListener(null);
+        }
+    }
+
+    public void allowClick() {
+        for (Aeroplane p : planes) {
+            if (!p.isFinished())
+                p.getPlaneView().setEnabled(true);
+        }
     }
 
     // 结束回合
     public void endTurn() {
         // 检查游戏是否结束
         if (checkGameEnd()) {
-            gameEnd();
+            endGame();
         } else {
             // 游戏没有结束
             if (rollResult[0] + rollResult[1] >= 10) {
                 if (continueRoll < 3) {
                     continueRoll++;
                     beginTurn();
-//                    movedPlanes.get(nowPlayer).add();
                 } else {
                     for (Aeroplane p : planes) {
                         for (int i : movedPlanes) {
@@ -415,7 +497,6 @@ public class ChessBoard {
             }
         }
     }
-
 
 // 横扫其他方的飞机
 // FIXME: 2020/12/8 可能改规则
@@ -475,8 +556,9 @@ public class ChessBoard {
         return planeNum;
     }
 
-// 提示
+//// 提示
 //    public void showInfo(String sentence) {
+//        Label tipView;
 //        tipView.setText(sentence);
 //        tipView.bringToFront();
 //        tipView.setVisibility(View.VISIBLE);
@@ -537,5 +619,15 @@ public class ChessBoard {
 
     public void setMarkPlane(int number) {
         markPlane = number;
+    }
+
+    // 结束游戏
+    public void endGame() {
+        state = GameState.GAME_END;
+
+        // 联网模式还要广播获胜消息
+        if (gameType == GameState.ONLINE) {
+            Client.notifyNewWinner();
+        }
     }
 }

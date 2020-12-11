@@ -124,6 +124,10 @@ public class Aeroplane {
         return state == PlaneState.IN_HANGAR;
     }
 
+    public boolean isFinished() {
+        return state == PlaneState.FINISH;
+    }
+
     protected void backToHangarDueToCrash() {
         this.state = PlaneState.IN_HANGAR;
         this.generalGridIndex = 0;
@@ -231,6 +235,42 @@ public class Aeroplane {
         }
         return false;
     }
+
+    // 等待被点击飞行
+    // FIXME: 2020/12/11 这玩意怎么写呜呜呜
+    public void getReadyToFly() {
+        this.planeView.setEnabled(true);
+
+        // FIXME: 2020/12/11 这玩意怎么写呜呜呜  lambda?
+        this.planeView.addActionListener();
+        {
+            // 被点击时禁止其他的棋子再被点击
+            chessBoard.forbidClick();
+            try {
+                this.receiveDiceNumber(chessBoard.rollResult);
+            } catch (Exception e) {
+//                throw e;
+            }
+        }
+
+        // 做一个不断重复的缩放动画，告诉玩家可以移动的棋子
+//        ScaleAnimation scaleAnim = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f, Animation.ABSOLUTE, planeView.getX()+gridLength, Animation.ABSOLUTE, planeView.getY()+gridLength);
+//        scaleAnim.setDuration(500);     //设置动画持续时间
+//        scaleAnim.setRepeatCount(-1);   //设置重复次数，-1无限循环
+//        scaleAnim.setRepeatMode(Animation.REVERSE); // 逆序重复
+//        scaleAnim.setFillAfter(false);              // 不用停在最后一帧
+//        planeView.startAnimation(scaleAnim);
+//        planeView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // 被点击时禁止其他的棋子再被点击
+//                board.forbidClick();
+//                // 调用函数来应用这个点数
+//                receiveDiceNumber(board.getDiceNumber());
+//            }
+//        });
+    }
+
 
     private int battlingSelfNumber;
     private int battlingOpposingNumber;
@@ -381,6 +421,7 @@ public class Aeroplane {
         if (generalGridIndex == BoardCoordinate.COLOR_DESTINATION[color]) finishTask();
         // 结束回合
         chessBoard.endTurn();
+        chessBoard.getMovedPlanes().add(this.number);
 //                }
 //            }
 //        });
