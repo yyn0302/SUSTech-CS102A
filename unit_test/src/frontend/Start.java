@@ -11,8 +11,10 @@ public class Start  {
     public static void main(String[] args) {
         //开始窗口
         JFrame startmenu=new JFrame("飞行棋大作战");
+
         JPanel startpanel=new BackgroundPanel((new ImageIcon("src\\开始图片.jpg").getImage()));
         JPanel substartpanel = new JPanel();
+
         substartpanel.setBackground(null);
         substartpanel.setOpaque(false);
         JButton startbutton = new JButton("开始游戏");
@@ -22,7 +24,7 @@ public class Start  {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startmenu.setVisible(true);
-                jf1.setVisible(true);
+                Settings.settingsFrame.settingsFrame.setVisible(true);
             }
         });
         //加上三个button
