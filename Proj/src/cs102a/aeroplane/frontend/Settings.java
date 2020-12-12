@@ -1,7 +1,9 @@
-package cs102a.aeroplane.frontend;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import cs102a.aeroplane.GameInfo;
-import cs102a.aeroplane.frontend.model.BackgroundPanel;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +20,11 @@ public class Settings extends JFrame {
         this.setTitle(title);
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
+
+        JPanel backgroundPanel = new BackgroundPanel((new ImageIcon("src\\开始图片.jpg").getImage()));
+        backgroundPanel.setOpaque(false);
+        backgroundPanel.setLayout(new GridLayout(3, 1, 10, 10));
+        backgroundPanel.setPreferredSize(new Dimension(150, 150));
 
 
         JLabel themeLabel = new JLabel("当前主题：海王");
@@ -83,6 +90,10 @@ public class Settings extends JFrame {
         JRadioButton rb2 = new JRadioButton("2");
         JRadioButton rb3 = new JRadioButton("3");
         JRadioButton rb4 = new JRadioButton("4", true);
+        rb1.setOpaque(false);
+        rb2.setOpaque(false);
+        rb3.setOpaque(false);
+        rb4.setOpaque(false);
 
         ButtonGroup humanCntSelection = new ButtonGroup();
         humanCntSelection.add(rb1);
@@ -90,30 +101,6 @@ public class Settings extends JFrame {
         humanCntSelection.add(rb3);
         humanCntSelection.add(rb4);
 
-        rb1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rb1.isSelected()) GameInfo.setHumanPlayerCnt(1);
-            }
-        });
-        rb2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rb2.isSelected()) GameInfo.setHumanPlayerCnt(2);
-            }
-        });
-        rb3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rb3.isSelected()) GameInfo.setHumanPlayerCnt(3);
-            }
-        });
-        rb4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (rb4.isSelected()) GameInfo.setHumanPlayerCnt(4);
-            }
-        });
 
         JButton enterSuperMode = new JButton("注册管理权限");
         enterSuperMode.addActionListener(new ActionListener() {
@@ -132,11 +119,11 @@ public class Settings extends JFrame {
 
 
         JPanel rowPanel1 = new JPanel();
-        rowPanel1.setLayout(new GridLayout(3, 2, 10, 10));
+        rowPanel1.setLayout(new GridLayout(2, 1, 10, 10));
         rowPanel1.add(themeLabel);
         rowPanel1.add(themeSettings);
-        rowPanel1.add(humanCntLabel);
-        rowPanel1.add(enterSuperMode);
+        rowPanel1.setOpaque(false);
+        rowPanel1.setPreferredSize(new Dimension(400, 150));
 
         JPanel rowPanel2 = new JPanel();
         rowPanel2.setLayout(new GridLayout(1, 5, 5, 10));
@@ -145,21 +132,26 @@ public class Settings extends JFrame {
         rowPanel2.add(rb2);
         rowPanel2.add(rb3);
         rowPanel2.add(rb4);
+        rowPanel2.setOpaque(false);
+        rowPanel2.setPreferredSize(new Dimension(600, 300));
 
         JPanel rowPanel3 = new JPanel();
         rowPanel3.setLayout(new GridLayout(1, 1, 10, 10));
         rowPanel3.add(enterSuperMode);
+        rowPanel3.setOpaque(false);
+        rowPanel3.setPreferredSize(new Dimension(400, 150));
 
-        JPanel backgroundPanel = new BackgroundPanel((new ImageIcon("src\\开始图片.jpg").getImage()));
-        backgroundPanel.setOpaque(false);
-        backgroundPanel.setLayout(new GridLayout(3, 1, 10, 10));
-        backgroundPanel.setPreferredSize(new Dimension(150, 150));
+        JPanel setSizepanel = new JPanel(new GridLayout(3, 1, 10, 50));
+        setSizepanel.setPreferredSize(new Dimension(800, 600));
         backgroundPanel.add(rowPanel1);
         backgroundPanel.add(rowPanel2);
         backgroundPanel.add(rowPanel3);
-
-
-        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        setSizepanel.add(backgroundPanel);
+        this.setDefaultCloseOperation(this.HIDE_ON_CLOSE);
         this.add(backgroundPanel);
+    }
+
+    public static void popsetting() {
+        settingsFrame.setVisible(true);
     }
 }
