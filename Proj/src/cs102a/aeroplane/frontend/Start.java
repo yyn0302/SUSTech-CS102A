@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public  class Start  extends JFrame{
-public static Start start=new Start("飞行器大作战");
+public static Start start=new Start("飞行棋大作战");
 public Start(String title){
     this.setTitle(title);
     //开始窗口
