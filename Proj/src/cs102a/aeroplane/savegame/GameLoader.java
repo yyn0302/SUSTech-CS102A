@@ -57,7 +57,7 @@ public class GameLoader {
 
             // 检查文件是否存在异常
             while (!sc.nextLine().equals("@@")) {
-                ;//读一行，让光标移动到正确预备位置
+                //读一行，让光标移动到正确预备位置
             }
             if (!sc.nextLine().equals("@PLAYER_LENGTH=57,57,57,57"))
                 throw new SecurityException("奇怪...存档怎么变了？说，是不是你又偷偷改数据了！\n想让别人多走几步？坏家伙");
@@ -72,7 +72,7 @@ public class GameLoader {
 
             // 读档
             while (!sc.nextLine().equals("@@")) {
-                ;//读一行，让光标移动到正确预备位置
+                //读一行，让光标移动到正确预备位置
             }
             try {
                 String[] splitTemp;
@@ -84,7 +84,7 @@ public class GameLoader {
                 chessBoard.setNowPlayer(Integer.parseInt(splitTemp[splitTemp.length - 1]));
 
                 while (!sc.nextLine().equals("@@PLANE_POSITION")) {
-                    ;//读一行，让光标移动到正确预备位置
+                    //读一行，让光标移动到正确预备位置
                 }
                 int planeCnt = 0;
                 for (int i = 0; i < 16; i++) {

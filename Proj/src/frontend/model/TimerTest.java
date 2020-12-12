@@ -1,4 +1,4 @@
-package frontend;
+package frontend.model;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +10,7 @@ public class TimerTest extends JFrame {
     /**
      *
      */
-    private static final long serialVersionUID = 1L;
+//    private static final long serialVersionUID = 1L;
     private static JButton button;
     private static TimerTest TimerTest;
 
@@ -22,10 +22,10 @@ public class TimerTest extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 TimeDialog d = new TimeDialog();
-                int result = d.showDialog(TimerTest, "对方想要和你语音是否接受?", 10);// TimerTest是程序主窗口类，弹出的对话框10秒后消失
-                System.out.println("===result: "+result);
+                d.showDialog(TimerTest, "对方想要和你语音是否接受?", 10);// TimerTest是程序主窗口类，弹出的对话框10秒后消失
             }
         });
+
         button.setBounds(2, 5, 80,20);
         TimerTest.getContentPane().setLayout(null);
         TimerTest.getContentPane().add(button);

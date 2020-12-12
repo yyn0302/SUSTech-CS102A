@@ -5,8 +5,8 @@ import java.io.File;
 import cs102a.aeroplane.util.SystemSelect;
 
 public class Sound {
-    private File musicFile;
-    private static String musicPath = SystemSelect.isMacOS() ?
+    private final File musicFile;
+    private static final String musicPath = SystemSelect.isMacOS() ?
             SystemSelect.getMacMusicPath() : SystemSelect.getWindowsMusicPath();
 
     public final static Sound ONE_STEP = new Sound(new File(String.format("%sNormMove.wav",musicPath)));

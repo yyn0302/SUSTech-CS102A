@@ -19,16 +19,16 @@ public class Aeroplane {
     private final int color;
     private final int number;           // 飞机编号，0~15
 
-    private int selfPathIndex;          // 自己该走完的57格
+    private final int selfPathIndex;          // 自己该走完的57格
     private int generalGridIndex;       // 飞机所在位置0~97
 
     private float targetX, targetY;
     private final float gridLength, xOffSet, yOffSet;
 
-    private JButton planeView;
+    private final JButton planeView;
     private final ChessBoard chessBoard;
 
-    private ArrayList<Integer> path;
+    private final ArrayList<Integer> path;
 
     public Aeroplane(ChessBoard chessBoard, int color, int number, int generalGridIndex, float gridLength, float xOffSet, float yOffSet) {
         this.chessBoard = chessBoard;
@@ -128,7 +128,7 @@ public class Aeroplane {
         return state == PlaneState.FINISH;
     }
 
-    protected void backToHangarDueToCrash() {
+    public void backToHangarDueToCrash() {
         this.state = PlaneState.IN_HANGAR;
         this.generalGridIndex = 0;
         this.path.add(0);
@@ -234,6 +234,10 @@ public class Aeroplane {
             if (i == index) return true;
         }
         return false;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     // 等待被点击飞行

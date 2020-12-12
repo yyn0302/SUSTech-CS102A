@@ -15,15 +15,16 @@ public class Server implements Closeable {
     private ServerSocket serverSocket;
     private Socket socket;
 
-    protected final int port = 20924;   // Because this port is safe to use and I ❤ this number
+    protected final int serverPort = 20924;   // Because this port is safe to use and I ❤ this number
 
     protected InputStream inputStream;
     protected OutputStream outputStream;
 
 
+    // 建立房间 -> 实例化Server -> 展示ip供其他人加入
     public Server() {
         try {
-            serverSocket = new ServerSocket(port);
+            serverSocket = new ServerSocket(serverPort, 4);     // 等待连接的队列最长4，多余的直接挤出
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -82,8 +83,9 @@ public class Server implements Closeable {
 
 
     /**
-     * @throws UnknownHostException 本机网络异常
      * @return 本地IP的String格式 或 报错信息
+     * TODO 在作为服务器的机器上将本地址显示出来，提示其他用户输入此ip进行连接
+     * @throws UnknownHostException 本机网络异常
      */
     static public String getLocalIP() throws Exception {
         try {

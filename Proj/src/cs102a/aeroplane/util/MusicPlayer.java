@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class MusicPlayer {
 
-    private File file;                  // wav文件的路径
+    private final File file;                  // wav文件的路径
     private boolean isLoop = false;     // 是否循环播放
     private boolean isPlaying;          // 是否正在播放
 //    private float newVolume = 7;        // FloatControl.Type.MASTER_GAIN的值(可用于调节音量)

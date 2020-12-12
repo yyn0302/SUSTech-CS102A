@@ -10,15 +10,14 @@ import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.util.Dice;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 public class ChessBoard {
     private int state;              // 状态（游戏未开始，游戏已开始，游戏结束）
     private int nowPlayer;          // 当前回合
     private float screenWidth;      // 屏幕宽度
-    private float boardLength;      // 棋盘宽度
-    private float gridLength;       // 棋盘上一小格的宽度
+    private final float boardLength;      // 棋盘宽度
+    private final float gridLength;       // 棋盘上一小格的宽度
     private float xOffSet;          // 棋盘在屏幕X方向即右方向的偏移
     private float yOffSet;          // 棋盘在屏幕Y方向即下方向的偏移
     private int step;               // 总步数
@@ -42,7 +41,7 @@ public class ChessBoard {
     // private HashMap<Integer, Integer> soundMap;     // 音效类型到音效id的映射
     private int gameType;                           // 游戏类型，单机、联网
     private int[] playerType;                       // 四个玩家类型，人类、AI
-    private int myCamp;                             // 自己阵营
+    private int myColor;                             // 自己阵营
 
     //    ChessBoard(/*ImageView boardView, ImageView diceView, ImageView arrowView, JPopupMenu tipView, float screenWidth, TextView[] playerViews, SoundPool sp,*/
 //            /*HashMap<Integer, Integer> soundMap*/) {
@@ -120,7 +119,7 @@ public class ChessBoard {
         // 如果是联网模式，还要初始化myCamp xxxx
 
 
-        if (GameInfo.isIsOnlineGame()) myCamp = Client.getDeltaPort();
+        if (GameInfo.isIsOnlineGame()) myColor = Client.getDeltaPort();
 
         state = GameState.GAME_START;
         // 还原飞机位置
@@ -221,7 +220,6 @@ public class ChessBoard {
 //            diceView.setY((float) (playerViews[nowPlayer].getY() + playerViews[nowPlayer].getHeight() * 0.3));
 //        }
 //        diceView.setVisibility(View.VISIBLE);
-        ;
         // 根据游戏类型和玩家类型做判断
         // 当前是单机游戏
         if (!GameInfo.isIsOnlineGame()) {
@@ -345,7 +343,6 @@ public class ChessBoard {
 //                    planes[markPlane].receiveDiceNumber(rollResult);
 //                    markPlane = -1;
 //                } else {
-                ;
                 // 是否全在机场
                 for (int i : BoardCoordinate.COLOR_PLANE[nowPlayer]) {
                     if (!planes[i].isInAirport() && !planes[i].isFinished()) {
@@ -386,8 +383,8 @@ public class ChessBoard {
 
         // 联机模式，在己方看来其他三个是人是AI都一样，在他们回合都是要等待diceNumber和飞机编号
         else {
-            if (nowPlayer == myCamp) { //己方回合
-                if (playerType[myCamp] == GameState.COMPUTER) {    // 己方为AI
+            if (nowPlayer == myColor) { //己方回合
+                if (playerType[myColor] == GameState.COMPUTER) {    // 己方为AI
                     ComputerAgent.agentTakeOver();
                 } else {   // 己方为人类
                     // TODO: 2020/12/8 add code
@@ -406,7 +403,6 @@ public class ChessBoard {
 //                    planes[markPlane].receiveDiceNumber(rollResult);
 //                    markPlane = -1;
 //                } else {
-                    ;
                     // 是否全在机场
                     for (int i : BoardCoordinate.COLOR_PLANE[nowPlayer]) {
                         if (!planes[i].isInAirport() && !planes[i].isFinished()) {
@@ -457,6 +453,10 @@ public class ChessBoard {
             p.getPlaneView().setEnabled(false);
             p.getPlaneView().addActionListener(null);
         }
+    }
+
+    public void setWinner1Index(int winner1Index) {
+        this.winner1Index = winner1Index;
     }
 
     public void allowClick() {
