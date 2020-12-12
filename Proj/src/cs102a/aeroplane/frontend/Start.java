@@ -1,3 +1,9 @@
+package cs102a.aeroplane.frontend;
+
+
+import cs102a.aeroplane.frontend.GameGUI;
+import cs102a.aeroplane.frontend.model.BackgroundPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

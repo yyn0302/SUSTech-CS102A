@@ -1,3 +1,9 @@
+package cs102a.aeroplane.frontend;
+
+import cs102a.aeroplane.GameInfo;
+import cs102a.aeroplane.frontend.EnterSuperMode;
+import cs102a.aeroplane.frontend.model.BackgroundPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,7 +19,6 @@ import java.awt.event.ActionListener;
 public class Settings extends JFrame {
 
     public static Settings settingsFrame = new Settings("游戏设置");
-
 
     public Settings(String title) {
 
