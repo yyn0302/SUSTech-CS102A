@@ -1,5 +1,6 @@
 package cs102a.aeroplane.frontend;
 
+import cs102a.aeroplane.frontend.model.BackgroundPanel;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;

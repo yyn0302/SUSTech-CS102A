@@ -1,6 +1,7 @@
 package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
+import cs102a.aeroplane.frontend.model.BackgroundPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +21,7 @@ public class Settings extends JFrame {
 
         JPanel backgroundPanel = new BackgroundPanel((new ImageIcon("src\\开始图片.jpg").getImage()));
         backgroundPanel.setOpaque(false);
-        backgroundPanel.setLayout(new GridLayout(2, 1, 10, 10));
+        backgroundPanel.setLayout(new GridLayout(3, 1, 10, 10));
         backgroundPanel.setPreferredSize(new Dimension(150, 150));
 
 
@@ -62,6 +63,39 @@ public class Settings extends JFrame {
         });
 
 
+        JLabel onlineLabel = new JLabel("联机模式：关");
+
+        JButton changeOnlineMode = new JButton("-> 开");
+        changeOnlineMode.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!GameInfo.isIsOnlineGame()) {
+                    changeOnlineMode.setText("-> 开");
+                    onlineLabel.setText("联机模式：关");
+                    GameInfo.setIsOnlineGame(true);
+                } else {
+                    changeOnlineMode.setText("-> 关");
+                    onlineLabel.setText("联机模式：开");
+                    GameInfo.setIsOnlineGame(false);
+                }
+            }
+        });
+
+
+        JLabel humanCntLabel = new JLabel("人类玩家数：");
+
+        JRadioButton rb1 = new JRadioButton("1");
+        JRadioButton rb2 = new JRadioButton("2");
+        JRadioButton rb3 = new JRadioButton("3");
+        JRadioButton rb4 = new JRadioButton("4", true);
+
+        ButtonGroup humanCntSelection = new ButtonGroup();
+        humanCntSelection.add(rb1);
+        humanCntSelection.add(rb2);
+        humanCntSelection.add(rb3);
+        humanCntSelection.add(rb4);
+
+
         JButton enterSuperMode = new JButton("注册管理权限");
         enterSuperMode.addActionListener(new ActionListener() {
             @Override
@@ -78,20 +112,29 @@ public class Settings extends JFrame {
         });
 
 
-        JPanel upPanel = new JPanel();
-        upPanel.setLayout(new GridLayout(2, 2, 10, 10));
-        upPanel.add(themeLabel);
-        upPanel.add(themeSettings);
-        upPanel.add(modeLabel);
-        upPanel.add(enterSuperMode);
+        JPanel rowPanel1 = new JPanel();
+        rowPanel1.setLayout(new GridLayout(3, 2, 10, 10));
+        rowPanel1.add(themeLabel);
+        rowPanel1.add(themeSettings);
+        rowPanel1.add(humanCntLabel);
+        rowPanel1.add(enterSuperMode);
 
-        JPanel downPanel = new JPanel();
-        downPanel.setLayout(new GridLayout(1, 1, 10, 10));
-        downPanel.add(enterSuperMode);
+        JPanel rowPanel2 = new JPanel();
+        rowPanel2.setLayout(new GridLayout(1, 5, 5, 10));
+        rowPanel2.add(humanCntLabel);
+        rowPanel2.add(rb1);
+        rowPanel2.add(rb2);
+        rowPanel2.add(rb3);
+        rowPanel2.add(rb4);
+
+        JPanel rowPanel3 = new JPanel();
+        rowPanel3.setLayout(new GridLayout(1, 1, 10, 10));
+        rowPanel3.add(enterSuperMode);
 
 
-        backgroundPanel.add(upPanel);
-        backgroundPanel.add(downPanel);
+        backgroundPanel.add(rowPanel1);
+        backgroundPanel.add(rowPanel2);
+        backgroundPanel.add(rowPanel3);
 
         this.setDefaultCloseOperation(this.HIDE_ON_CLOSE);
         this.add(backgroundPanel);
