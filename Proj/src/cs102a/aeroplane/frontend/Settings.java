@@ -90,6 +90,30 @@ public class Settings extends JFrame {
         humanCntSelection.add(rb3);
         humanCntSelection.add(rb4);
 
+        rb1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rb1.isSelected()) GameInfo.setHumanPlayerCnt(1);
+            }
+        });
+        rb2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rb2.isSelected()) GameInfo.setHumanPlayerCnt(2);
+            }
+        });
+        rb3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rb3.isSelected()) GameInfo.setHumanPlayerCnt(3);
+            }
+        });
+        rb4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rb4.isSelected()) GameInfo.setHumanPlayerCnt(4);
+            }
+        });
 
         JButton enterSuperMode = new JButton("注册管理权限");
         enterSuperMode.addActionListener(new ActionListener() {
@@ -134,7 +158,8 @@ public class Settings extends JFrame {
         backgroundPanel.add(rowPanel2);
         backgroundPanel.add(rowPanel3);
 
-        this.setDefaultCloseOperation(this.HIDE_ON_CLOSE);
+
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         this.add(backgroundPanel);
     }
 }

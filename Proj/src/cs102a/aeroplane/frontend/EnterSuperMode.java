@@ -62,7 +62,7 @@ public class EnterSuperMode extends JFrame {
         base.add(upPanel);
         base.add(downPanel);
 
-        this.setDefaultCloseOperation(this.HIDE_ON_CLOSE);
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         this.add(base);
     }
 
