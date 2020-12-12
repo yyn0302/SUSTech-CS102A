@@ -284,6 +284,16 @@ public class Aeroplane {
         return battlingOpposingNumber;
     }
 
+    public void setGeneralGridIndex(int generalGridIndex) {
+        assert generalGridIndex >= -1 && generalGridIndex <= 96
+                : "先辈这次动作挺小的，但还是被我发现啦！\n棋子怎么可能飞到棋盘外呢？先 辈 大 笨 蛋";
+        this.generalGridIndex = generalGridIndex;
+        if (generalGridIndex == -1) finishTask();
+        path.clear();
+        path.add(generalGridIndex);
+    }
+
+
     public void setBattlingCheatChoice(boolean battlingCheatChoice) {
         this.battlingCheatChoice = battlingCheatChoice;
     }
@@ -328,7 +338,7 @@ public class Aeroplane {
     // FIXME: 2020/12/11 旋转图片，布局坐标调整（可能由chessBoard负责）
     public void move() {
         generalGridIndex = path.get(path.size() - 1);
-        // 根据要去的下一个位置调整飞机角度
+        // 控件要旋转的角度
         planeView.setRotation(BoardCoordinate.REVOLVE_ANGLE[generalGridIndex]);
         // FIXME: 2020/12/11 旋转图片
         // FIXME: 2020/12/11 控件旋转

@@ -1,7 +1,7 @@
 package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.GameInfo;
-import cs102a.aeroplane.musicfx.MusicPlayer;
+import cs102a.aeroplane.util.MusicPlayer;
 import cs102a.aeroplane.online.Client;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.GameState;
@@ -21,6 +21,7 @@ public class ChessBoard {
     private float gridLength;       // 棋盘上一小格的宽度
     private float xOffSet;          // 棋盘在屏幕X方向即右方向的偏移
     private float yOffSet;          // 棋盘在屏幕Y方向即下方向的偏移
+    private int step;               // 总步数
 
     int[] rollResult;
     private int continueRoll;
@@ -32,13 +33,13 @@ public class ChessBoard {
 //    private JPopupMenu tipView;       // 提示view
 //    private int[] diceNumbers;         // 骰子点数
     private Aeroplane[] planes;              // 16架飞机
-    private int markPlane;                   // 被标记的飞机，下次自动走，在迭在别人迭子上时用
+//    private int markPlane;                   // 被标记的飞机，下次自动走，在迭在别人迭子上时用
     private int winner1Index;                // 胜利者
     private int winner2Index;                // 胜利者
     private int winner3Index;                // 胜利者
     //    private TextView[] playerViews; // 4个玩家信息view
 //    private SoundPool sp;           // 音效池
-    private HashMap<Integer, Integer> soundMap;     // 音效类型到音效id的映射
+    // private HashMap<Integer, Integer> soundMap;     // 音效类型到音效id的映射
     private int gameType;                           // 游戏类型，单机、联网
     private int[] playerType;                       // 四个玩家类型，人类、AI
     private int myCamp;                             // 自己阵营
@@ -57,6 +58,7 @@ public class ChessBoard {
 //        this.soundMap = soundMap;
         boardLength = (int) (screenWidth / 18) * 18;
         gridLength = boardLength / 36;
+        step=0;
         // 调整棋盘大小
 //        ViewGroup.LayoutParams boardParams = boardView.getLayoutParams();
 //        boardParams.width = (int) boardLength;
@@ -104,7 +106,6 @@ public class ChessBoard {
     }
 
     // 开始游戏
-    // FIXME: 2020/12/9 本地游戏颜色与服务器交流得到
     public void startGame() {
         playSound(GameInfo.getTheme() == 1 ? Sound.GAMING_THEME1 : Sound.GAMING_THEME2, true);
         // 禁止点击棋子
@@ -119,8 +120,7 @@ public class ChessBoard {
         // 如果是联网模式，还要初始化myCamp xxxx
 
 
-        // FIXME: 2020/12/9 本地游戏颜色与服务器交流得到
-//        if(GameInfo.isIsOnlineGame())myCamp=
+        if (GameInfo.isIsOnlineGame()) myCamp = Client.getDeltaPort();
 
         state = GameState.GAME_START;
         // 还原飞机位置
@@ -131,7 +131,7 @@ public class ChessBoard {
         Random rd = new Random();
         nowPlayer = rd.nextInt(4);
 //        showInfo(Commdef.campName[nowPlayer] + "开始");
-        markPlane = -1;
+//        markPlane = -1;
         winner1Index = -1;
         winner2Index = -1;
         winner3Index = -1;
@@ -466,6 +466,26 @@ public class ChessBoard {
         }
     }
 
+    public void setStep(int step) {
+        this.step = step;
+    }
+
+    public void setNowPlayer(int nowPlayer) {
+        this.nowPlayer = nowPlayer;
+    }
+
+    public int getStep() {
+        return step;
+    }
+
+    public int getNowPlayer() {
+        return nowPlayer;
+    }
+
+    public Aeroplane[] getPlanes() {
+        return planes;
+    }
+
     // 结束回合
     public void endTurn() {
         // 检查游戏是否结束
@@ -592,34 +612,34 @@ public class ChessBoard {
         return yOffSet + gridLength * BoardCoordinate.COORDINATE[index][1];
     }
 
-    public void setXOffSet(float xOffSet) {
-        this.xOffSet = xOffSet;
-    }
+//    public void setXOffSet(float xOffSet) {
+//        this.xOffSet = xOffSet;
+//    }
+//
+//    public void setYOffSet(float yOffSet) {
+//        this.yOffSet = yOffSet;
+//        // 调整骰子大小
+////        ViewGroup.LayoutParams diceParams = diceView.getLayoutParams();
+////        diceParams.width = (int) (yOffSet * 0.4);
+////        diceParams.height = (int) (yOffSet * 0.4);
+////        diceView.setLayoutParams(diceParams);
+////        // 调整箭头大小
+////        ViewGroup.LayoutParams arrowParams = arrowView.getLayoutParams();
+////        arrowParams.width = (int) (yOffSet * 0.4);
+////        arrowParams.height = (int) (yOffSet * 0.4);
+////        arrowView.setLayoutParams(arrowParams);
+////        // 调整玩家信息框的大小
+////        for (int i = 0; i < 4; i++) {
+////            ViewGroup.LayoutParams playerParams = playerViews[i].getLayoutParams();
+////            playerParams.width = (int) (yOffSet * 1.4);
+////            playerParams.height = (int) (yOffSet);
+////            playerViews[i].setLayoutParams(playerParams);
+////        }
+//    }
 
-    public void setYOffSet(float yOffSet) {
-        this.yOffSet = yOffSet;
-        // 调整骰子大小
-//        ViewGroup.LayoutParams diceParams = diceView.getLayoutParams();
-//        diceParams.width = (int) (yOffSet * 0.4);
-//        diceParams.height = (int) (yOffSet * 0.4);
-//        diceView.setLayoutParams(diceParams);
-//        // 调整箭头大小
-//        ViewGroup.LayoutParams arrowParams = arrowView.getLayoutParams();
-//        arrowParams.width = (int) (yOffSet * 0.4);
-//        arrowParams.height = (int) (yOffSet * 0.4);
-//        arrowView.setLayoutParams(arrowParams);
-//        // 调整玩家信息框的大小
-//        for (int i = 0; i < 4; i++) {
-//            ViewGroup.LayoutParams playerParams = playerViews[i].getLayoutParams();
-//            playerParams.width = (int) (yOffSet * 1.4);
-//            playerParams.height = (int) (yOffSet);
-//            playerViews[i].setLayoutParams(playerParams);
-//        }
-    }
-
-    public void setMarkPlane(int number) {
-        markPlane = number;
-    }
+//    public void setMarkPlane(int number) {
+//        markPlane = number;
+//    }
 
     // 结束游戏
     public void endGame() {
