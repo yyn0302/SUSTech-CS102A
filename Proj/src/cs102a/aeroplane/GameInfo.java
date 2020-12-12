@@ -1,7 +1,6 @@
 package cs102a.aeroplane;
 
 public class GameInfo {
-    // TODO: 2020/12/4 开始界面中用户的设置要传入这里
     // 之后本局游戏的设置变量从这里读取
 
 private static boolean superUser =false;
