@@ -19,11 +19,6 @@ public class Settings extends JFrame {
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
 
-        JPanel backgroundPanel = new BackgroundPanel((new ImageIcon("src\\开始图片.jpg").getImage()));
-        backgroundPanel.setOpaque(false);
-        backgroundPanel.setLayout(new GridLayout(3, 1, 10, 10));
-        backgroundPanel.setPreferredSize(new Dimension(150, 150));
-
 
         JLabel themeLabel = new JLabel("当前主题：海王");
 
@@ -131,7 +126,10 @@ public class Settings extends JFrame {
         rowPanel3.setLayout(new GridLayout(1, 1, 10, 10));
         rowPanel3.add(enterSuperMode);
 
-
+        JPanel backgroundPanel = new BackgroundPanel((new ImageIcon("src\\开始图片.jpg").getImage()));
+        backgroundPanel.setOpaque(false);
+        backgroundPanel.setLayout(new GridLayout(3, 1, 10, 10));
+        backgroundPanel.setPreferredSize(new Dimension(150, 150));
         backgroundPanel.add(rowPanel1);
         backgroundPanel.add(rowPanel2);
         backgroundPanel.add(rowPanel3);
