@@ -1,11 +1,6 @@
-package frontend;
+package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.util.SystemSelect;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import java.awt.*;
