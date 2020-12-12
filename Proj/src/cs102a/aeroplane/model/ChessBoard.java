@@ -211,6 +211,7 @@ public class ChessBoard {
 
     // 开始回合
     public void beginTurn() {
+        // TODO: 2020/12/12 更新右上角显示的玩家信息
         // 调整骰子的位置
 //        if (nowPlayer == Hangar.BLUE || nowPlayer == Hangar.GREEN) {
 //            diceView.setX((float) (playerViews[nowPlayer].getX() + playerViews[nowPlayer].getWidth() * 0.64));

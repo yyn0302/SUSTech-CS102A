@@ -7,15 +7,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Settings {
+public class Settings extends JFrame {
 
-    public static JFrame settingsFrame = new JFrame("设置");
+    public static Settings settingsFrame = new Settings("设置");
 
 
-    public Settings() {
+    public Settings(String title) {
 
-        settingsFrame.setSize(800, 600);
-        settingsFrame.setLocationRelativeTo(null);
+        this.setTitle(title);
+        this.setSize(800, 600);
+        this.setLocationRelativeTo(null);
 
         JPanel backgroundPanel = new BackgroundPanel((new ImageIcon("src\\开始图片.jpg").getImage()));
         backgroundPanel.setOpaque(false);
@@ -92,7 +93,7 @@ public class Settings {
         backgroundPanel.add(upPanel);
         backgroundPanel.add(downPanel);
 
-        settingsFrame.setDefaultCloseOperation(settingsFrame.HIDE_ON_CLOSE);
-        settingsFrame.add(backgroundPanel);
+        this.setDefaultCloseOperation(this.HIDE_ON_CLOSE);
+        this.add(backgroundPanel);
     }
 }
