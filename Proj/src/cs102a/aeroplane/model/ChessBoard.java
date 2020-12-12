@@ -596,7 +596,7 @@ public class ChessBoard {
     public void playSound(Sound sound, boolean isLoop) {
 //        int streamID = sp.play(soundMap.get(soundId), 0.8f, 0.8f, 1, 0, 1.0f);
         MusicPlayer player = new MusicPlayer(sound);
-//        player.setVolume(6f);
+        player.setVolume(6f);
         player.setLoop(isLoop);
         player.play();
     }

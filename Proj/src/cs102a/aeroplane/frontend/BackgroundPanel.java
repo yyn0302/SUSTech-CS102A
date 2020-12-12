@@ -1,4 +1,4 @@
-package frontend;
+package cs102a.aeroplane.frontend;
 
 import javax.swing.*;
 import java.awt.*;

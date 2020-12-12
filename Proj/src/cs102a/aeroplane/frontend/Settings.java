@@ -1,4 +1,4 @@
-package frontend;
+package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
 
@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 
 public class Settings extends JFrame {
 
-    public static Settings settingsFrame = new Settings("设置");
+    public static Settings settingsFrame = new Settings("游戏设置");
 
 
     public Settings(String title) {
@@ -21,7 +21,7 @@ public class Settings extends JFrame {
         JPanel backgroundPanel = new BackgroundPanel((new ImageIcon("src\\开始图片.jpg").getImage()));
         backgroundPanel.setOpaque(false);
         backgroundPanel.setLayout(new GridLayout(2, 1, 10, 10));
-        backgroundPanel.setPreferredSize(new Dimension(800, 600));
+        backgroundPanel.setPreferredSize(new Dimension(150, 150));
 
 
         JLabel themeLabel = new JLabel("当前主题：海王");

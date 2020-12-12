@@ -1,7 +1,6 @@
 package cs102a.aeroplane.util;
 
 import cs102a.aeroplane.GameInfo;
-import frontend.CustomerChoice;
 
 import java.util.ArrayList;
 

@@ -25,7 +25,7 @@ public class Client extends Server {
         }
     }
 
-    FIXME:2020/12/12
+//    FIXME:2020/12/12
 
     // 获取本机连接端口，以此大小给本地分配 myColor
     public int getLocalPort() {

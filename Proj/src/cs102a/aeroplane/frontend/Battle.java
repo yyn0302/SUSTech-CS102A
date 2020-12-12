@@ -1,4 +1,4 @@
-package frontend;
+package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.util.Dice;

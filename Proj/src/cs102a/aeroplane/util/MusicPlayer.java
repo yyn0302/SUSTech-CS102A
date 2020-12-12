@@ -13,7 +13,7 @@ public class MusicPlayer {
     private final File file;                  // wav文件的路径
     private boolean isLoop = false;     // 是否循环播放
     private boolean isPlaying;          // 是否正在播放
-//    private float newVolume = 7;        // FloatControl.Type.MASTER_GAIN的值(可用于调节音量)
+    private float newVolume = 7;        // FloatControl.Type.MASTER_GAIN的值(可用于调节音量)
 
     private playSoundThread playSoundThread;
 
@@ -53,10 +53,10 @@ public class MusicPlayer {
      *
      * @return 返回当前对象
      */
-//    public MusicPlayer setVolume(float newVolume) {
-//        this.newVolume = newVolume;
-//        return this;
-//    }
+    public MusicPlayer setVolume(float newVolume) {
+        this.newVolume = newVolume;
+        return this;
+    }
 
     // 异步播放线程
     private class playSoundThread extends Thread {
