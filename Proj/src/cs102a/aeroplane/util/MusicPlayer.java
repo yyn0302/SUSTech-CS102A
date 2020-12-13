@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class MusicPlayer {
 
-    private final File file;                  // wav文件的路径
+    private final File file;            // wav文件的路径
     private boolean isLoop = false;     // 是否循环播放
     private boolean isPlaying;          // 是否正在播放
     private float newVolume = 7;        // FloatControl.Type.MASTER_GAIN的值(可用于调节音量)
@@ -35,28 +35,19 @@ public class MusicPlayer {
         }
     }
 
-    /**
-     * 设置循环播放
-     *
-     * @param isLoop
-     * @return 返回当前对象
-     */
+    // 设置循环播放
     public MusicPlayer setLoop(boolean isLoop) {
         this.isLoop = isLoop;
         return this;
     }
 
-    /**
-     * -80.0~6.0206测试,越小音量越小
-     * <p>
-     * //     * @param newVolume
-     *
-     * @return 返回当前对象
-     */
+
+     // -80.0~6.0206测试,越小音量越小
     public MusicPlayer setVolume(float newVolume) {
         this.newVolume = newVolume;
         return this;
     }
+
 
     // 异步播放线程
     private class playSoundThread extends Thread {
@@ -64,7 +55,6 @@ public class MusicPlayer {
         @Override
         public void run() {
             isPlaying = true;
-
             do {
                 SourceDataLine sourceDataLine = null;
                 BufferedInputStream bufferedInputStream = null;
@@ -76,17 +66,14 @@ public class MusicPlayer {
                     AudioFormat format = audioInputStream.getFormat();
                     sourceDataLine = AudioSystem.getSourceDataLine(format);
                     sourceDataLine.open();
-                    // 必须open之后
-//                    if (newVolume != 7) {
-//                        FloatControl control = (FloatControl) sourceDataLine.getControl(FloatControl.Type.MASTER_GAIN);
-////						System.out.println(control.getMaximum());
-////						System.out.println(control.getMinimum());
-//                        control.setValue(newVolume);
-//                    }
+
+                    if (newVolume != 7) {
+                        FloatControl control = (FloatControl) sourceDataLine.getControl(FloatControl.Type.MASTER_GAIN);
+                        control.setValue(newVolume);
+                    }
 
                     sourceDataLine.start();
                     byte[] buf = new byte[512];
-//					System.out.println(audioInputStream.available());
                     int len = -1;
                     while (isPlaying && (len = audioInputStream.read(buf)) != -1) {
                         sourceDataLine.write(buf, 0, len);
@@ -111,10 +98,7 @@ public class MusicPlayer {
                         e.printStackTrace();
                     }
                 }
-
             } while (isPlaying && isLoop);
-
         }
     }
-
 }

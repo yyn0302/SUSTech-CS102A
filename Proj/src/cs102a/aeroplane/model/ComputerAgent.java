@@ -1,5 +1,7 @@
 package cs102a.aeroplane.model;
 
+import cs102a.aeroplane.util.Timer;
+
 public class ComputerAgent {
 
     // TODO: 2020/12/8 add code
@@ -16,6 +18,7 @@ public class ComputerAgent {
     }
 
     public static void agentTakeOver() {
+        Timer.delay(1000);
 
     }
 }

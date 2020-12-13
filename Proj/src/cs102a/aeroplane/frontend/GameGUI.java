@@ -1,37 +1,29 @@
 package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
+import cs102a.aeroplane.frontend.model.PlayerInfoPanel;
 import cs102a.aeroplane.util.SystemSelect;
 
+import javax.security.auth.RefreshFailedException;
+import javax.security.auth.Refreshable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GameGUI extends JFrame {
-    public static GameGUI gameGUI = new GameGUI("飞行棋大作战");
+    public static GameGUI gameGUI = new GameGUI("飞行棋[当前 "+" 步]");
 
     public GameGUI(String title) {
         String path = SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath();
-        JPanel Chessboard = new BackgroundPanel((new ImageIcon(path+"开始图片.jpg").getImage()));
-        JPanel Playerboard = new JPanel();
+        JPanel chessBoardPanel = new BackgroundPanel((new ImageIcon(path + "开始图片.jpg").getImage()));
+
+        JPanel rightSidePanel = new JPanel();
         this.setLayout(new GridLayout(1, 2, 50, 50));//大小有待后续调整
-        Playerboard.setLayout(new GridLayout(2, 1, 20, 20));
+        rightSidePanel.setLayout(new GridLayout(2, 1, 20, 20));
         //玩家面板
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new GridLayout(1, 2));
-        //头像图片
+        JPanel playerInfoPanel = new PlayerInfoPanel(1);
 
-        ImageIcon pic1 = new ImageIcon(path + "玩家1.jpg");
-        ImageIcon pic2 = new ImageIcon(path+"玩家2.jpg");
-        ImageIcon pic3 = new ImageIcon(path+"玩家3.jpg");
-        ImageIcon pic4 = new ImageIcon(path+"玩家4.jpg");
-
-        JLabel playerLabel = new JLabel(pic2);
-        JLabel nameLabel = new JLabel("Feshele");
-        infoPanel.add(playerLabel);
-        infoPanel.add(nameLabel);
-        infoPanel.setPreferredSize(new Dimension(100, 100));//大小有待调整
         //保存面板
         JPanel savePanel = new JPanel();
         savePanel.setLayout(new GridLayout(3, 1, 10, 10));//大小有待调整
@@ -63,10 +55,10 @@ public class GameGUI extends JFrame {
         savePanel.add(returnButton);
         savePanel.setPreferredSize(new Dimension(100, 100));//大小有待后续调整
         //窗口初始化
-        Playerboard.add(infoPanel);
-        Playerboard.add(savePanel);
-        this.add(Chessboard);
-        this.add(Playerboard);
+        rightSidePanel.add(playerInfoPanel);
+        rightSidePanel.add(savePanel);
+        this.add(chessBoardPanel);
+        this.add(rightSidePanel);
         this.setVisible(true);
         this.setSize(800, 600);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -74,5 +66,9 @@ public class GameGUI extends JFrame {
 
     public static void popgamegui() {
         gameGUI.setVisible(true);
+    }
+
+    public void refresh() {
+
     }
 }

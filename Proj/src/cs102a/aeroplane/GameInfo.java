@@ -8,7 +8,7 @@ public class GameInfo {
     private static int HumanPlayerCnt = 4;
     private static boolean isOnlineGame = false;
 
-    private static String[] playerName = {"阿斯顿", "史蒂夫", "很反感", "帅的人"};
+    private static String[] playerName = {"A", "B", "C", "D"};
 
 
     public static String[] getPlayerName() {

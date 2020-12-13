@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * JTextField num1 = new JTextField(10);
  * num1.setDocument(new DecimalOnlyDocument());
  */
-public class DecimalOnlyDocument extends PlainDocument {
+public class DecimalLimitedDocument extends PlainDocument {
 // 正则表达式，只接收数字键及小数点(只允许输入一次小数点)
 
     private boolean dot = false;    // 已经有小数点？

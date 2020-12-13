@@ -15,6 +15,13 @@ public class Start {
 
         JFrame startFrame = new JFrame("飞行棋");
 
+
+        JLabel title = new JLabel("飞行棋");
+        title.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 30));
+        title.setForeground(Color.white);
+        title.setBackground(Color.blue);
+        title.setOpaque(true);
+
         JButton startButton = new JButton("开始游戏");
         startButton.addActionListener(new ActionListener() {
             @Override
@@ -53,10 +60,11 @@ public class Start {
 
 
         JPanel subStartPanel = new JPanel();
-        subStartPanel.setLayout(new GridLayout(4, 1, 10, 20));
+        subStartPanel.setLayout(new GridLayout(5, 1, 10, 20));
         subStartPanel.setPreferredSize(new Dimension(150, 150));
         subStartPanel.setBackground(null);
         subStartPanel.setOpaque(false);
+        subStartPanel.add(title);
         subStartPanel.add(startButton);
         subStartPanel.add(continueButton);
         subStartPanel.add(storeButton);

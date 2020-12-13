@@ -1,11 +1,10 @@
 package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.GameInfo;
-import cs102a.aeroplane.util.MusicPlayer;
 import cs102a.aeroplane.online.Client;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.GameState;
-import cs102a.aeroplane.presets.Hangar;
+import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.util.Dice;
 
@@ -32,7 +31,7 @@ public class ChessBoard {
 //    private JPopupMenu tipView;       // 提示view
 //    private int[] diceNumbers;         // 骰子点数
     private Aeroplane[] planes;              // 16架飞机
-//    private int markPlane;                   // 被标记的飞机，下次自动走，在迭在别人迭子上时用
+    //    private int markPlane;                   // 被标记的飞机，下次自动走，在迭在别人迭子上时用
     private int winner1Index;                // 胜利者
     private int winner2Index;                // 胜利者
     private int winner3Index;                // 胜利者
@@ -57,7 +56,7 @@ public class ChessBoard {
 //        this.soundMap = soundMap;
         boardLength = (int) (screenWidth / 18) * 18;
         gridLength = boardLength / 36;
-        step=0;
+        step = 0;
         // 调整棋盘大小
 //        ViewGroup.LayoutParams boardParams = boardView.getLayoutParams();
 //        boardParams.width = (int) boardLength;
@@ -81,22 +80,22 @@ public class ChessBoard {
     public void initPlanes() {
 //    public void initPlanes(ImageView[] planeViews) {
         planes = new Aeroplane[]{
-                new Aeroplane(this, Hangar.BLUE, 0, 0, gridLength, xOffSet, yOffSet),// planeViews[0]),
-                new Aeroplane(this, Hangar.BLUE, 1, 1, gridLength, xOffSet, yOffSet),// planeViews[1]),
-                new Aeroplane(this, Hangar.BLUE, 2, 2, gridLength, xOffSet, yOffSet),// planeViews[2]),
-                new Aeroplane(this, Hangar.BLUE, 3, 3, gridLength, xOffSet, yOffSet),// planeViews[3]),
-                new Aeroplane(this, Hangar.GREEN, 4, 5, gridLength, xOffSet, yOffSet),// planeViews[4]),
-                new Aeroplane(this, Hangar.GREEN, 5, 6, gridLength, xOffSet, yOffSet),// planeViews[5]),
-                new Aeroplane(this, Hangar.GREEN, 6, 7, gridLength, xOffSet, yOffSet),// planeViews[6]),
-                new Aeroplane(this, Hangar.GREEN, 7, 8, gridLength, xOffSet, yOffSet),// planeViews[7]),
-                new Aeroplane(this, Hangar.RED, 8, 10, gridLength, xOffSet, yOffSet),// planeViews[8]),
-                new Aeroplane(this, Hangar.RED, 9, 11, gridLength, xOffSet, yOffSet),// planeViews[9]),
-                new Aeroplane(this, Hangar.RED, 10, 12, gridLength, xOffSet, yOffSet),// planeViews[10]),
-                new Aeroplane(this, Hangar.RED, 11, 13, gridLength, xOffSet, yOffSet),// planeViews[11]),
-                new Aeroplane(this, Hangar.YELLOW, 12, 15, gridLength, xOffSet, yOffSet),// planeViews[12]),
-                new Aeroplane(this, Hangar.YELLOW, 13, 16, gridLength, xOffSet, yOffSet),// planeViews[13]),
-                new Aeroplane(this, Hangar.YELLOW, 14, 17, gridLength, xOffSet, yOffSet),// planeViews[14]),
-                new Aeroplane(this, Hangar.YELLOW, 15, 18, gridLength, xOffSet, yOffSet)// planeViews[15]),
+                new Aeroplane(this, PlaneState.BLUE, 0, 0, gridLength, xOffSet, yOffSet),// planeViews[0]),
+                new Aeroplane(this, PlaneState.BLUE, 1, 1, gridLength, xOffSet, yOffSet),// planeViews[1]),
+                new Aeroplane(this, PlaneState.BLUE, 2, 2, gridLength, xOffSet, yOffSet),// planeViews[2]),
+                new Aeroplane(this, PlaneState.BLUE, 3, 3, gridLength, xOffSet, yOffSet),// planeViews[3]),
+                new Aeroplane(this, PlaneState.GREEN, 4, 5, gridLength, xOffSet, yOffSet),// planeViews[4]),
+                new Aeroplane(this, PlaneState.GREEN, 5, 6, gridLength, xOffSet, yOffSet),// planeViews[5]),
+                new Aeroplane(this, PlaneState.GREEN, 6, 7, gridLength, xOffSet, yOffSet),// planeViews[6]),
+                new Aeroplane(this, PlaneState.GREEN, 7, 8, gridLength, xOffSet, yOffSet),// planeViews[7]),
+                new Aeroplane(this, PlaneState.RED, 8, 10, gridLength, xOffSet, yOffSet),// planeViews[8]),
+                new Aeroplane(this, PlaneState.RED, 9, 11, gridLength, xOffSet, yOffSet),// planeViews[9]),
+                new Aeroplane(this, PlaneState.RED, 10, 12, gridLength, xOffSet, yOffSet),// planeViews[10]),
+                new Aeroplane(this, PlaneState.RED, 11, 13, gridLength, xOffSet, yOffSet),// planeViews[11]),
+                new Aeroplane(this, PlaneState.YELLOW, 12, 15, gridLength, xOffSet, yOffSet),// planeViews[12]),
+                new Aeroplane(this, PlaneState.YELLOW, 13, 16, gridLength, xOffSet, yOffSet),// planeViews[13]),
+                new Aeroplane(this, PlaneState.YELLOW, 14, 17, gridLength, xOffSet, yOffSet),// planeViews[14]),
+                new Aeroplane(this, PlaneState.YELLOW, 15, 18, gridLength, xOffSet, yOffSet)// planeViews[15]),
         };
     }
 
@@ -106,7 +105,7 @@ public class ChessBoard {
 
     // 开始游戏
     public void startGame() {
-        playSound(GameInfo.getTheme() == 1 ? Sound.GAMING_THEME1 : Sound.GAMING_THEME2, true);
+        Sound.(GameInfo.getTheme() == 1 ? Sound.GAMING_THEME1 : Sound.GAMING_THEME2).play(true);
         // 禁止点击棋子
 //        forbidClick();
         // 初始化游戏类型，玩家类型
@@ -345,7 +344,7 @@ public class ChessBoard {
 //                    markPlane = -1;
 //                } else {
                 // 是否全在机场
-                for (int i : BoardCoordinate.COLOR_PLANE[nowPlayer]) {
+                for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
                     if (!planes[i].isInAirport() && !planes[i].isFinished()) {
                         // 添加在外面的飞机number
                         outsidePlanes.add(i);
@@ -355,7 +354,7 @@ public class ChessBoard {
                 boolean ableToTakeOff = rollResult[0] == 6 || rollResult[1] == 6;
                 if (ableToTakeOff) {
                     // 是起飞的点数则当前回合的所有飞机都可飞
-                    for (int i : BoardCoordinate.COLOR_PLANE[nowPlayer]) {
+                    for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
                         if (!planes[i].isFinished())
                             try {
                                 planes[i].getReadyToFly();
@@ -405,7 +404,7 @@ public class ChessBoard {
 //                    markPlane = -1;
 //                } else {
                     // 是否全在机场
-                    for (int i : BoardCoordinate.COLOR_PLANE[nowPlayer]) {
+                    for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
                         if (!planes[i].isInAirport() && !planes[i].isFinished()) {
                             // 添加在外面的飞机number
                             outsidePlanes.add(i);
@@ -415,7 +414,7 @@ public class ChessBoard {
                     boolean ableToTakeOff = rollResult[0] == 6 || rollResult[1] == 6;
                     if (ableToTakeOff) {
                         // 是起飞的点数则当前回合的所有飞机都可飞
-                        for (int i : BoardCoordinate.COLOR_PLANE[nowPlayer]) {
+                        for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
                             if (!planes[i].isFinished())
                                 try {
                                     planes[i].getReadyToFly();
@@ -593,24 +592,17 @@ public class ChessBoard {
 //    }
 
     // 播放音效
-    public void playSound(Sound sound, boolean isLoop) {
-//        int streamID = sp.play(soundMap.get(soundId), 0.8f, 0.8f, 1, 0, 1.0f);
-        MusicPlayer player = new MusicPlayer(sound);
-        player.setVolume(6f);
-        player.setLoop(isLoop);
-        player.play();
-    }
 
 //    public int getDiceNumbers() {
 //        return diceNumbers;
 //    }
 
     public float getXFromIndex(int index) {
-        return xOffSet + gridLength * BoardCoordinate.COORDINATE[index][0];
+        return xOffSet + gridLength * BoardCoordinate.COORDINATE_OFFSET[index][0];
     }
 
     public float getYFromIndex(int index) {
-        return yOffSet + gridLength * BoardCoordinate.COORDINATE[index][1];
+        return yOffSet + gridLength * BoardCoordinate.COORDINATE_OFFSET[index][1];
     }
 
 //    public void setXOffSet(float xOffSet) {

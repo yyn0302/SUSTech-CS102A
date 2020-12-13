@@ -1,7 +1,7 @@
 package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
-import cs102a.aeroplane.frontend.model.DecimalOnlyDocument;
+import cs102a.aeroplane.frontend.model.DecimalLimitedDocument;
 import cs102a.aeroplane.frontend.model.InputLimiter;
 import cs102a.aeroplane.frontend.model.TimeDialog;
 import cs102a.aeroplane.gamemall.Wallet;
@@ -27,7 +27,7 @@ public class EditUserInfo extends JFrame {
 
         JLabel balanceLabel = new JLabel("余额(金币)：");
         JTextField balanceTextField = new JTextField(Wallet.getBalance(GameMall.getAsPlayer()) + "");
-        balanceTextField.setDocument(new DecimalOnlyDocument());
+        balanceTextField.setDocument(new DecimalLimitedDocument());
         JPanel jp2 = new JPanel(new GridLayout(1, 2));
         jp2.add(balanceLabel);
         jp2.add(balanceTextField);

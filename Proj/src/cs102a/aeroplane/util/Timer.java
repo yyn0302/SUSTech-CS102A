@@ -5,10 +5,10 @@ import java.awt.*;
 public class Timer {
 
     /**
-     * @description: 利用Robot类实现自动操作
      * @param {int} ms
      * @return {*}
-     */    
+     * @description: 利用Robot类实现自动操作
+     */
     public static void delay(int ms) {
         try {
             Robot robot = new Robot();
