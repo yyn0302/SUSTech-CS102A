@@ -159,13 +159,4 @@ public class Settings extends JFrame {
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         this.add(backgroundPanel);
     }
-
-
-    public static final void show_() {
-        settingsFrame.setVisible(true);
-    }
-
-    public static final void hide_() {
-        settingsFrame.setVisible(false);
-    }
 }

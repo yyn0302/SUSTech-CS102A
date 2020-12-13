@@ -1,61 +1,74 @@
 package cs102a.aeroplane.frontend;
 
-
-import cs102a.aeroplane.frontend.GameGUI;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
+import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public  class Start  extends JFrame{
-public static Start start=new Start("飞行棋大作战");
-public Start(String title){
-    this.setTitle(title);
-    //开始窗口
-    JPanel startpanel=new BackgroundPanel((new ImageIcon("src\\开始图片.jpg").getImage()));
-    JPanel substartpanel = new JPanel();
-    substartpanel.setBackground(null);
-    substartpanel.setOpaque(false);
-    JButton startbutton = new JButton("开始游戏");
-    JButton continueButton = new JButton("继续游戏");
-    JButton settingbutton = new JButton("设置");
-    //三个button的listener
-    startbutton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            //Todo:初始化游戏
-            start.dispose();
-            GameGUI.popgamegui();
-        }
-    });
-    continueButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            //Todo:继续游戏
-        }
-    });
-    settingbutton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Settings.settingsFrame.show();
-        }
-    });
-    //加上三个button
-    substartpanel.add(startbutton);substartpanel.add(continueButton);substartpanel.add(settingbutton);
-    substartpanel.setLayout( new GridLayout(3,1,10,30));
-    substartpanel.setPreferredSize(new Dimension(150,150));
-    startpanel.add(substartpanel);
-    this.add(startpanel);
-    this.setSize(800,600);
-    this.setVisible(true);
-    this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-}
-public static void popstart(){
-    start.setVisible(true);
-}
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+
+public class Start {
     public static void main(String[] args) {
-        start.setVisible(true);
+
+        JFrame startFrame = new JFrame("飞行棋");
+
+        JButton startButton = new JButton("开始游戏");
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startFrame.setVisible(false);
+                GameGUI.gameGUI.setVisible(true);
+            }
+        });
+
+        JButton continueButton = new JButton("继续游戏");
+        continueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startFrame.setVisible(false);
+                LoadHistory.loadHistory.setVisible(true);
+            }
+        });
+
+        JButton storeButton = new JButton("道具商店");
+        storeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startFrame.setVisible(false);
+                Store.store.setVisible(true);
+            }
+        });
+
+        JButton settingButton = new JButton("游戏设置");
+        settingButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startFrame.setVisible(true);
+                Settings.settingsFrame.setVisible(true);
+            }
+        });
+
+
+        JPanel subStartPanel = new JPanel();
+        subStartPanel.setLayout(new GridLayout(4, 1, 10, 20));
+        subStartPanel.setPreferredSize(new Dimension(150, 150));
+        subStartPanel.setBackground(null);
+        subStartPanel.setOpaque(false);
+        subStartPanel.add(startButton);
+        subStartPanel.add(continueButton);
+        subStartPanel.add(storeButton);
+        subStartPanel.add(settingButton);
+
+        String picPath = SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath();
+        JPanel startPanel = new BackgroundPanel((new ImageIcon(picPath + "开始图片.jpg").getImage()));
+        startPanel.add(subStartPanel);
+        startFrame.add(startPanel);
+        startFrame.setSize(800, 600);
+
+        startFrame.setVisible(true);
+        startFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 }
