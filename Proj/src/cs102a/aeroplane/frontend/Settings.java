@@ -1,16 +1,8 @@
 package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
-import cs102a.aeroplane.frontend.EnterSuperMode;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
 import cs102a.aeroplane.util.SystemSelect;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-
 
 import javax.swing.*;
 import java.awt.*;
@@ -142,8 +134,8 @@ public class Settings extends JFrame {
         rowPanel3.setOpaque(false);
         rowPanel3.setPreferredSize(new Dimension(400, 150));
 
-        String path=SystemSelect.isMacOS()?SystemSelect.getMacImagePath():SystemSelect.getWindowsImagePath();
-        JPanel backgroundPanel = new BackgroundPanel((new ImageIcon(path+"开始图片.jpg").getImage()));
+        String path = SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath();
+        JPanel backgroundPanel = new BackgroundPanel((new ImageIcon(path + "开始图片.jpg").getImage()));
         backgroundPanel.setOpaque(false);
         backgroundPanel.setLayout(new GridLayout(3, 1, 10, 10));
         backgroundPanel.setPreferredSize(new Dimension(150, 150));

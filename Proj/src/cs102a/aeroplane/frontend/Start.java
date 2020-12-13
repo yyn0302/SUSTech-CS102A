@@ -38,7 +38,7 @@ public class Start {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startFrame.setVisible(false);
-                Store.store.setVisible(true);
+                GameMall.gamemall.setVisible(true);
             }
         });
 

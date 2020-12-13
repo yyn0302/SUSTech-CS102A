@@ -1,5 +1,7 @@
 package cs102a.aeroplane.gamemall;
 
+import cs102a.aeroplane.GameInfo;
+
 public class Wallet {
 
     private static float[] discountAsPercent = {1.00f, 1.00f, 1.00f, 1.00f};
@@ -22,6 +24,7 @@ public class Wallet {
 
 
     public static void addBalance(int user, float addition) throws AssertionError {
+        assert GameInfo.isSuperUser() : "没权限给自己加钱，略略略";
         assert addition > 0 : "氪金，充的钱当然要是正数啊";
         Wallet.balance[user] += addition;
     }

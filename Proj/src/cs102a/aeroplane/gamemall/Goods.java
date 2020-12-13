@@ -14,6 +14,7 @@ public abstract class Goods {
 
     public JFrame itemDetail;
 
+
     // 实例化一个介绍页面，默认invisible
     public Goods(float price, String itemName, String intro) {
         this.price = price;
@@ -35,23 +36,37 @@ public abstract class Goods {
                 "花费" + this.price + "金币购买一件" : "优惠价" + this.price * Wallet.getDiscountAsPercent(asPlayer) + "金币");
 
         JPanel rowPanel1 = new JPanel();
-        rowPanel1.setPreferredSize();
+        rowPanel1.setPreferredSize(new Dimension(30,60));
         rowPanel1.setLayout(new GridLayout(1, 4, 10, 10));
         rowPanel1.add(nameLabel);
 
         JPanel rowPanel2 = new JPanel();
+        rowPanel2.setPreferredSize(new Dimension(30,60));
         rowPanel2.setLayout(new GridLayout(1, 3, 10, 10));
         rowPanel2.add(priceLabel);
         rowPanel2.add(possessionLabel);
 
         JPanel rowPanel3 = new JPanel();
+        rowPanel3.setPreferredSize(new Dimension(30,60));
         rowPanel3.setLayout(new GridLayout(1, 1, 10, 10));
-        rowPanel3.add(nameLabel);
+        rowPanel3.add(introLabel);
 
+        JPanel rowPanel4 = new JPanel();
+        rowPanel4.setPreferredSize(new Dimension(30,60));
+        rowPanel4.setLayout(new GridLayout(3, 1, 10, 10));
+        rowPanel4.add(buyButton);
 
+        JPanel base = new JPanel(new GridLayout(1, 4));
+        base.setPreferredSize(new Dimension(150,150));
+        base.add(rowPanel1);
+        base.add(rowPanel2);
+        base.add(rowPanel3);
+        base.add(rowPanel4);
 
-
+        itemDetail.add(base);
+        itemDetail.setDefaultCloseOperation(itemDetail.HIDE_ON_CLOSE);
     }
+
 
     public void purchase(int purchaser)throws Exception {
         if (price * Wallet.getDiscountAsPercent(purchaser) <= Wallet.getBalance(purchaser)) {
