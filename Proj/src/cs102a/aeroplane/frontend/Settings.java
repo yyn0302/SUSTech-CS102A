@@ -3,6 +3,7 @@ package cs102a.aeroplane.frontend;
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.EnterSuperMode;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
+import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,11 +26,6 @@ public class Settings extends JFrame {
         this.setTitle(title);
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
-
-        JPanel backgroundPanel = new BackgroundPanel((new ImageIcon("src\\开始图片.jpg").getImage()));
-        backgroundPanel.setOpaque(false);
-        backgroundPanel.setLayout(new GridLayout(3, 1, 10, 10));
-        backgroundPanel.setPreferredSize(new Dimension(150, 150));
 
 
         JLabel themeLabel = new JLabel("当前主题：海王");
@@ -107,7 +103,7 @@ public class Settings extends JFrame {
         humanCntSelection.add(rb4);
 
 
-        JButton enterSuperMode = new JButton("注册管理权限");
+        JButton enterSuperMode = new JButton("获取管理权限");
         enterSuperMode.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -146,17 +142,30 @@ public class Settings extends JFrame {
         rowPanel3.setOpaque(false);
         rowPanel3.setPreferredSize(new Dimension(400, 150));
 
-        JPanel setSizepanel = new JPanel(new GridLayout(3, 1, 10, 50));
-        setSizepanel.setPreferredSize(new Dimension(800, 600));
+        String path=SystemSelect.isMacOS()?SystemSelect.getMacImagePath():SystemSelect.getWindowsImagePath();
+        JPanel backgroundPanel = new BackgroundPanel((new ImageIcon(path+"开始图片.jpg").getImage()));
+        backgroundPanel.setOpaque(false);
+        backgroundPanel.setLayout(new GridLayout(3, 1, 10, 10));
+        backgroundPanel.setPreferredSize(new Dimension(150, 150));
         backgroundPanel.add(rowPanel1);
         backgroundPanel.add(rowPanel2);
         backgroundPanel.add(rowPanel3);
-        setSizepanel.add(backgroundPanel);
-        this.setDefaultCloseOperation(this.HIDE_ON_CLOSE);
+
+
+        JPanel setSizePanel = new JPanel(new GridLayout(3, 1, 10, 50));
+        setSizePanel.setPreferredSize(new Dimension(800, 600));
+        setSizePanel.add(backgroundPanel);
+
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         this.add(backgroundPanel);
     }
 
-    public static void popsetting() {
+
+    public static final void show_() {
         settingsFrame.setVisible(true);
+    }
+
+    public static final void hide_() {
+        settingsFrame.setVisible(false);
     }
 }

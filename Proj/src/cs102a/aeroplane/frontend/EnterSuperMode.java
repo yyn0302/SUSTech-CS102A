@@ -47,7 +47,7 @@ public class EnterSuperMode extends JFrame {
                     } else {
                         isRightPwd = false;
                         TimeDialog td = new TimeDialog();
-                        td.showDialog(EnterSuperMode.enterSuperMode, "密码错误", 2);
+                        td.showDialog(EnterSuperMode.enterSuperMode, "密码错误 (pwd = 020924)", 2);
                         EnterSuperMode.enterSuperMode.setVisible(false);
                     }
                 } catch (NullPointerException ex) {

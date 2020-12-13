@@ -121,8 +121,8 @@ public class CustomerChoice {
                 }
             });
         }
-        JLabel label1 = new JLabel(Matchpicture.chooseImage(Player.getRollresult()[0]));
-        JLabel label2 = new JLabel(Matchpicture.chooseImage(Player.getRollresult()[1]));
+        JLabel label1 = new JLabel(Matchpicture.chooseImage(Player.getRollResult()[0]));
+        JLabel label2 = new JLabel(Matchpicture.chooseImage(Player.getRollResult()[1]));
         jPanel.add(label1);
         jPanel.add(label2);
         JPanel Buttonpanel=new JPanel();

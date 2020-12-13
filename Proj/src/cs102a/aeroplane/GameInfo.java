@@ -5,6 +5,8 @@ public class GameInfo {
 
 private static boolean superUser =false;
 
+private static String[] playerName={"阿斯顿","史蒂夫","很反感","帅的人"};
+
     public static boolean isSuperUser() {
         return superUser;
     }

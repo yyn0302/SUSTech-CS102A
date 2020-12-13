@@ -6,17 +6,17 @@ import java.util.ArrayList;
 
 public class Player {
     private static int cheatNum;
-    private static  ArrayList<Integer> possibleChoice;
+    private static ArrayList<Integer> possibleChoice;
     private static int ans;
-    private static int[]rollresult;
-    public static int[] getRollresult() {
-        return rollresult;
+    private static int[] rollResult;
+
+    public static int[] getRollResult() {
+        return rollResult;
     }
 
-    public static void setRollresult(int[] rollresult) {
-        Player.rollresult = rollresult;
+    public static void setRollResult(int[] rollResult) {
+        Player.rollResult = rollResult;
     }
-
 
 
     public static ArrayList<Integer> getPossibleChoice() {
@@ -50,7 +50,7 @@ public class Player {
 
     public static int askPlayerStep(int[] rollResult) {
         possibleChoice = new ArrayList<>();
-        rollresult = rollResult;
+        Player.rollResult = rollResult;
         if (GameInfo.isIsCheatMode()) {
             // TODO: 2020/12/4 传入popup中用户输入的值，原始的String即可
             // FIXME: 2020/12/4 删除调试用例
@@ -74,17 +74,17 @@ public class Player {
         } else {
             //获取这个Arraylist
             if (rollResult[0] + rollResult[1] <= 12)
-                possibleChoice.add( rollResult[0] + rollResult[1]);
+                possibleChoice.add(rollResult[0] + rollResult[1]);
             if (rollResult[0] - rollResult[1] > 0)
-                possibleChoice.add( rollResult[0] - rollResult[1]);
+                possibleChoice.add(rollResult[0] - rollResult[1]);
             if (rollResult[1] - rollResult[0] > 0)
                 possibleChoice.add(rollResult[1] - rollResult[0]);
             if (rollResult[0] * rollResult[1] <= 12)
                 possibleChoice.add(rollResult[1] * rollResult[0]);
             if ((rollResult[0] / (float) rollResult[1]) % 1f == 0f)
-                possibleChoice.add( rollResult[0] / rollResult[1]);
+                possibleChoice.add(rollResult[0] / rollResult[1]);
             if ((rollResult[1] / (float) rollResult[0]) % 1f == 0f)
-                possibleChoice.add( rollResult[1] / rollResult[0]);
+                possibleChoice.add(rollResult[1] / rollResult[0]);
             // TODO: 2020/12/4 把这个list传给前端，选择一个并把值传回来
             // 前端对应选项传回的int
             //CustomerChoice.CreateCustomerChoice(possibleChoice);

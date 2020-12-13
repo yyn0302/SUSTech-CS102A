@@ -39,7 +39,7 @@ public Start(String title){
     settingbutton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            Settings.popsetting();
+            Settings.settingsFrame.show();
         }
     });
     //加上三个button
