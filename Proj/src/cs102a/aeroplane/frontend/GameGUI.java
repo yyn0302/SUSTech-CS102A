@@ -12,7 +12,8 @@ public class GameGUI extends JFrame {
     public static GameGUI gameGUI = new GameGUI("飞行棋大作战");
 
     public GameGUI(String title) {
-        JPanel Chessboard = new BackgroundPanel((new ImageIcon("src\\开始图片.jpg").getImage()));
+        String path = SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath();
+        JPanel Chessboard = new BackgroundPanel((new ImageIcon(path+"开始图片.jpg").getImage()));
         JPanel Playerboard = new JPanel();
         this.setLayout(new GridLayout(1, 2, 50, 50));//大小有待后续调整
         Playerboard.setLayout(new GridLayout(2, 1, 20, 20));
@@ -20,11 +21,11 @@ public class GameGUI extends JFrame {
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new GridLayout(1, 2));
         //头像图片
-        String path = SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath();
+
         ImageIcon pic1 = new ImageIcon(path + "玩家1.jpg");
-        ImageIcon pic2 = new ImageIcon("src\\玩家2.jpg");
-        ImageIcon pic3 = new ImageIcon("src\\玩家3.jpg");
-        ImageIcon pic4 = new ImageIcon("src\\玩家4.jpg");
+        ImageIcon pic2 = new ImageIcon(path+"玩家2.jpg");
+        ImageIcon pic3 = new ImageIcon(path+"玩家3.jpg");
+        ImageIcon pic4 = new ImageIcon(path+"玩家4.jpg");
 
         JLabel playerLabel = new JLabel(pic2);
         JLabel nameLabel = new JLabel("Feshele");
