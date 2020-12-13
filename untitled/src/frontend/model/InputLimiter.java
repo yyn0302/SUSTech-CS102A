@@ -1,4 +1,4 @@
-package cs102a.aeroplane.frontend.model;
+package frontend.model;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

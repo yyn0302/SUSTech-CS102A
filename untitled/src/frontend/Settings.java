@@ -1,4 +1,4 @@
-package cs102a.aeroplane.frontend;
+package frontend;
 
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;

@@ -1,4 +1,4 @@
-package cs102a.aeroplane.frontend.model;
+package frontend.model;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;

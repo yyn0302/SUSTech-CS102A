@@ -9,7 +9,7 @@ import java.awt.*;
 
 public abstract class Goods {
 
-    private float price;
+    private final float price;
     private int asPlayer;       // 记录本页的购买等信息/活动与此用户相关
     private int[] storeCnt = {0, 0, 0, 0};
 
@@ -35,7 +35,10 @@ public abstract class Goods {
 
         JButton buyButton = new JButton(Wallet.getDiscountAsPercent(asPlayer) == 1.00f ?
                 "花费" + this.price + "金币购买一件" : "优惠价" + this.price * Wallet.getDiscountAsPercent(asPlayer) + "金币");
-
+buyButton.addActionListener(e->{
+    try{
+    this.purchase(asPlayer);}catch (Exception e){aa}
+});
         JPanel rowPanel1 = new JPanel();
         rowPanel1.setPreferredSize(new Dimension(30, 60));
         rowPanel1.setLayout(new GridLayout(1, 4, 10, 10));
@@ -79,18 +82,8 @@ public abstract class Goods {
     }
 
 
-    public float getPrice() {
-        return price;
-    }
-
-
     public int[] getStoreCnt() {
         return storeCnt;
-    }
-
-
-    protected void setPrice(int price) {
-        if (GameInfo.isSuperUser()) this.price = price;
     }
 
 

@@ -1,9 +1,8 @@
-package cs102a.aeroplane.frontend;
+package frontend;
 
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.MatchDicePicture;
 import cs102a.aeroplane.util.Dice;
-import cs102a.aeroplane.util.Timer;
 
 import javax.swing.*;
 import java.awt.*;

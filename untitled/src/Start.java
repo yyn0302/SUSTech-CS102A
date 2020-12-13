@@ -7,12 +7,11 @@ public class Start {
     public static void main(String[] args) {
 
         JFrame startFrame = new JFrame("飞行棋");
-
+        startFrame.setLocationRelativeTo(null);
 
         JLabel title = new JLabel("飞行棋");
         title.setFont(new Font("微软雅黑", Font.BOLD, 30));
-        title.setForeground(Color.white);
-        title.setBackground(Color.blue);
+        title.setForeground(Color.blue);
         title.setOpaque(true);
 
         JButton startButton = new JButton("开始游戏");
