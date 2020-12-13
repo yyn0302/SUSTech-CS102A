@@ -83,6 +83,30 @@ public class Settings extends JFrame {
         JRadioButton rb2 = new JRadioButton("2");
         JRadioButton rb3 = new JRadioButton("3");
         JRadioButton rb4 = new JRadioButton("4", true);
+        rb1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rb1.isSelected()) GameInfo.setHumanPlayerCnt(1);
+            }
+        });
+        rb2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rb2.isSelected()) GameInfo.setHumanPlayerCnt(2);
+            }
+        });
+        rb3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rb3.isSelected()) GameInfo.setHumanPlayerCnt(3);
+            }
+        });
+        rb4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rb4.isSelected()) GameInfo.setHumanPlayerCnt(4);
+            }
+        });
         rb1.setOpaque(false);
         rb2.setOpaque(false);
         rb3.setOpaque(false);

@@ -1,5 +1,8 @@
 package cs102a.aeroplane.frontend;
 
+import cs102a.aeroplane.GameInfo;
+import cs102a.aeroplane.gamemall.GoodsList;
+import cs102a.aeroplane.gamemall.Wallet;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
@@ -9,60 +12,141 @@ import java.awt.event.ActionListener;
 
 public class GameMall extends JFrame {
 
-    public static GameMall gamemall = new GameMall("道具商店");
+    public static GameMall gameMall = new GameMall("道具商店");
 
-    private static int asPlayer;
+
+    private static int asPlayer = 0;
+
+    JLabel userBalanceLabel = new JLabel();
+    JLabel userDiscountLabel = new JLabel();
+    JButton editWallet = new JButton("修改账户信息");
+    JRadioButton player1 = new JRadioButton("玩家1：" + GameInfo.getPlayerName()[0], true);
+    JRadioButton player2 = new JRadioButton("玩家2：" + GameInfo.getPlayerName()[1]);
+    JRadioButton player3 = new JRadioButton("玩家3：" + GameInfo.getPlayerName()[2]);
+    JRadioButton player4 = new JRadioButton("玩家4：" + GameInfo.getPlayerName()[3]);
 
 
     public GameMall(String title) {
 
         this.setTitle(title);
+        this.setSize(800, 600);
+        this.setLocationRelativeTo(null);
 
-        String path= SystemSelect.isMacOS()?SystemSelect.getMacImagePath():SystemSelect.getWindowsImagePath();
-        ImageIcon bomb = new ImageIcon(path+"炸弹.jpg");
-        ImageIcon VIP = new ImageIcon(path+"VIP.jpg");
-        ImageIcon boeing = new ImageIcon(path+"波音.jpg");
-
-        JLabel bombJLabel = new JLabel(bomb);
-        JLabel VIPJLabel = new JLabel(VIP);
-        JLabel boeingJLabel = new JLabel(boeing);
-        JLabel bombLabel = new JLabel("炸弹");
-        JLabel VIPlabel = new JLabel("VIP");
-        JLabel boyinLabel = new JLabel("无条件起飞");
-        JButton buy = new JButton("购买");
-        buy.addActionListener(new ActionListener() {
+        JLabel playerLabel = new JLabel("当前身份：");
+        player1.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-                Pay.popPay();
+                if (player1.isSelected()) asPlayer = 0;
             }
         });
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 2, 20, 30));
-        panel.setPreferredSize(new Dimension(600, 600));
-        panel.add(boeingJLabel);
-        panel.add(boyinLabel);
-        panel.add(bombJLabel);
-        panel.add(bombLabel);
-        panel.add(VIPJLabel);
-        panel.add(VIPlabel);
-        this.add(panel);
-        this.setSize(800, 600);
-        this.setLayout(new GridLayout(3, 2, 20, 30));
-        this.setVisible(true);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setLayout(new GridLayout());
+        player2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (player2.isSelected()) asPlayer = 1;
+            }
+        });
+        player3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (player3.isSelected()) asPlayer = 2;
+            }
+        });
+        player4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (player4.isSelected()) asPlayer = 3;
+            }
+        });
+
+        ButtonGroup playerSelect = new ButtonGroup();
+        playerSelect.add(player1);
+        playerSelect.add(player2);
+        playerSelect.add(player3);
+        playerSelect.add(player4);
+
+        JPanel userSelectPanel = new JPanel(new GridLayout(1, 6));
+        userSelectPanel.add(playerLabel);
+        userSelectPanel.add(new JLabel());
+        userSelectPanel.add(player1);
+        userSelectPanel.add(player2);
+        userSelectPanel.add(player3);
+        userSelectPanel.add(player4);
+
+
+        this.userBalanceLabel.setText("账户余额：" + Wallet.getBalance(asPlayer) + "金币");
+        this.userDiscountLabel.setText("优惠方案：" + Wallet.getDiscountAsPercent(asPlayer) * 100 + "折");
+        this.editWallet.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EditUserInfo.editUserInfo.setVisible(true);
+            }
+        });
+
+        JPanel userInfoPanel = new JPanel(new GridLayout(1, 3));
+        userInfoPanel.add(userBalanceLabel);
+        userInfoPanel.add(userDiscountLabel);
+        userInfoPanel.add(editWallet);
+
+
+        String path = SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath();
+        ImageIcon bomb = new ImageIcon(path + "炸弹.jpg");
+        ImageIcon boeing = new ImageIcon(path + "波音.jpg");
+        ImageIcon VIP = new ImageIcon(path + "VIP.jpg");
+
+        JButton bombButton = new JButton(bomb);
+        JButton boeingButton = new JButton(boeing);
+        JButton vipButton = new JButton(VIP);
+        bombButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GoodsList.bomb.setAsPlayer(asPlayer);
+                GoodsList.bomb.itemDetail.setVisible(true);
+            }
+        });
+        boeingButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GoodsList.takeOffAnyway.setAsPlayer(asPlayer);
+                GoodsList.takeOffAnyway.itemDetail.setVisible(true);
+            }
+        });
+        vipButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GoodsList.makeMeWin.setAsPlayer(asPlayer);
+                GoodsList.makeMeWin.itemDetail.setVisible(true);
+            }
+        });
+
+        JPanel goodsPanel = new JPanel(new GridLayout(1, 3));
+        goodsPanel.add(bombButton);
+        goodsPanel.add(boeingButton);
+        goodsPanel.add(vipButton);
+
+        JPanel base = new JPanel();
+        base.setLayout(new GridLayout(4, 2, 20, 30));
+        base.setPreferredSize(new Dimension(600, 600));
+        base.add(userSelectPanel);
+        base.add(userInfoPanel);
+        base.add(goodsPanel);
+
+
+        this.add(base);
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 
-    public static void main(String[] args) {
-        gamemall.setVisible(true);
+    public final void refreshInfo() {
+        this.userBalanceLabel.setText("账户余额：" + Wallet.getBalance(asPlayer) + "金币");
+        this.userDiscountLabel.setText("优惠方案：" + Wallet.getDiscountAsPercent(asPlayer) * 100 + "折");
+        this.player1.setText("玩家1：" + GameInfo.getPlayerName()[0]);
+        this.player2.setText("玩家2：" + GameInfo.getPlayerName()[1]);
+        this.player3.setText("玩家3：" + GameInfo.getPlayerName()[2]);
+        this.player4.setText("玩家4：" + GameInfo.getPlayerName()[3]);
+
+        this.editWallet.setEnabled(GameInfo.isSuperUser());
     }
 
     public static int getAsPlayer() {
         return asPlayer;
     }
-
-    public static void setAsPlayer(int asPlayer) {
-        GameMall.asPlayer = asPlayer;
-    }
-
-
 }

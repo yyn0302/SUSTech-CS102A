@@ -2,6 +2,7 @@ package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
+import cs102a.aeroplane.frontend.model.MatchDicePicture;
 import cs102a.aeroplane.util.Player;
 
 
@@ -121,8 +122,8 @@ public class CustomerChoice {
                 }
             });
         }
-        JLabel label1 = new JLabel(Matchpicture.chooseImage(Player.getRollResult()[0]));
-        JLabel label2 = new JLabel(Matchpicture.chooseImage(Player.getRollResult()[1]));
+        JLabel label1 = new JLabel(MatchDicePicture.getImage(Player.getRollResult()[0]));
+        JLabel label2 = new JLabel(MatchDicePicture.getImage(Player.getRollResult()[1]));
         jPanel.add(label1);
         jPanel.add(label2);
         JPanel Buttonpanel=new JPanel();
