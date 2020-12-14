@@ -17,7 +17,7 @@ public class SystemSelect {
     private final static String windowsImagePath = "\\Proj\\src\\cs102a\\aeroplane\\resources\\image\\";
 
 
-    public static boolean isMacOS() {
+    private static boolean isMacOS() {
         return OS.contains("mac");
     }
 
