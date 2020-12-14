@@ -13,7 +13,6 @@ public class Start {
 
         JFrame startFrame = new JFrame("飞行棋");
 
-
         JLabel title = new JLabel("飞行棋");
         title.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 30));
         title.setBounds(0,0,100,50);
