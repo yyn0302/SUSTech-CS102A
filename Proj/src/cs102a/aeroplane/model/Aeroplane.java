@@ -46,7 +46,7 @@ public class Aeroplane {
         // TODO: 2020/12/9 add code 可以点击
         StringBuilder iconPath = new StringBuilder();
 
-        iconPath.append(SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath());
+        iconPath.append(SystemSelect.getImagePath());
         iconPath.append(GameInfo.getTheme() == 1 ? "plane_theme1_" : "plane_");
         switch (color) {
             case PlaneState.BLUE:
