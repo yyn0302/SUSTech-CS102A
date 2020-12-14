@@ -1,7 +1,9 @@
 package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
+import cs102a.aeroplane.frontend.model.BackgroundPanel;
 import cs102a.aeroplane.frontend.model.MatchDicePicture;
+import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,7 +47,11 @@ public class SetStep {
             basePanel.add(choicePanel);
             basePanel.add(confirmButton);
 
-            setStepFrame.add(basePanel);
+            String picPath = SystemSelect.getImagePath();
+            JPanel picPanel = new BackgroundPanel((new ImageIcon(picPath + "骰子背景图.jpg").getImage()));
+            picPanel.add(basePanel);
+
+            setStepFrame.add(picPanel);
         }
 
         //显示骰子，显示下拉菜单让用户选择
@@ -77,7 +83,11 @@ public class SetStep {
             basePanel.add(choicePanel);
             basePanel.add(confirmButton);
 
-            setStepFrame.add(basePanel);
+            String picPath = SystemSelect.getImagePath();
+            JPanel picPanel = new BackgroundPanel((new ImageIcon(picPath + "骰子背景图.jpg").getImage()));
+            picPanel.add(basePanel);
+
+            setStepFrame.add(picPanel);
         }
 
         setStepFrame.setVisible(true);

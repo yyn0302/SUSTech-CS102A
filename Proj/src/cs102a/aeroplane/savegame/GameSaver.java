@@ -16,8 +16,7 @@ public class GameSaver {
     public static void save(ChessBoard chessBoard) {
         BufferedWriter bufferedWriter = null;
 
-        String fileDict = SystemSelect.isMacOS() ?
-                SystemSelect.getMacHistoryPath() : SystemSelect.getWindowsHistoryPath();
+        String fileDict = SystemSelect.getHistoryPath();
         String filePath = String.format("%s%d.aeroplane", fileDict,
                 Objects.requireNonNull(new File(fileDict).listFiles()).length + 1);
 
@@ -79,7 +78,7 @@ public class GameSaver {
 
         try {
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(new File(filePath), true)));      // FileOutputStream 第二个参数：追加写入/覆写
+                    new FileOutputStream(filePath, true)));      // FileOutputStream 第二个参数：追加写入/覆写
             bufferedWriter.write(gameInfo);
             bufferedWriter.write(stepInfo);
         } catch (Exception e) {

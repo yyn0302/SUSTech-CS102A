@@ -7,8 +7,8 @@ import java.io.File;
 
 public class Sound {
     private final File musicFile;
-    private static final String musicPath = SystemSelect.isMacOS() ?
-            SystemSelect.getMacMusicPath() : SystemSelect.getWindowsMusicPath();
+    private static final String musicPath = SystemSelect.getMusicPath();
+    MusicPlayer player = new MusicPlayer(this);
 
     public final static Sound ONE_STEP = new Sound(new File(String.format("%sNormMove.wav", musicPath)));
     public final static Sound JUMP = new Sound(new File(String.format("%sJump.wav", musicPath)));
@@ -28,11 +28,21 @@ public class Sound {
     }
 
     public final void play(boolean isLoop) {
-        MusicPlayer player = new MusicPlayer(this);
-        player.setVolume(6f);
+        player.setVolume(6);
         player.setLoop(isLoop);
         player.play();
         if (!isLoop) System.gc();
+    }
+
+    // 结束音乐
+    public final void over() {
+        player.over();
+    }
+
+    // 静音按键调用，设置bgm静音
+    public final void changeIsMute() {
+        if (player.getVolume() == 6) player.setVolume(-80);
+        else player.setVolume(6);
     }
 
 }

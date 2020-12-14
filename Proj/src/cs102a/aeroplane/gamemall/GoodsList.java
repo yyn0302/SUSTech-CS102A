@@ -37,7 +37,7 @@ public class GoodsList {
     };
 
     // 对应VIP
-    public static final Goods makeMeWin = new Goods(999, "VIP", "无论自己多菜，游戏结束后排行榜上一定是第一") {
+    public static final Goods makeMeWin = new Goods(499, "VIP", "无论自己多菜，游戏结束后排行榜上一定是第一") {
         @Override
         public void use(ChessBoard chessBoard) {
             chessBoard.setWinner1Index(chessBoard.getNowPlayer());

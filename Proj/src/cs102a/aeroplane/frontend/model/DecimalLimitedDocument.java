@@ -8,11 +8,11 @@ import java.util.regex.Pattern;
 
 
 /**
- * JTextField num1 = new JTextField(10);
- * num1.setDocument(new DecimalOnlyDocument());
+ * JTextField num1 = new JTextField(<LENGTH>);
+ * num1.setDocument(new DecimalLimitedDocument());
  */
 public class DecimalLimitedDocument extends PlainDocument {
-// 正则表达式，只接收数字键及小数点(只允许输入一次小数点)
+// 正则表达式，只接收数字及小数点(只允许输入一次小数点)
 
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {

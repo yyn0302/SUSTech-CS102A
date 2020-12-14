@@ -2,6 +2,7 @@ package cs102a.aeroplane.gamemall;
 
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.GameMall;
+import cs102a.aeroplane.frontend.model.TimeDialog;
 import cs102a.aeroplane.model.ChessBoard;
 
 import javax.swing.*;
@@ -35,10 +36,15 @@ public abstract class Goods {
 
         JButton buyButton = new JButton(Wallet.getDiscountAsPercent(asPlayer) == 1.00f ?
                 "花费" + this.price + "金币购买一件" : "优惠价" + this.price * Wallet.getDiscountAsPercent(asPlayer) + "金币");
-buyButton.addActionListener(e->{
-    try{
-    this.purchase(asPlayer);}catch (Exception e){aa}
-});
+        buyButton.addActionListener(e -> {
+            try {
+                this.purchase(asPlayer);
+            } catch (Exception ex) {
+                TimeDialog td = new TimeDialog();
+                td.showDialog(itemDetail, ex.getMessage(), 3);
+            }
+        });
+
         JPanel rowPanel1 = new JPanel();
         rowPanel1.setPreferredSize(new Dimension(30, 60));
         rowPanel1.setLayout(new GridLayout(1, 4, 10, 10));
@@ -77,7 +83,7 @@ buyButton.addActionListener(e->{
             Wallet.spendBalance(purchaser, price * Wallet.getDiscountAsPercent(purchaser));
             storeCnt[purchaser] += 1;
             possessionLabel.setText("拥有件数" + storeCnt[asPlayer]);       // 刷新内容
-            GameMall.gameMall.refreshInfo();
+            GameMall.window.refreshInfo();
         } else throw new Exception("啊哦，余额不足啦");
     }
 

@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class Settings extends JFrame {
 
-    public static Settings settingsFrame = new Settings("游戏设置");
+    public static Settings window = new Settings("游戏设置");
 
     public Settings(String title) {
 
@@ -99,7 +99,7 @@ public class Settings extends JFrame {
         JButton enterSuperMode = new JButton("获取管理权限");
         enterSuperMode.addActionListener(e -> {
             if (!GameInfo.isSuperUser()) {
-                EnterSuperMode.enterSuperMode.setVisible(true);
+                EnterSuperMode.window.setVisible(true);
                 if (EnterSuperMode.isRightPwd()) {
                     enterSuperMode.setText("已获取管理权限");
                     enterSuperMode.setEnabled(false);
@@ -132,7 +132,7 @@ public class Settings extends JFrame {
         rowPanel3.setOpaque(false);
         rowPanel3.setPreferredSize(new Dimension(400, 150));
 
-        String path = SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath();
+        String path = SystemSelect.getImagePath();
         JPanel backgroundPanel = new BackgroundPanel((new ImageIcon(path + "开始图片.jpg").getImage()));
         backgroundPanel.setOpaque(false);
         backgroundPanel.setLayout(new GridLayout(3, 1, 10, 10));

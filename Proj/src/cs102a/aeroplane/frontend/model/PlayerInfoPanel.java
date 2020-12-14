@@ -11,7 +11,7 @@ import java.awt.*;
 // PlayerInfoPanel pip = new PlayerInfoPanel(id)
 public class PlayerInfoPanel extends JPanel {
 
-    private static final String path = SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath();
+    private static final String path = SystemSelect.getImagePath();
     private static final ImageIcon pic1 = new ImageIcon(path + "玩家1.jpg");
     private static final ImageIcon pic2 = new ImageIcon(path + "玩家2.jpg");
     private static final ImageIcon pic3 = new ImageIcon(path + "玩家3.jpg");

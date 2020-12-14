@@ -16,6 +16,7 @@ public class Start {
 
         JLabel title = new JLabel("飞行棋");
         title.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 30));
+        title.setBounds(0,0,100,50);
         title.setForeground(Color.white);
         title.setBackground(Color.blue);
         title.setOpaque(true);
@@ -23,25 +24,25 @@ public class Start {
         JButton startButton = new JButton("开始游戏");
         startButton.addActionListener(e -> {
             startFrame.setVisible(false);
-            GameGUI.gameGUI.setVisible(true);
+            // GameGUI.gameGUI.setVisible(true);
         });
 
         JButton continueButton = new JButton("继续游戏");
         continueButton.addActionListener(e -> {
             startFrame.setVisible(false);
-            LoadHistory.loadHistory.setVisible(true);
+            // LoadHistory.loadHistory.setVisible(true);
         });
 
         JButton storeButton = new JButton("道具商店");
         storeButton.addActionListener(e -> {
             startFrame.setVisible(false);
-            GameMall.gameMall.setVisible(true);
+            GameMall.window.setVisible(true);
         });
 
         JButton settingButton = new JButton("游戏设置");
         settingButton.addActionListener(e -> {
             startFrame.setVisible(true);
-            Settings.settingsFrame.setVisible(true);
+            Settings.window.setVisible(true);
         });
 
 
@@ -56,7 +57,7 @@ public class Start {
         subStartPanel.add(storeButton);
         subStartPanel.add(settingButton);
 
-        String picPath = SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath();
+        String picPath = SystemSelect.getImagePath();
         JPanel startPanel = new BackgroundPanel((new ImageIcon(picPath + "开始图片.jpg").getImage()));
         startPanel.add(subStartPanel);
         startFrame.add(startPanel);

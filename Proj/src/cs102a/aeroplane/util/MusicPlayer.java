@@ -13,7 +13,7 @@ public class MusicPlayer {
     private final File file;            // wav文件的路径
     private boolean isLoop = false;     // 是否循环播放
     private boolean isPlaying;          // 是否正在播放
-    private float newVolume = 7;        // FloatControl.Type.MASTER_GAIN的值(可用于调节音量)
+    private int volume = 6;           // FloatControl.Type.MASTER_GAIN的值(可用于调节音量)
 
     private playSoundThread playSoundThread;
 
@@ -36,18 +36,19 @@ public class MusicPlayer {
     }
 
     // 设置循环播放
-    public MusicPlayer setLoop(boolean isLoop) {
+    public void setLoop(boolean isLoop) {
         this.isLoop = isLoop;
-        return this;
     }
 
 
-     // -80.0~6.0206测试,越小音量越小
-    public MusicPlayer setVolume(float newVolume) {
-        this.newVolume = newVolume;
-        return this;
+    // -80.0~6测试,越小音量越小
+    public void setVolume(int volume) {
+        this.volume = volume;
     }
 
+    public float getVolume() {
+        return volume;
+    }
 
     // 异步播放线程
     private class playSoundThread extends Thread {
@@ -67,14 +68,12 @@ public class MusicPlayer {
                     sourceDataLine = AudioSystem.getSourceDataLine(format);
                     sourceDataLine.open();
 
-                    if (newVolume != 7) {
-                        FloatControl control = (FloatControl) sourceDataLine.getControl(FloatControl.Type.MASTER_GAIN);
-                        control.setValue(newVolume);
-                    }
+                    FloatControl control = (FloatControl) sourceDataLine.getControl(FloatControl.Type.MASTER_GAIN);
+                    control.setValue(volume);
 
                     sourceDataLine.start();
                     byte[] buf = new byte[512];
-                    int len = -1;
+                    int len;
                     while (isPlaying && (len = audioInputStream.read(buf)) != -1) {
                         sourceDataLine.write(buf, 0, len);
                     }

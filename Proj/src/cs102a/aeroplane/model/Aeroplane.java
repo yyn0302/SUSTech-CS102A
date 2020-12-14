@@ -18,10 +18,10 @@ public class Aeroplane {
     private final int color;
     private final int number;           // 飞机编号，0~15
 
-    private final int selfPathIndex;          // 自己该走完的57格
+    private final int selfPathIndex;    // 自己该走完的57格
     private int generalGridIndex;       // 飞机所在位置0~97
 
-    private float targetX, targetY;
+//    private float targetX, targetY;
     private final float gridLength, xOffSet, yOffSet;
 
     private final JButton planeView;

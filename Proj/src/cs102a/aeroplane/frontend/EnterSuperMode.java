@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class EnterSuperMode extends JFrame {
 
-    public static EnterSuperMode enterSuperMode = new EnterSuperMode("确认权限");
+    public static EnterSuperMode window = new EnterSuperMode("确认权限");
 
     private static final String PWD = "020924";
     private static boolean isRightPwd = false;
@@ -43,8 +43,8 @@ public class EnterSuperMode extends JFrame {
                 } else {
                     isRightPwd = false;
                     TimeDialog td = new TimeDialog();
-                    td.showDialog(EnterSuperMode.enterSuperMode, "密码错误 (pwd = 020924)", 2);
-                    EnterSuperMode.enterSuperMode.setVisible(false);
+                    td.showDialog(EnterSuperMode.window, "密码错误 (pwd = 020924)", 2);
+                    EnterSuperMode.window.setVisible(false);
                 }
             } catch (NullPointerException ex) {
                 ex.printStackTrace();

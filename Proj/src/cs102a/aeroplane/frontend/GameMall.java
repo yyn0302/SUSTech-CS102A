@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class GameMall extends JFrame {
 
-    public static GameMall gameMall = new GameMall("道具商店");
+    public static GameMall window = new GameMall("道具商店");
 
 
     private static int asPlayer = 0;
@@ -61,7 +61,7 @@ public class GameMall extends JFrame {
 
         this.userBalanceLabel.setText("账户余额：" + Wallet.getBalance(asPlayer) + "金币");
         this.userDiscountLabel.setText("优惠方案：" + Wallet.getDiscountAsPercent(asPlayer) * 100 + "折");
-        this.editWallet.addActionListener(e -> EditUserInfo.windows.setVisible(true));
+        this.editWallet.addActionListener(e -> EditUserInfo.window.setVisible(true));
 
         JPanel userInfoPanel = new JPanel(new GridLayout(1, 3));
         userInfoPanel.add(userBalanceLabel);
@@ -69,7 +69,7 @@ public class GameMall extends JFrame {
         userInfoPanel.add(editWallet);
 
 
-        String path = SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath();
+        String path = SystemSelect.getImagePath();
         ImageIcon bomb = new ImageIcon(path + "炸弹.jpg");
         ImageIcon boeing = new ImageIcon(path + "波音.jpg");
         ImageIcon VIP = new ImageIcon(path + "VIP.jpg");

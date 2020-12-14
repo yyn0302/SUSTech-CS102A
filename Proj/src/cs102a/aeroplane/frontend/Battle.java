@@ -1,8 +1,10 @@
 package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
+import cs102a.aeroplane.frontend.model.BackgroundPanel;
 import cs102a.aeroplane.frontend.model.MatchDicePicture;
 import cs102a.aeroplane.util.Dice;
+import cs102a.aeroplane.util.SystemSelect;
 import cs102a.aeroplane.util.Timer;
 
 import javax.swing.*;
@@ -48,7 +50,11 @@ public class Battle {
             basePanel.add(labelPanel);
             basePanel.add(buttonPanel);
 
-            battleFrame.add(basePanel);
+            String picPath = SystemSelect.getImagePath();
+            JPanel picPanel = new BackgroundPanel((new ImageIcon(picPath + "骰子背景图.jpg").getImage()));
+            picPanel.add(basePanel);
+
+            battleFrame.add(picPanel);
 
             battleFrame.setVisible(true);
         }
@@ -75,7 +81,11 @@ public class Battle {
             basePanel.setPreferredSize(new Dimension(150, 150));
             basePanel.add(dicePanel, tipPanel);
 
-            battleFrame.add(basePanel);
+            String picPath = SystemSelect.getImagePath();
+            JPanel picPanel = new BackgroundPanel((new ImageIcon(picPath + "骰子背景图.jpg").getImage()));
+            picPanel.add(basePanel);
+
+            battleFrame.add(picPanel);
             battleFrame.setVisible(true);
 
             Timer.delay(1000);

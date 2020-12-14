@@ -8,7 +8,7 @@ import javax.swing.*;
 public class MatchDicePicture {
 
     public static ImageIcon getImage(int point) {
-        String path = SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath();
+        String path = SystemSelect.getImagePath();
         ImageIcon pic1 = new ImageIcon(path + "1.jpg");
         ImageIcon pic2 = new ImageIcon(path + "2.jpg");
         ImageIcon pic3 = new ImageIcon(path + "3.jpg");

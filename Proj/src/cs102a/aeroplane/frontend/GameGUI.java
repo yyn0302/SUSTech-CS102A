@@ -4,18 +4,17 @@ import cs102a.aeroplane.frontend.model.BackgroundPanel;
 import cs102a.aeroplane.frontend.model.PlayerInfoPanel;
 import cs102a.aeroplane.util.SystemSelect;
 
-import javax.security.auth.RefreshFailedException;
-import javax.security.auth.Refreshable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GameGUI extends JFrame {
-    public static GameGUI gameGUI = new GameGUI("飞行棋[当前 "+" 步]");
+    public static GameGUI window = new GameGUI("飞行棋[当前 " + " 步]");
 
     public GameGUI(String title) {
-        String path = SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath();
+        this.setTitle(title);
+        String path = SystemSelect.getImagePath();
         JPanel chessBoardPanel = new BackgroundPanel((new ImageIcon(path + "开始图片.jpg").getImage()));
 
         JPanel rightSidePanel = new JPanel();
@@ -45,8 +44,8 @@ public class GameGUI extends JFrame {
 
         returnButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                gameGUI.dispose();
-                //打开startmenu
+                window.dispose();
+                //打开startMenu
 
             }
         });
@@ -64,8 +63,8 @@ public class GameGUI extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    public static void popgamegui() {
-        gameGUI.setVisible(true);
+    public static void popGameGUI() {
+        window.setVisible(true);
     }
 
     public void refresh() {
