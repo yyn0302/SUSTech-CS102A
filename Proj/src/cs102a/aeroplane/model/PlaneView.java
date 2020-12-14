@@ -1,28 +1,43 @@
 package cs102a.aeroplane.model;
 
+import cs102a.aeroplane.GameInfo;
+import cs102a.aeroplane.presets.PlaneState;
+import cs102a.aeroplane.util.SystemSelect;
+
 import javax.swing.*;
 import java.awt.*;
 
-//20*20，创建680*680的panel
-// 棋盘
 public class PlaneView extends JButton {
-    public static void setPosition(int x, int y,int positionx,int positiony) {
-        JFrame frame = new JFrame("位置测试");
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(x,y));
-        JButton[][] Buttonarray = new JButton[x][y];
-        //加入所有的Buttons并隐藏
-        for(int i = 0; i < x; i++) {
-            for (int j = 0; j < y; j++) {
-                panel.add(Buttonarray[i][j]);
-                if (i == positionx && j == positiony) {
-                    Buttonarray[i][j].setVisible(true);
-                } else {
-                    Buttonarray[i][j].setVisible(false);
-                }
-            }
+
+    private final int color;
+    // TODO: 2020/12/14 放好棋盘GUI后把棋盘图片左上角重定位(0,0)
+    private final float xOffSet, yOffSet;
+    private final JPanel chessboard;
+
+    public PlaneView(){
+        StringBuilder iconPath = new StringBuilder();
+        iconPath.append(SystemSelect.isMacOS() ? SystemSelect.getMacImagePath() : SystemSelect.getWindowsImagePath());
+        iconPath.append(GameInfo.getTheme() == 1 ? "plane_theme1_" : "plane_");
+        switch (color) {
+            case PlaneState.BLUE:
+                iconPath.append("blue.png");
+                break;
+            case PlaneState.GREEN:
+                iconPath.append("green.png");
+                break;
+            case PlaneState.RED:
+                iconPath.append("red.png");
+                break;
+            case PlaneState.YELLOW:
+                iconPath.append("yellow.png");
+                break;
         }
+        this.planeView.setIcon(new ImageIcon(iconPath.toString()));
+
+
+
     }
-    //你需要把button的listener写成一个方法，然后如果显示，就调用，如果不显示，就放空。
-    //比如从（0,0)到(1,1),(0,0)设为不可见，没有listner，（1，1）设为可见，有listner
+    public static void moveTo(int generalIndex,) {
+        this.set
+    }
 }

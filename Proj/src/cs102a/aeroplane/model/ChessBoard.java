@@ -8,10 +8,11 @@ import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.util.Dice;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class ChessBoard {
+public class ChessBoard extends JPanel {
     private int state;              // 状态（游戏未开始，游戏已开始，游戏结束）
     private int nowPlayer;          // 当前回合
     private float screenWidth;      // 屏幕宽度

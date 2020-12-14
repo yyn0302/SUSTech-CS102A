@@ -15,28 +15,22 @@ import java.util.concurrent.TimeUnit;
 public class Aeroplane {
 
     private int state;
-    private final int color;
     private final int number;           // 飞机编号，0~15
+    private final int color;
 
     private final int selfPathIndex;    // 自己该走完的57格
     private int generalGridIndex;       // 飞机所在位置0~97
 
-//    private float targetX, targetY;
-    private final float gridLength, xOffSet, yOffSet;
+    private final PlaneView planeView;
+    private final ChessBoard chessBoard;    // 传递句柄给PlaneView
 
-    private final JButton planeView;
-    private final ChessBoard chessBoard;
-
-    private final ArrayList<Integer> path;
+//    private final ArrayList<Integer> path;
 
     public Aeroplane(ChessBoard chessBoard, int color, int number, int generalGridIndex, float gridLength, float xOffSet, float yOffSet) {
         this.chessBoard = chessBoard;
         this.color = color;
         this.number = number;
         this.generalGridIndex = generalGridIndex;
-        this.gridLength = gridLength;
-        this.xOffSet = xOffSet;
-        this.yOffSet = yOffSet;
 
         selfPathIndex = -1;
         state = PlaneState.IN_HANGAR;
@@ -44,7 +38,6 @@ public class Aeroplane {
 
         // 飞机的view实际上是JButton，每次只有己方未完成的飞机可以点击
         // TODO: 2020/12/9 add code 可以点击
-        StringBuilder iconPath = new StringBuilder();
 
         iconPath.append(SystemSelect.getImagePath());
         iconPath.append(GameInfo.getTheme() == 1 ? "plane_theme1_" : "plane_");
