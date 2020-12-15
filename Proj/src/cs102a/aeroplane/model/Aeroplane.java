@@ -14,17 +14,15 @@ import java.util.concurrent.TimeUnit;
 
 public class Aeroplane {
 
-    private int state;
     private final int number;           // 飞机编号，0~15
     private final int color;
 
-    private final int selfPathIndex;    // 自己该走完的57格
+    private int selfPathIndex;    // 自己该走完的57格
     private int generalGridIndex;       // 飞机所在位置0~97
 
     private final PlaneView planeView;
     private final ChessBoard chessBoard;    // 传递句柄给PlaneView
 
-//    private final ArrayList<Integer> path;
 
     public Aeroplane(ChessBoard chessBoard, int color, int number, int generalGridIndex, float gridLength, float xOffSet, float yOffSet) {
         this.chessBoard = chessBoard;
@@ -83,7 +81,7 @@ public class Aeroplane {
         return number;
     }
 
-    public JButton getPlaneView() {
+    public PlaneView getPlaneView() {
         return planeView;
     }
 
@@ -461,12 +459,12 @@ public class Aeroplane {
 
     // 通过index来获取在屏幕上的x坐标
     public float getXFromIndex(int index) {
-        return xOffSet + gridLength * BoardCoordinate.COORDINATE_OFFSET[index][0];
+        return xOffSet + gridLength * BoardCoordinate.GRID_CENTER_OFFSET[index][0];
     }
 
     // 通过index来获取在屏幕上的y坐标
     public float getYFromIndex(int index) {
-        return yOffSet + gridLength * BoardCoordinate.COORDINATE_OFFSET[index][1];
+        return yOffSet + gridLength * BoardCoordinate.GRID_CENTER_OFFSET[index][1];
     }
 
 

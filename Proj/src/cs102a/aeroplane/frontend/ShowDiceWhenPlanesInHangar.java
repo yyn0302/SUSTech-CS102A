@@ -95,4 +95,4 @@ public class ShowDiceWhenPlanesInHangar {
 //        System.gc();
 //        return isWinInBattle;
 //    }
-}做窗口
+}//做窗口

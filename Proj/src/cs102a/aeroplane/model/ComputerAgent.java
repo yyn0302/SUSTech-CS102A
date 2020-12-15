@@ -2,7 +2,7 @@ package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.util.Timer;
 
-public class ComputerAgent {
+public class ComputerAgent extends HumanAgent {
 
     // TODO: 2020/12/8 add code
     // 自动转骰子获取点数diceNumber，如果能走就根据AI策略获取要走的飞机编号，Commdef.COLOR_PLANE[turn]是当前回合四架飞机的编号
