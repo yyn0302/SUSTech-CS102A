@@ -599,11 +599,11 @@ public class ChessBoard extends JPanel {
 //    }
 
     public float getXFromIndex(int index) {
-        return xOffSet + gridLength * BoardCoordinate.COORDINATE_OFFSET[index][0];
+        return xOffSet + gridLength * BoardCoordinate.GRID_CENTER_OFFSET[index][0];
     }
 
     public float getYFromIndex(int index) {
-        return yOffSet + gridLength * BoardCoordinate.COORDINATE_OFFSET[index][1];
+        return yOffSet + gridLength * BoardCoordinate.GRID_CENTER_OFFSET[index][1];
     }
 
 //    public void setXOffSet(float xOffSet) {
