@@ -1,6 +1,7 @@
 package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
+import cs102a.aeroplane.frontend.model.TimeDialog;
 import cs102a.aeroplane.savegame.GameLoader;
 import cs102a.aeroplane.util.SystemSelect;
 
@@ -12,6 +13,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class LoadHistory extends JFrame {
 
@@ -36,7 +38,7 @@ public class LoadHistory extends JFrame {
         chooseList.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 try {
-                    String[] selection = chooseList.getSelectedItem().toString().split("  @");
+                    String[] selection = Objects.requireNonNull(chooseList.getSelectedItem()).toString().split("@");
                     historySelected = selection[0];
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -46,7 +48,12 @@ public class LoadHistory extends JFrame {
 
         JButton confirmButton = new JButton("确定");
         confirmButton.addActionListener(e -> {
-            GameLoader.setFileName(historySelected);
+            if (!historySelected.equals("没有游戏档案哦"))
+                GameLoader.setFileName(historySelected);
+            else {
+                TimeDialog td = new TimeDialog();
+                td.showDialog(this, "不能读档哦", 3);
+            }
             dispose();
         });
 
@@ -58,7 +65,6 @@ public class LoadHistory extends JFrame {
         this.add(panel);
         this.setSize(800, 600);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        this.setVisible(true);
     }
 
     public void getFiles() {
@@ -66,12 +72,15 @@ public class LoadHistory extends JFrame {
         File[] list = file.listFiles(File::isDirectory);
 
         Format simpleFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        for (File value : list) {
-            String[] name = value.getName().split(".a");    // 把后缀名切开
-            Date d = new Date(value.lastModified());
-            String dateString = simpleFormat.format(d);
-            nameList.add(name[0] + "  @保存时间:" + dateString);
+        try {
+            for (File value : list) {
+                String[] name = value.getName().split(".a");    // 把后缀名切开
+                Date d = new Date(value.lastModified());
+                String dateString = simpleFormat.format(d);
+                nameList.add(name[0] + "@保存时间:" + dateString);
+            }
+        } catch (NullPointerException np) {
+            nameList.add("没有游戏档案哦");
         }
     }
 }

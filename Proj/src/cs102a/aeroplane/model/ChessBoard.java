@@ -6,7 +6,6 @@ import cs102a.aeroplane.frontend.GameGUI;
 import cs102a.aeroplane.online.Client;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.GameState;
-import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.util.Dice;
 
@@ -15,86 +14,59 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class ChessBoard extends JPanel {
-    private int state;              // 状态（游戏未开始，游戏已开始，游戏结束）
+    private int state;              // 状态（游戏未开始，游戏已开始，游戏结束）  // 重置游戏后先进入GAME_READY，完成后GAME_START
     private int nowPlayer;          // 当前回合
-    private float screenWidth;      // 屏幕宽度
-    private final float boardLength;      // 棋盘宽度
-    private final float gridLength;       // 棋盘上一小格的宽度
-    private float xOffSet;          // 棋盘在屏幕X方向即右方向的偏移
-    private float yOffSet;          // 棋盘在屏幕Y方向即下方向的偏移
-    private int step;               // 总步数
+    private int xOffSet;            // 棋盘在屏幕X方向即右方向的偏移
+    private int yOffSet;            // 棋盘在屏幕Y方向即下方向的偏移
 
-    int[] rollResult;
-    private int continueRoll;
+    int[] rollResult;               // 骰子点数
+    private int continueRoll;       // 记录连投的次数
 
-    ArrayList<ArrayList<Integer>> stackingPlanes = new ArrayList<>();     // 记录有无叠子，四个子ArrayList存飞机number
-    ArrayList<Integer> movedPlanes = new ArrayList<>();                   // 记录一个人摇多次时，移动过哪些棋子
+    private GameGUI gameGUI;
+
+    ArrayList<ArrayList<Integer>> stackingPlanes;     // 记录有无叠子，子ArrayList存叠一起的飞机number，只有第一个是visible
+    ArrayList<Integer> movedPlanes;                   // 记录一个人摇多次时，移动过哪些棋子
 
     private Aeroplane[] planes;              // 16架飞机
-    //    private int markPlane;                   // 被标记的飞机，下次自动走，在迭在别人迭子上时用
     private int winner1Index;                // 胜利者
     private int winner2Index;                // 胜利者
     private int winner3Index;                // 胜利者
-    //    private TextView[] playerViews; // 4个玩家信息view
-//    private SoundPool sp;           // 音效池
-    // private HashMap<Integer, Integer> soundMap;     // 音效类型到音效id的映射
-    private int[] playerType;                       // 四个玩家类型，人类、AI
-    private int myColor;                             // 自己阵营
+    private int[] playerType;                // 四个玩家类型，人类、AI
+    private int myColor = -1;                // 自己阵营，联机时
 
-    //    ChessBoard(/*ImageView boardView, ImageView diceView, ImageView arrowView, JPopupMenu tipView, float screenWidth, TextView[] playerViews, SoundPool sp,*/
-//            /*HashMap<Integer, Integer> soundMap*/) {
-    ChessBoard() {
+    public ChessBoard(GameGUI gameGUI, int xOffSet, int yOffSet) {
         this.state = GameState.GAME_READY;
-        // FIXME: 2020/12/8 把目标窗口大小赋值给 screenWidth
-        this.screenWidth = screenWidth;
-//        this.boardView = boardView;
-//        this.diceView = diceView;
-//        this.arrowView = arrowView;
-//        this.tipView = tipView;
-//        this.sp = sp;
-//        this.soundMap = soundMap;
-        boardLength = (int) (screenWidth / 18) * 18;
-        gridLength = boardLength / 36;
-        step = 0;
-        // 调整棋盘大小
-//        ViewGroup.LayoutParams boardParams = boardView.getLayoutParams();
-//        boardParams.width = (int) boardLength;
-//        boardParams.height = (int) boardLength;
-//        boardView.setLayoutParams(boardParams);
-        // 调整提示框大小
-//        ViewGroup.LayoutParams tipParams = tipView.getLayoutParams();
-//        tipParams.width = (int) boardLength;
-//        tipParams.height = (int) (boardLength * 0.5);
-//        tipView.setLayoutParams(tipParams);
-
-//        this.playerViews = new TextView[4];
-//        this.playerViews[0] = playerViews[0];
-//        this.playerViews[1] = playerViews[1];
-//        this.playerViews[2] = playerViews[2];
-//        this.playerViews[3] = playerViews[3];
+        this.nowPlayer = -1;
+        this.gameGUI = gameGUI;
+        this.xOffSet = xOffSet;
+        this.yOffSet = yOffSet;
+        this.winner1Index = -1;
+        this.winner2Index = -1;
+        this.winner3Index = -1;
         continueRoll = 0;
+        stackingPlanes = new ArrayList<>();
+        movedPlanes = new ArrayList<>();
     }
 
     // 初始化飞机
     public void initPlanes() {
-//    public void initPlanes(ImageView[] planeViews) {
         planes = new Aeroplane[]{
-                new Aeroplane(this, PlaneState.BLUE, 0, 0, gridLength, xOffSet, yOffSet),// planeViews[0]),
-                new Aeroplane(this, PlaneState.BLUE, 1, 1, gridLength, xOffSet, yOffSet),// planeViews[1]),
-                new Aeroplane(this, PlaneState.BLUE, 2, 2, gridLength, xOffSet, yOffSet),// planeViews[2]),
-                new Aeroplane(this, PlaneState.BLUE, 3, 3, gridLength, xOffSet, yOffSet),// planeViews[3]),
-                new Aeroplane(this, PlaneState.GREEN, 4, 5, gridLength, xOffSet, yOffSet),// planeViews[4]),
-                new Aeroplane(this, PlaneState.GREEN, 5, 6, gridLength, xOffSet, yOffSet),// planeViews[5]),
-                new Aeroplane(this, PlaneState.GREEN, 6, 7, gridLength, xOffSet, yOffSet),// planeViews[6]),
-                new Aeroplane(this, PlaneState.GREEN, 7, 8, gridLength, xOffSet, yOffSet),// planeViews[7]),
-                new Aeroplane(this, PlaneState.RED, 8, 10, gridLength, xOffSet, yOffSet),// planeViews[8]),
-                new Aeroplane(this, PlaneState.RED, 9, 11, gridLength, xOffSet, yOffSet),// planeViews[9]),
-                new Aeroplane(this, PlaneState.RED, 10, 12, gridLength, xOffSet, yOffSet),// planeViews[10]),
-                new Aeroplane(this, PlaneState.RED, 11, 13, gridLength, xOffSet, yOffSet),// planeViews[11]),
-                new Aeroplane(this, PlaneState.YELLOW, 12, 15, gridLength, xOffSet, yOffSet),// planeViews[12]),
-                new Aeroplane(this, PlaneState.YELLOW, 13, 16, gridLength, xOffSet, yOffSet),// planeViews[13]),
-                new Aeroplane(this, PlaneState.YELLOW, 14, 17, gridLength, xOffSet, yOffSet),// planeViews[14]),
-                new Aeroplane(this, PlaneState.YELLOW, 15, 18, gridLength, xOffSet, yOffSet)// planeViews[15]),
+//                new Aeroplane(this, PlaneState.BLUE, 0, 0, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.BLUE, 1, 1, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.BLUE, 2, 2, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.BLUE, 3, 3, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.GREEN, 4, 5, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.GREEN, 5, 6, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.GREEN, 6, 7, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.GREEN, 7, 8, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.RED, 8, 10, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.RED, 9, 11, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.RED, 10, 12, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.RED, 11, 13, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.YELLOW, 12, 15, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.YELLOW, 13, 16, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.YELLOW, 14, 17, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.YELLOW, 15, 18, xOffSet, yOffSet)
         };
     }
 
@@ -120,16 +92,11 @@ public class ChessBoard extends JPanel {
         state = GameState.GAME_START;
 
         // 还原飞机位置
-        for (Aeroplane plane : planes) {
-            plane.restore();
-        }
-        // 随机决定哪方先开始
-        Random rd = new Random();
-        nowPlayer = rd.nextInt(4);
+        for (Aeroplane plane : planes) plane.restore();
 
-        winner1Index = -1;
-        winner2Index = -1;
-        winner3Index = -1;
+        // 随机决定哪方先开始
+        nowPlayer = new Random().nextInt(4);
+
         beginTurn();
     }
 
@@ -283,7 +250,7 @@ public class ChessBoard extends JPanel {
 //                } else {
                 // 是否全在机场
                 for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
-                    if (!planes[i].isInAirport() && !planes[i].isFinished()) {
+                    if (!planes[i].isInHangar() && !planes[i].isFinished()) {
                         // 添加在外面的飞机number
                         outsidePlanes.add(i);
                     }
@@ -343,7 +310,7 @@ public class ChessBoard extends JPanel {
 //                } else {
                     // 是否全在机场
                     for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
-                        if (!planes[i].isInAirport() && !planes[i].isFinished()) {
+                        if (!planes[i].isInHangar() && !planes[i].isFinished()) {
                             // 添加在外面的飞机number
                             outsidePlanes.add(i);
                         }
@@ -482,7 +449,7 @@ public class ChessBoard extends JPanel {
 
     // 结束游戏
     public void endGame() {
-        EndGameAndShowRank endWindow = new EndGameAndShowRank();
+        EndGameAndShowRank endWindow = new EndGameAndShowRank(this);
         endWindow.setVisible(true);
 
         // 联网模式还要广播获胜消息

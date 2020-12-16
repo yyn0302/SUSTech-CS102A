@@ -11,6 +11,8 @@ public class Settings extends JFrame {
 
     public static Settings window = new Settings("游戏设置");
 
+    public static JButton enterSuperMode;
+
     public Settings(String title) {
 
         this.setTitle(title);
@@ -96,7 +98,7 @@ public class Settings extends JFrame {
         humanCntSelection.add(rb4);
 
 
-        JButton enterSuperMode = new JButton("获取管理权限");
+        enterSuperMode = new JButton("获取管理权限");
         enterSuperMode.addActionListener(e -> {
             if (!GameInfo.isSuperUser()) {
                 EnterSuperMode.window.setVisible(true);
@@ -104,6 +106,7 @@ public class Settings extends JFrame {
                     enterSuperMode.setText("已获取管理权限");
                     enterSuperMode.setEnabled(false);
                     GameInfo.setSuperUser(true);
+                    GameMall.window.userInfoPanel.setEnabled(true);
                 }
             }
         });

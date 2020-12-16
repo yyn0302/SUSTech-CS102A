@@ -23,6 +23,7 @@ public class GameMall extends JFrame {
     JRadioButton player3 = new JRadioButton("玩家3：" + GameInfo.getPlayerName()[2]);
     JRadioButton player4 = new JRadioButton("玩家4：" + GameInfo.getPlayerName()[3]);
 
+    public JPanel userInfoPanel;
 
     public GameMall(String title) {
 
@@ -62,8 +63,9 @@ public class GameMall extends JFrame {
         this.userBalanceLabel.setText("账户余额：" + Wallet.getBalance(asPlayer) + "金币");
         this.userDiscountLabel.setText("优惠方案：" + Wallet.getDiscountAsPercent(asPlayer) * 100 + "折");
         this.editWallet.addActionListener(e -> EditUserInfo.window.setVisible(true));
+        this.editWallet.setEnabled(GameInfo.isSuperUser());
 
-        JPanel userInfoPanel = new JPanel(new GridLayout(1, 3));
+        userInfoPanel = new JPanel(new GridLayout(1, 3));
         userInfoPanel.add(userBalanceLabel);
         userInfoPanel.add(userDiscountLabel);
         userInfoPanel.add(editWallet);

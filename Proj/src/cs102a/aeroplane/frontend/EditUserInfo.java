@@ -55,9 +55,11 @@ public class EditUserInfo extends JFrame {
             }
 
             GameInfo.getPlayerName()[GameMall.getAsPlayer()] = nameTextField.getText();
+            GameMall.window.refreshInfo();
+            window.setVisible(false);
         });
 
-        JPanel base = new JPanel(new GridLayout(1, 4));
+        JPanel base = new JPanel(new GridLayout(4, 1));
         base.add(jp1);
         base.add(jp2);
         base.add(jp3);

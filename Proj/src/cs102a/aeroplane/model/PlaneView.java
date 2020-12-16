@@ -13,8 +13,8 @@ import java.awt.event.MouseListener;
 public class PlaneView extends JButton {
     private final int color;
     private final int number;
-
     private int state;
+    private final int itsHangar;
 
     private int numOfStackedPlanes;
     MouseListener ableToMoveTipListener = new MouseListener() {
@@ -76,6 +76,7 @@ public class PlaneView extends JButton {
         this.yOffSet = yOffSet;
         this.chessboard = chessboard;
         this.number = number;
+        this.itsHangar=itsHangar;
 
         this.numOfStackedPlanes = 1;
         this.state = PlaneState.IN_HANGAR;
@@ -90,7 +91,7 @@ public class PlaneView extends JButton {
         StringBuilder themeSelectedIconPath = new StringBuilder();
         themeSelectedIconPath.append(SystemSelect.getImagePath());
         themeSelectedIconPath.append(GameInfo.getTheme() == 1 ? "t1_p" : "t2_p");
-        themeSelectedIconPath.append(numOfStackedPlanes + "_");
+        themeSelectedIconPath.append(numOfStackedPlanes).append("_");
         switch (color) {
             case PlaneState.BLUE:
                 themeSelectedIconPath.append("bl.png");
@@ -112,13 +113,39 @@ public class PlaneView extends JButton {
         this.setBounds(xOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][0] - BoardCoordinate.GRID_SIZE / 2,
                 yOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][1] - BoardCoordinate.GRID_SIZE / 2,
                 BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
+        this.setRotation(BoardCoordinate.REVOLVE_ANGLE[generalGridIndex]);
     }
 
-    public void makeItReadyToBeSelected() {
+    public void readyToBeSelected() {
         for (ActionListener actionListener : this.getActionListeners()) {
             this.removeActionListener(actionListener);
         }
         this.addMouseListener(ableToMoveTipListener);
+        this.setEnabled(true);
+    }
+
+    public void finish() {
+        moveTo(itsHangar);
+        StringBuilder themeSelectedIconPath = new StringBuilder();
+        themeSelectedIconPath.append(SystemSelect.getImagePath());
+        themeSelectedIconPath.append("pl_fin_");
+        switch (color) {
+            case PlaneState.BLUE:
+                themeSelectedIconPath.append("bl.png");
+                break;
+            case PlaneState.GREEN:
+                themeSelectedIconPath.append("gr.png");
+                break;
+            case PlaneState.RED:
+                themeSelectedIconPath.append("re.png");
+                break;
+            case PlaneState.YELLOW:
+                themeSelectedIconPath.append("ye.png");
+                break;
+        }
+        setIcon(new ImageIcon(themeSelectedIconPath.toString()));
+        this.state = PlaneState.FINISH;
+        this.setEnabled(false);
     }
 
     public int getState() {

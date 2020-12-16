@@ -1,5 +1,6 @@
 package cs102a.aeroplane.frontend;
 
+import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.TimeDialog;
 
 import javax.swing.*;
@@ -39,7 +40,11 @@ public class EnterSuperMode extends JFrame {
             try {
                 if (pwd.getText().equals(PWD)) {
                     isRightPwd = true;
-                    EnterSuperMode.super.setVisible(false);
+                    window.dispose();
+                    Settings.enterSuperMode.setText("已获取管理权限");
+                    Settings.enterSuperMode.setEnabled(false);
+                    GameInfo.setSuperUser(true);
+
                 } else {
                     isRightPwd = false;
                     TimeDialog td = new TimeDialog();

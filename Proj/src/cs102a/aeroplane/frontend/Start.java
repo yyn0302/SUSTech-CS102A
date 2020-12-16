@@ -12,6 +12,7 @@ public class Start {
     private static JFrame startFrame = new JFrame("飞行棋");
 
     public static void main(String[] args) {
+        startFrame.setLocationRelativeTo(null);
         JLabel title = new JLabel("飞行棋");
         title.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 30));
         title.setBounds(0, 0, 100, 50);
@@ -29,11 +30,11 @@ public class Start {
         continueButton.addActionListener(e -> {
             startFrame.setVisible(false);
             LoadHistory loadHistory = new LoadHistory("读档");
+            loadHistory.setVisible(true);
         });
 
         JButton storeButton = new JButton("道具商店");
         storeButton.addActionListener(e -> {
-            startFrame.setVisible(false);
             GameMall.window.setVisible(true);
         });
 

@@ -95,8 +95,8 @@ public class BoardCoordinate {
             {15, 16, 17, 18}    // 黄
     };
 
-    // 各色的行走路径(没有发生跳步)的编号
-    public static final int[][] COLOR_NORM_PATH = {
+    // 各色的可能出现的位置的编号
+    public static final int[][] COLOR_PATH = {
             { // 蓝
                     4, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34,
                     35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
