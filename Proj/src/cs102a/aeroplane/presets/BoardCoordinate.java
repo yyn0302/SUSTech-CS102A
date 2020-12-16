@@ -3,8 +3,6 @@ package cs102a.aeroplane.presets;
 public class BoardCoordinate {
     /**
      * 棋子所有能到达的位置
-     * {a,b} 表示位置左上角在x方向下标为a，y方向下标为b的格 (Grid)
-     * 记得叠子时偏移 0.2格
      * 一共97个位置，按下列顺序编号
      */
     public static final int[][] GRID_CENTER_OFFSET = {

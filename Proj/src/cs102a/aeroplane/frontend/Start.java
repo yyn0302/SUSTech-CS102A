@@ -9,13 +9,12 @@ import java.awt.*;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class Start {
+    private static JFrame startFrame = new JFrame("飞行棋");
+
     public static void main(String[] args) {
-
-        JFrame startFrame = new JFrame("飞行棋");
-
         JLabel title = new JLabel("飞行棋");
         title.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 30));
-        title.setBounds(0,0,100,50);
+        title.setBounds(0, 0, 100, 50);
         title.setForeground(Color.white);
         title.setBackground(Color.blue);
         title.setOpaque(true);
@@ -23,13 +22,13 @@ public class Start {
         JButton startButton = new JButton("开始游戏");
         startButton.addActionListener(e -> {
             startFrame.setVisible(false);
-            // GameGUI.gameGUI.setVisible(true);
+            GameGUI.window.setVisible(true);
         });
 
         JButton continueButton = new JButton("继续游戏");
         continueButton.addActionListener(e -> {
             startFrame.setVisible(false);
-            // LoadHistory.loadHistory.setVisible(true);
+            LoadHistory loadHistory = new LoadHistory("读档");
         });
 
         JButton storeButton = new JButton("道具商店");
@@ -64,5 +63,9 @@ public class Start {
 
         startFrame.setVisible(true);
         startFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    public static void popStart() {
+        startFrame.setVisible(true);
     }
 }

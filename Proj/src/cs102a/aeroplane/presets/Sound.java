@@ -5,6 +5,7 @@ import cs102a.aeroplane.util.SystemSelect;
 
 import java.io.File;
 
+// play(boolean)
 public class Sound {
     private final File musicFile;
     private static final String musicPath = SystemSelect.getMusicPath();
@@ -35,7 +36,7 @@ public class Sound {
     }
 
     // 结束音乐
-    public final void over() {
+    public final void end() {
         player.over();
     }
 

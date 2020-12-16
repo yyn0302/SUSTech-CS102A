@@ -6,16 +6,64 @@ import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class PlaneView extends JButton {
-
     private final int color;
-    private final int itsHangar;
     private final int number;
+
     private int state;
+
     private int numOfStackedPlanes;
+    MouseListener ableToMoveTipListener = new MouseListener() {
+        @Override
+        // 选择此飞机，禁止其他点击，准备飞到相应位置
+        public void mousePressed(MouseEvent e) {
+            for (Aeroplane p : chessboard.getPlanes()) {
+                if (p.getNumber() != number) p.getPlaneView().setEnabled(false);
+
+            }
+        }
+
+        // 做了个移入移出的可选择的提示
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            StringBuilder themeSelectedIconPath = new StringBuilder();
+            themeSelectedIconPath.append(SystemSelect.getImagePath());
+            themeSelectedIconPath.append("pl_fin_");
+            switch (color) {
+                case PlaneState.BLUE:
+                    themeSelectedIconPath.append("bl.png");
+                    break;
+                case PlaneState.GREEN:
+                    themeSelectedIconPath.append("gr.png");
+                    break;
+                case PlaneState.RED:
+                    themeSelectedIconPath.append("re.png");
+                    break;
+                case PlaneState.YELLOW:
+                    themeSelectedIconPath.append("ye.png");
+                    break;
+            }
+            setIcon(new ImageIcon(themeSelectedIconPath.toString()));
+        }
+
+        // 做了个移入移出的可选择的提示
+        @Override
+        public void mouseExited(MouseEvent e) {
+            setIconAsPlaneNum(numOfStackedPlanes);
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+    };
 
     // TODO: 2020/12/14 放好棋盘GUI后把棋盘图片左上角重定位(0,0)
     private final int xOffSet;
@@ -24,7 +72,6 @@ public class PlaneView extends JButton {
 
     public PlaneView(ChessBoard chessboard, int number, int color, int itsHangar, int xOffSet, int yOffSet) {
         this.color = color;
-        this.itsHangar = itsHangar;
         this.xOffSet = xOffSet;
         this.yOffSet = yOffSet;
         this.chessboard = chessboard;
@@ -68,51 +115,17 @@ public class PlaneView extends JButton {
     }
 
     public void makeItReadyToBeSelected() {
-        this.addMouseListener(new MouseListener() {
-            @Override
-            // 选择此飞机，禁止其他点击，准备飞到相应位置
-            public void mousePressed(MouseEvent e) {
-                for (Aeroplane p : chessboard.getPlanes()) {
-                    if (p.getNumber() != number) p.getPlaneView().setEnabled(false);
-                }
-            }
+        for (ActionListener actionListener : this.getActionListeners()) {
+            this.removeActionListener(actionListener);
+        }
+        this.addMouseListener(ableToMoveTipListener);
+    }
 
-            // 做了个移入移出的可选择的提示
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                StringBuilder themeSelectedIconPath = new StringBuilder();
-                themeSelectedIconPath.append(SystemSelect.getImagePath());
-                themeSelectedIconPath.append("pl_fin_");
-                switch (color) {
-                    case PlaneState.BLUE:
-                        themeSelectedIconPath.append("bl.png");
-                        break;
-                    case PlaneState.GREEN:
-                        themeSelectedIconPath.append("gr.png");
-                        break;
-                    case PlaneState.RED:
-                        themeSelectedIconPath.append("re.png");
-                        break;
-                    case PlaneState.YELLOW:
-                        themeSelectedIconPath.append("ye.png");
-                        break;
-                }
-                setIcon(new ImageIcon(themeSelectedIconPath.toString()));
-            }
+    public int getState() {
+        return state;
+    }
 
-            // 做了个移入移出的可选择的提示
-            @Override
-            public void mouseExited(MouseEvent e) {
-                setIconAsPlaneNum(numOfStackedPlanes);
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            }
-        });
+    public void setState(int state) {
+        this.state = state;
     }
 }

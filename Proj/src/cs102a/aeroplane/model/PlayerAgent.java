@@ -2,8 +2,11 @@ package cs102a.aeroplane.model;
 
 public class PlayerAgent {
     private boolean isComputer;
+    private int moveCount;
 
-    public boolean isComputer() {
-        return isComputer;
+    public int getMoveCount() {
+        return moveCount;
     }
+
+    public void
 }

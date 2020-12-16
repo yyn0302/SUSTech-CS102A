@@ -13,7 +13,7 @@ public class MusicPlayer {
     private final File file;            // wav文件的路径
     private boolean isLoop = false;     // 是否循环播放
     private boolean isPlaying;          // 是否正在播放
-    private int volume = 6;           // FloatControl.Type.MASTER_GAIN的值(可用于调节音量)
+    private int volume = 6;             // FloatControl.Type.MASTER_GAIN的值(可用于调节音量)
 
     private playSoundThread playSoundThread;
 

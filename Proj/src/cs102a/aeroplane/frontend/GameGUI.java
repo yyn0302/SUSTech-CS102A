@@ -2,6 +2,7 @@ package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
 import cs102a.aeroplane.frontend.model.PlayerInfoPanel;
+import cs102a.aeroplane.model.ChessBoard;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
@@ -11,6 +12,12 @@ import java.awt.event.ActionListener;
 
 public class GameGUI extends JFrame {
     public static GameGUI window = new GameGUI("飞行棋[当前 " + " 步]");
+    private ChessBoard chessBoard = new ChessBoard();
+    private PlayerInfoPanel playerInfoPanel;
+
+    public PlayerInfoPanel getPlayerInfoPanel() {
+        return playerInfoPanel;
+    }
 
     public GameGUI(String title) {
         this.setTitle(title);
@@ -21,7 +28,7 @@ public class GameGUI extends JFrame {
         this.setLayout(new GridLayout(1, 2, 50, 50));//大小有待后续调整
         rightSidePanel.setLayout(new GridLayout(2, 1, 20, 20));
         //玩家面板
-        JPanel playerInfoPanel = new PlayerInfoPanel(1);
+        playerInfoPanel = new PlayerInfoPanel(chessBoard);
 
         //保存面板
         JPanel savePanel = new JPanel();
