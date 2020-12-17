@@ -14,7 +14,7 @@ public class GameMall extends JFrame {
 
 
     private static int asPlayer = 0;
-
+    public JPanel userInfoPanel;
     JLabel userBalanceLabel = new JLabel();
     JLabel userDiscountLabel = new JLabel();
     JButton editWallet = new JButton("修改账户信息");
@@ -22,8 +22,6 @@ public class GameMall extends JFrame {
     JRadioButton player2 = new JRadioButton("玩家2：" + GameInfo.getPlayerName()[1]);
     JRadioButton player3 = new JRadioButton("玩家3：" + GameInfo.getPlayerName()[2]);
     JRadioButton player4 = new JRadioButton("玩家4：" + GameInfo.getPlayerName()[3]);
-
-    public JPanel userInfoPanel;
 
     public GameMall(String title) {
 
@@ -109,6 +107,10 @@ public class GameMall extends JFrame {
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 
+    public static int getAsPlayer() {
+        return asPlayer;
+    }
+
     public final void refreshInfo() {
         this.userBalanceLabel.setText("账户余额：" + Wallet.getBalance(asPlayer) + "金币");
         this.userDiscountLabel.setText("优惠方案：" + Wallet.getDiscountAsPercent(asPlayer) * 100 + "折");
@@ -118,9 +120,5 @@ public class GameMall extends JFrame {
         this.player4.setText("玩家4：" + GameInfo.getPlayerName()[3]);
 
         this.editWallet.setEnabled(GameInfo.isSuperUser());
-    }
-
-    public static int getAsPlayer() {
-        return asPlayer;
     }
 }

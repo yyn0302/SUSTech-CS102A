@@ -35,7 +35,7 @@ public class GameLoader {
             chessBoard.setStep(stepBkp);
             chessBoard.setNowPlayer(nowPlayerBkp);
             for (int i = 0; i < 16; i++) {
-                chessBoard.getPlanes()[i].setGeneralGridIndex(planeIndexBkp[i]);
+                chessBoard.getPlanes()[i].setGeneralGridIndexAndMove(planeIndexBkp[i]);
             }
         }
     }

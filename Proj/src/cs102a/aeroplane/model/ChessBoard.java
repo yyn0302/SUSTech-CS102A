@@ -1,6 +1,7 @@
 package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.GameInfo;
+import cs102a.aeroplane.frontend.Battle;
 import cs102a.aeroplane.frontend.EndGameAndShowRank;
 import cs102a.aeroplane.frontend.GameGUI;
 import cs102a.aeroplane.frontend.SetStep;
@@ -14,26 +15,28 @@ import cs102a.aeroplane.util.Dice;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 import static cs102a.aeroplane.frontend.EndGameAndShowRank.endGameAndShowRank;
 
 public class ChessBoard extends JPanel {
-    int[] rollResult;                                     // 骰子点数
-    ArrayList<ArrayList<Integer>> stackingPlanes;         // 记录有无叠子，子ArrayList存叠一起的飞机number，只有第一个是visible
-    ArrayList<Integer> movedPlanes;                       // 记录一个人摇多次时，移动过哪些棋子       // FIXME: 写叠子功能
-    private int state;                                    // 状态（游戏未开始，游戏已开始，游戏结束）  // 重置游戏后先进入GAME_READY，完成后GAME_START
-    private int nowPlayer;                                // 当前回合
-    private int nowMove;                                  // 当前玩家选择的准备对任何飞机的移动步数    // 要起飞则在判断至少一个6后接受任意的nowStep
-    private int continueRoll;                             // 记录连投的次数
-    private final GameGUI gameGUI;                        // 句柄
-    private final Aeroplane[] planes;                     // 16架飞机
-    private int winner1Index;                             // 胜利者
-    private int winner2Index;                             // 胜利者
-    private int winner3Index;                             // 胜利者
-    private final int[] playerSteps;                      // 截止胜利走了多少步
-    private int[] playerType;                             // 四个玩家类型，人类、AI
-    private int myColor = -1;                             // 自己阵营，联机时
+    private final GameGUI gameGUI;                          // 句柄
+    private final Aeroplane[] planes;                       // 16架飞机
+    private int[] playerSteps;                              // 截止胜利走了多少步
+    int[] rollResult;                                       // 骰子点数
+    private ArrayList<Integer> movedPlanes;                 // 记录一个人摇多次时，移动过哪些棋子
+    private int state;                                      // 状态（游戏未开始，游戏已开始，游戏结束）  // 重置游戏后先进入GAME_READY，完成后GAME_START
+    private int nowPlayer;                                  // 当前回合
+    private int nowMove;                                    // 当前玩家选择的准备对任何飞机的移动步数    // 要起飞则在判断至少一个6后接受任意的nowStep
+    private int continueRoll;                               // 记录连投的次数
+    private int winner1Index;                               // 胜利者
+    private int winner2Index;                               // 胜利者
+    private int winner3Index;                               // 胜利者
+    private int[] playerType;                               // 四个玩家类型，人类、AI
+    private int myColor = -1;                               // 自己阵营，联机时
+    protected boolean[][] teamIndexUsed = new boolean[4][2];  // 当前队伍已经有飞机
+
 
     public ChessBoard(GameGUI gameGUI, int xOffSet, int yOffSet) {
         this.state = GameState.GAME_READY;
@@ -46,7 +49,6 @@ public class ChessBoard extends JPanel {
 
         this.playerSteps = new int[]{0, 0, 0, 0};
         this.continueRoll = 0;
-        this.stackingPlanes = new ArrayList<>();
         this.movedPlanes = new ArrayList<>();
 
         // 初始化飞机
@@ -208,7 +210,11 @@ public class ChessBoard extends JPanel {
    endGameAndShowRank.setVisible(true);
     }
 
-
+    public void battleInTeam(int indexOfMyTeam, int indexOfTargetGrid) {
+        while(hasOtherPlane(indexOfMyTeam)||hasOtherPlane(indexOfTargetGrid)){
+            if(Battle.isWinner()){}
+        }
+    }
 
 
     /*
@@ -217,15 +223,22 @@ public class ChessBoard extends JPanel {
 
     // 判断index上有没有其他方的棋子
     public boolean hasOtherPlane(int index) {
-        for (Aeroplane plane : planes) {
+        for (Aeroplane plane : planes)
             if (plane.getGeneralGridIndex() == index && plane.getColor() != nowPlayer) return true;
-        }
         return false;
     }
 
+    // 判断当前组内还有没有棋子
+    public int planesInTeam(int teamNumber) {
+        int cnt = 0;
+        for (int i:BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer])
+            if (planes[i].indexOfTeam==teamNumber) cnt++;
+        return cnt;
+    }
+
     // 获取所有当前格子上的敌机以battle
-    public ArrayList<Aeroplane> getOppoPlanes(int index) {
-        ArrayList<Aeroplane> p = new ArrayList<>();
+    public LinkedList<Aeroplane> getOppoPlanes(int index) {
+        LinkedList<Aeroplane> p = new LinkedList<>();
         for (Aeroplane plane : planes) {
             if (plane.getGeneralGridIndex() == index && plane.getColor() != nowPlayer) p.add(plane);
         }
@@ -257,6 +270,7 @@ public class ChessBoard extends JPanel {
     private boolean checkGameEnd() {
         return state == GameState.GAME_END;
     }
+
 
 
     /*

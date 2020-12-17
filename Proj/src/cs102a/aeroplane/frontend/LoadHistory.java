@@ -17,7 +17,7 @@ import java.util.Objects;
 
 public class LoadHistory extends JFrame {
 
-    private ArrayList<String> nameList = new ArrayList<>();
+    private final ArrayList<String> nameList = new ArrayList<>();
     private String historySelected;
 
     public LoadHistory(String title) {
@@ -48,11 +48,12 @@ public class LoadHistory extends JFrame {
 
         JButton confirmButton = new JButton("确定");
         confirmButton.addActionListener(e -> {
-            if (!historySelected.equals("没有游戏档案哦"))
+            if (historySelected != null && !historySelected.equals("没有游戏档案哦"))
                 GameLoader.setFileName(historySelected);
             else {
                 TimeDialog td = new TimeDialog();
-                td.showDialog(this, "不能读档哦", 3);
+                td.showDialog(this, "不能读档哦", 2);
+                Start.popStart();
             }
             dispose();
         });
@@ -74,10 +75,12 @@ public class LoadHistory extends JFrame {
         Format simpleFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             for (File value : list) {
-                String[] name = value.getName().split(".a");    // 把后缀名切开
+                String name = value.getName();
+//                String[] name = value.getName().split(".a");    // 把后缀名切开
                 Date d = new Date(value.lastModified());
                 String dateString = simpleFormat.format(d);
-                nameList.add(name[0] + "@保存时间:" + dateString);
+                nameList.add(name + "@保存时间:" + dateString);
+//                nameList.add(name[0] + "@保存时间:" + dateString);
             }
         } catch (NullPointerException np) {
             nameList.add("没有游戏档案哦");

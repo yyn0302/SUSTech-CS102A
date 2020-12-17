@@ -14,12 +14,13 @@ public class PlaneView extends JButton {
     private final int color;
     private final int number;
     private final int itsHangar;
+
     // TODO: 2020/12/14 放好棋盘GUI后把棋盘图片左上角重定位(0,0)
     private final int xOffSet;
     private final int yOffSet;
     private final ChessBoard chessboard;    // 引用
-    private int state;
     private final Aeroplane aeroplane;
+    private int state;
     private int numOfStackedPlanes;
     MouseListener ableToMoveTipListener = new MouseListener() {
         @Override
@@ -27,7 +28,14 @@ public class PlaneView extends JButton {
         public void mousePressed(MouseEvent e) {
             for (Aeroplane p : chessboard.getPlanes()) {
                 if (p.getNumber() != number) p.getPlaneView().setEnabled(false);
-                aeroplane.tryMovingFront(chessboard.getNowMove());
+                if (aeroplane.indexOfTeam == -1)  // 不在队伍,自己移动自己
+                    aeroplane.tryMovingFront(chessboard.getNowMove());
+                else {
+                    for (Aeroplane a : chessboard.getPlanes()) {
+                        if (a.getColor() == color && a.indexOfTeam == aeroplane.indexOfTeam)
+                        // 驱动所有队内成员一起移动
+                    }
+                }
             }
         }
 
@@ -113,7 +121,6 @@ public class PlaneView extends JButton {
         this.setBounds(xOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][0] - BoardCoordinate.GRID_SIZE / 2,
                 yOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][1] - BoardCoordinate.GRID_SIZE / 2,
                 BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
-
         // FIXME: 2020/12/17 旋转
 //        this.setRotation(BoardCoordinate.REVOLVE_ANGLE[generalGridIndex]);
 //        try {
