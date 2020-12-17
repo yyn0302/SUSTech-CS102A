@@ -6,6 +6,7 @@ import cs102a.aeroplane.frontend.GameGUI;
 import cs102a.aeroplane.online.Client;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.GameState;
+import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.util.Dice;
 
@@ -28,9 +29,14 @@ public class ChessBoard extends JPanel {
     ArrayList<Integer> movedPlanes;                   // 记录一个人摇多次时，移动过哪些棋子
 
     private Aeroplane[] planes;              // 16架飞机
+    private PlayerAgent[] players;           // 4玩家
     private int winner1Index;                // 胜利者
     private int winner2Index;                // 胜利者
     private int winner3Index;                // 胜利者
+    private int player1Steps;                // 截止胜利走了多少步
+    private int player2Steps;                // 截止胜利走了多少步
+    private int player3Steps;                // 截止胜利走了多少步
+    private int player4Steps;                // 截止胜利走了多少步
     private int[] playerType;                // 四个玩家类型，人类、AI
     private int myColor = -1;                // 自己阵营，联机时
 
@@ -40,39 +46,41 @@ public class ChessBoard extends JPanel {
         this.gameGUI = gameGUI;
         this.xOffSet = xOffSet;
         this.yOffSet = yOffSet;
+
         this.winner1Index = -1;
         this.winner2Index = -1;
         this.winner3Index = -1;
+
+        this.player1Steps = 0;
+        this.player2Steps = 0;
+        this.player3Steps = 0;
+        this.player4Steps = 0;
+
         continueRoll = 0;
         stackingPlanes = new ArrayList<>();
         movedPlanes = new ArrayList<>();
-    }
 
-    // 初始化飞机
-    public void initPlanes() {
+        // 初始化飞机
         planes = new Aeroplane[]{
-//                new Aeroplane(this, PlaneState.BLUE, 0, 0, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.BLUE, 1, 1, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.BLUE, 2, 2, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.BLUE, 3, 3, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.GREEN, 4, 5, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.GREEN, 5, 6, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.GREEN, 6, 7, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.GREEN, 7, 8, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.RED, 8, 10, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.RED, 9, 11, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.RED, 10, 12, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.RED, 11, 13, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.YELLOW, 12, 15, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.YELLOW, 13, 16, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.YELLOW, 14, 17, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.YELLOW, 15, 18, xOffSet, yOffSet)
+                new Aeroplane(this, PlaneState.BLUE, 0, 0, xOffSet, yOffSet),
+                new Aeroplane(this, PlaneState.BLUE, 1, 1, xOffSet, yOffSet),
+                new Aeroplane(this, PlaneState.BLUE, 2, 2, xOffSet, yOffSet),
+                new Aeroplane(this, PlaneState.BLUE, 3, 3, xOffSet, yOffSet),
+                new Aeroplane(this, PlaneState.GREEN, 4, 5, xOffSet, yOffSet),
+                new Aeroplane(this, PlaneState.GREEN, 5, 6, xOffSet, yOffSet),
+                new Aeroplane(this, PlaneState.GREEN, 6, 7, xOffSet, yOffSet),
+                new Aeroplane(this, PlaneState.GREEN, 7, 8, xOffSet, yOffSet),
+                new Aeroplane(this, PlaneState.RED, 8, 10, xOffSet, yOffSet),
+                new Aeroplane(this, PlaneState.RED, 9, 11, xOffSet, yOffSet),
+                new Aeroplane(this, PlaneState.RED, 10, 12, xOffSet, yOffSet),
+                new Aeroplane(this, PlaneState.RED, 11, 13, xOffSet, yOffSet),
+                new Aeroplane(this, PlaneState.YELLOW, 12, 15, xOffSet, yOffSet),
+                new Aeroplane(this, PlaneState.YELLOW, 13, 16, xOffSet, yOffSet),
+                new Aeroplane(this, PlaneState.YELLOW, 14, 17, xOffSet, yOffSet),
+                new Aeroplane(this, PlaneState.YELLOW, 15, 18, xOffSet, yOffSet)
         };
     }
 
-    public ArrayList<Integer> getMovedPlanes() {
-        return movedPlanes;
-    }
 
     // 开始游戏
     public void startGame() {
@@ -449,12 +457,16 @@ public class ChessBoard extends JPanel {
 
     // 结束游戏
     public void endGame() {
-        EndGameAndShowRank endWindow = new EndGameAndShowRank(this);
-        endWindow.setVisible(true);
+        new EndGameAndShowRank(this).setVisible(true);
 
         // 联网模式还要广播获胜消息
         if (GameInfo.isIsOnlineGame()) {
             ?
         }
+    }
+
+
+    public ArrayList<Integer> getMovedPlanes() {
+        return movedPlanes;
     }
 }

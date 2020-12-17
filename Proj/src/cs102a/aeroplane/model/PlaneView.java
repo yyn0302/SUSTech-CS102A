@@ -6,9 +6,12 @@ import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 public class PlaneView extends JButton {
     private final int color;
@@ -76,7 +79,7 @@ public class PlaneView extends JButton {
         this.yOffSet = yOffSet;
         this.chessboard = chessboard;
         this.number = number;
-        this.itsHangar=itsHangar;
+        this.itsHangar = itsHangar;
 
         this.numOfStackedPlanes = 1;
         this.state = PlaneState.IN_HANGAR;
@@ -113,8 +116,50 @@ public class PlaneView extends JButton {
         this.setBounds(xOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][0] - BoardCoordinate.GRID_SIZE / 2,
                 yOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][1] - BoardCoordinate.GRID_SIZE / 2,
                 BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
-        this.setRotation(BoardCoordinate.REVOLVE_ANGLE[generalGridIndex]);
+
+        // FIXME: 2020/12/17 旋转
+//        this.setRotation(BoardCoordinate.REVOLVE_ANGLE[generalGridIndex]);
+//        try {
+//            BufferedImage origin;
+//            BufferedImage rotated90 = rotate(original, 90.0d);
+//            BufferedImage rotatedMinus90 = rotate(original, -90.0d);
+//
+//            JPanel panel = new JPanel();
+//            panel.add(new JLabel(new ImageIcon(original)));
+//            panel.add(new JLabel(new ImageIcon(rotated90)));
+//            panel.add(new JLabel(new ImageIcon(rotatedMinus90)));
+//
+//            JOptionPane.showMessageDialog(null, panel, null, JOptionPane.PLAIN_MESSAGE, null);
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//        }
     }
+
+//    /**
+//     * @param image   BufferedImage original = ImageIO.read(img);
+//     *                BufferedImage rotated90 = rotate(original, 90.0d);
+//     * @param degrees in degrees
+//     * @return a rotated BufferedImage can be given to new ImageIcon()
+//     */
+//    private BufferedImage rotate(BufferedImage image, Double degrees) {
+//        double radians = Math.toRadians(degrees);
+//        double sin = Math.abs(Math.sin(radians));
+//        double cos = Math.abs(Math.cos(radians));
+//        int newWidth = (int) Math.round(image.getWidth() * cos + image.getHeight() * sin);
+//        int newHeight = (int) Math.round(image.getWidth() * sin + image.getHeight() * cos);
+//
+//        BufferedImage rotate = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+//        Graphics2D g2d = rotate.createGraphics();
+//        int x = (newWidth - image.getWidth()) / 2;
+//        int y = (newHeight - image.getHeight()) / 2;
+//        AffineTransform at = new AffineTransform();
+//        at.setToRotation(radians, x + (image.getWidth() / 2), y + (image.getHeight() / 2));
+//        at.translate(x, y);
+//        g2d.setTransform(at);
+//        g2d.drawImage(image, 0, 0, null);
+//        g2d.dispose();
+//        return rotate;
+//    }
 
     public void readyToBeSelected() {
         for (ActionListener actionListener : this.getActionListeners()) {

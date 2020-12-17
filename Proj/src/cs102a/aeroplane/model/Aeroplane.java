@@ -111,7 +111,7 @@ public class Aeroplane {
                             generalGridIndex = COLOR_PATH[color][selfPathIndex + steps];
                     } else {
                         // 是自己格子，无条件赶走对方
-                        for (Aeroplane p : chessBoard.getOppoPlanes(COLOR_NORM_PATH[color][selfPathIndex + steps]))
+                        for (Aeroplane p : chessBoard.getOppoPlanes(COLOR_PATH[color][selfPathIndex + steps]))
                             p.backToHangarDueToCrash();
 
                         // 且跳到下一个同色格子，赶走这个格子的对方
@@ -123,36 +123,13 @@ public class Aeroplane {
                     }
                 }
             } else {
-                for (int j = 1; j <= steps - i + 1; j++) {
-                    path.add(COLOR_NORM_PATH[color][selfPathIndex + i - j - 1]);
-                    // 判断这一步会不会碰上其他方
-                    if (chessBoard.hasOtherPlane(COLOR_NORM_PATH[color][selfPathIndex + i - j - 1])) {
-                        if (j == steps - i + 1) {
-                            // 不是自己格子，battle
-                            if (!onSameColorGrid(COLOR_NORM_PATH[color][selfPathIndex + i - j - 1])) {
-                                for (Aeroplane p : chessBoard.getOppoPlanes(COLOR_NORM_PATH[color][selfPathIndex + i - j - 1])) {
-                                    if (isWinnerInBattling()) {
-                                        p.backToHangarDueToCrash();
-                                    } else {
-                                        this.backToHangarDueToCrash();
-                                        break;
-                                    }
-                                    if (this.state != PlaneState.IN_HANGAR)
-                                        path.add(COLOR_NORM_PATH[color][selfPathIndex + i - j - 1]);
-                                }
-                            } else {
-                                // 是自己格子，无条件赶走对方
-                                for (Aeroplane p : chessBoard.getOppoPlanes(COLOR_NORM_PATH[color][selfPathIndex + i - j - 1]))
-                                    p.backToHangarDueToCrash();
-
-                                // 且跳到下一个同色格子，赶走这个格子的对方
-                                for (Aeroplane p : chessBoard.getOppoPlanes(isJetGrid(COLOR_NORM_PATH[color][selfPathIndex + i - j - 1])))
-                                    p.backToHangarDueToCrash();
-
-                                chessBoard.adjustPosition(getNextGridWhenOnSelfColorGrid(COLOR_NORM_PATH[color][selfPathIndex + i - j - 1]), number);
-                            }
-                        }
-                    }
+                // 判断这一步会不会碰上其他方
+                // FIXME: 2020/12/16 检查数学计算有没有出错
+                if (chessBoard.hasOtherPlane(COLOR_PATH[color][2 * BoardCoordinate.PATH_LENGTH - generalGridIndex - steps])) {
+                    // 是自己格子，无条件赶走对方
+                    for (Aeroplane p : chessBoard.getOppoPlanes(COLOR_PATH[color][2 * BoardCoordinate.PATH_LENGTH - generalGridIndex - steps]))
+                        p.backToHangarDueToCrash();
+                    generalGridIndex = COLOR_PATH[color][2 * BoardCoordinate.PATH_LENGTH - generalGridIndex - steps];
                 }
             }
         }

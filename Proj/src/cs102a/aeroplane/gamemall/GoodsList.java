@@ -12,7 +12,7 @@ public class GoodsList {
         public void use(ChessBoard chessBoard) {
             for (Aeroplane p : chessBoard.getPlanes()) {
                 if (p.getColor() != chessBoard.getNowPlayer()) {
-                    if (p.getState() == PlaneState.WAITING || p.getState() == PlaneState.ON_BOARD) {
+                    if (p.getState() != PlaneState.FINISH && p.getState() == PlaneState.ON_BOARD) {
                         p.backToHangarDueToCrash();
                     }
                 }
@@ -22,13 +22,14 @@ public class GoodsList {
     };
 
     // 对应波音
-    public static final Goods takeOffAnyway = new Goods(49, "芜湖起飞", "自己方所有当前在机场的飞机都获得一次无条件起飞的资格") {
+    public static final Goods takeOffAnyway = new Goods(39, "芜湖起飞", "自己方任选一架当前在机场的飞机获得一次无条件起飞的资格") {
         @Override
         public void use(ChessBoard chessBoard) {
             for (Aeroplane p : chessBoard.getPlanes()) {
                 if (p.getColor() == chessBoard.getNowPlayer()) {
                     if (p.getState() == PlaneState.IN_HANGAR) {
-                        p.setState(PlaneState.WAITING);
+                        p.setState(PlaneState.ON_BOARD);
+                        p.getPlaneView().readyToBeSelected();
                     }
                 }
             }
