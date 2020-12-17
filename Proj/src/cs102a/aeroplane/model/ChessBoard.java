@@ -14,6 +14,8 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static cs102a.aeroplane.frontend.EndGameAndShowRank.endGameAndShowRank;
+
 public class ChessBoard extends JPanel {
     private int state;              // 状态（游戏未开始，游戏已开始，游戏结束）  // 重置游戏后先进入GAME_READY，完成后GAME_START
     private int nowPlayer;          // 当前回合
@@ -457,11 +459,11 @@ public class ChessBoard extends JPanel {
 
     // 结束游戏
     public void endGame() {
-        new EndGameAndShowRank(this).setVisible(true);
+       endGameAndShowRank.setVisible(true);
 
         // 联网模式还要广播获胜消息
         if (GameInfo.isIsOnlineGame()) {
-            ?
+            //?
         }
     }
 

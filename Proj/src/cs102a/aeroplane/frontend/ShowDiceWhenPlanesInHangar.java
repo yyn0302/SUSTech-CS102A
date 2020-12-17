@@ -11,7 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ShowDiceWhenPlanesInHangar {
-写
+//写
 //    private static boolean isWinInBattle;
 //
 //    public static void popBattleFrame() {
