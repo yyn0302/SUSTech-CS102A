@@ -26,7 +26,7 @@ public class GameSaver {
                 "@@\n" +
                         "@PLAYER_LENGTH=%d,%d,%d,%d\n" +
                         "@LANDING=96\n" +
-                        "@@PLAYER=4\n" +
+                        "@PLAYER=4\n" +
                         "@DICE_NUM=2\n",
                 BoardCoordinate.PATH_LENGTH,
                 BoardCoordinate.PATH_LENGTH,
@@ -38,9 +38,12 @@ public class GameSaver {
         // 完成 -1
         String stepInfo = String.format(
                 "@@\n" +
-                        "@STEP=%d\n" +
-                        "@MOVING_PLAYER=%d\n" +
-                        "@@PLANE_POSITION\n" +
+                        "@NOW_PLAYER=%d\n" +
+                        "@B=%d\n"+
+                        "@G=%d\n"+
+                        "@R=%d\n"+
+                        "@Y=%d\n"+
+                        "@@\n" +
                         "1P%d\n" +
                         "2P%d\n" +
                         "3P%d\n" +
@@ -57,7 +60,6 @@ public class GameSaver {
                         "14P%d\n" +
                         "15P%d\n" +
                         "16P%d",
-                chessBoard.getStep(),
                 chessBoard.getNowPlayer(),
                 chessBoard.getPlanes()[0].getGeneralGridIndex(),
                 chessBoard.getPlanes()[1].getGeneralGridIndex(),

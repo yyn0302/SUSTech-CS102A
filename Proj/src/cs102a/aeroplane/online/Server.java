@@ -12,13 +12,11 @@ import java.util.ArrayList;
 
 public class Server implements Closeable {
 
-    private ServerSocket serverSocket;
-    private Socket socket;
-
     protected final int serverPort = 20924;   // Because this port is safe to use and I ❤ this number
-
     protected InputStream inputStream;
     protected OutputStream outputStream;
+    private ServerSocket serverSocket;
+    private Socket socket;
 
 
     // 建立房间 -> 实例化Server -> 展示ip供其他人加入
@@ -30,6 +28,18 @@ public class Server implements Closeable {
         }
     }
 
+    /**
+     * @return 本地IP的String格式 或 报错信息
+     * TODO 在作为服务器的机器上将本地址显示出来，提示其他用户输入此ip进行连接
+     * @throws UnknownHostException 本机网络异常
+     */
+    static public String getLocalIP() throws Exception {
+        try {
+            return InetAddress.getLocalHost().toString();
+        } catch (UnknownHostException e) {
+            throw new UnknownHostException("嗯？获取不到自己的IP地址？？\n怎么会这样( •̥́ ˍ •̀ू )");
+        }
+    }
 
     /**
      * @throws IOException 客户机配置异常
@@ -45,7 +55,6 @@ public class Server implements Closeable {
         }
     }
 
-
     /**
      * @throws IOException 发送信息失败
      * @description: 将信息写入输出流
@@ -60,7 +69,6 @@ public class Server implements Closeable {
             throw new IOException("呐呐，先辈！连接有些小问题唔...");
         }
     }
-
 
     /**
      * @return 获取游戏相关状态变更/结束等广播
@@ -80,21 +88,6 @@ public class Server implements Closeable {
             return msg.toString();
         }
     }
-
-
-    /**
-     * @return 本地IP的String格式 或 报错信息
-     * TODO 在作为服务器的机器上将本地址显示出来，提示其他用户输入此ip进行连接
-     * @throws UnknownHostException 本机网络异常
-     */
-    static public String getLocalIP() throws Exception {
-        try {
-            return InetAddress.getLocalHost().toString();
-        } catch (UnknownHostException e) {
-            throw new UnknownHostException("嗯？获取不到自己的IP地址？？\n怎么会这样( •̥́ ˍ •̀ू )");
-        }
-    }
-
 
     @Override
     public void close() {

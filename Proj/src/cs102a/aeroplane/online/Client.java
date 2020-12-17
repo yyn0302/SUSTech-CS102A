@@ -7,10 +7,11 @@ import java.net.Socket;
 // Reference: https://blog.csdn.net/fansongy/article/details/7767129
 public class Client extends Server {
 
-    private Socket socket;
+//    public Client localClient=new Client()
 
     protected InputStream inputStream;
     protected OutputStream outputStream;
+    private Socket socket;
 
     // TODO: 2020/12/12 此ip为用户输入，加入房间
     // 按键 加入房间 -> 输入ip传递过来 -> 实例化Client
@@ -27,6 +28,11 @@ public class Client extends Server {
 
 //    FIXME:2020/12/12
 
+    public void getAndApplyChange() {
+//        加标识符
+
+    }
+
     // 获取本机连接端口，以此大小给本地分配 myColor
     public int getLocalPort() {
         try {
@@ -36,17 +42,11 @@ public class Client extends Server {
         }
     }
 
-
-    public static void getAndApplyChange() {
-//        加标识符
+    public void uploadChanges() {
 
     }
 
-//    public static void updateRecordedChange() {
-//
-//    }
-//
-//    public static void notifyNewWinner() {
-//
-//    }
+    public void notifyNewWinner() {
+
+    }
 }

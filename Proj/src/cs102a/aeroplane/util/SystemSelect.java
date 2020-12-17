@@ -1,12 +1,9 @@
 package cs102a.aeroplane.util;
 
 public class SystemSelect {
+    static final public String baseLoad = System.getProperty("user.dir");
     // 判断操作系统，适配windows和macos
     private final static String OS = System.getProperty("os.name").toLowerCase();
-
-
-    static final public String baseLoad = System.getProperty("user.dir");
-
     private final static String macHistoryPath = "/Proj/src/cs102a/aeroplane/savegame/history/";
     private final static String windowsHistoryPath = "\\Proj\\src\\cs102a\\aeroplane\\savegame\\history\\";
 

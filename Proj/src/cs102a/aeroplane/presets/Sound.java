@@ -7,10 +7,7 @@ import java.io.File;
 
 // play(boolean)
 public class Sound {
-    private final File musicFile;
     private static final String musicPath = SystemSelect.getMusicPath();
-    MusicPlayer player = new MusicPlayer(this);
-
     public final static Sound ONE_STEP = new Sound(new File(String.format("%sNormMove.wav", musicPath)));
     public final static Sound JUMP = new Sound(new File(String.format("%sJump.wav", musicPath)));
     public final static Sound JET = new Sound(new File(String.format("%sFly.wav", musicPath)));
@@ -18,6 +15,8 @@ public class Sound {
     public final static Sound FINISH_ONE_PLANE = new Sound(new File(String.format("%sFinish.wav", musicPath)));
     public final static Sound GAMING_THEME1 = new Sound(new File(String.format("%sBGM_Auamen.wav", musicPath)));
     public final static Sound GAMING_THEME2 = new Sound(new File(String.format("%sBGM_Incarnation.wav", musicPath)));
+    private final File musicFile;
+    MusicPlayer player = new MusicPlayer(this);
 
 
     Sound(File musicFile) {

@@ -40,14 +40,13 @@ public class MusicPlayer {
         this.isLoop = isLoop;
     }
 
+    public float getVolume() {
+        return volume;
+    }
 
     // -80.0~6测试,越小音量越小
     public void setVolume(int volume) {
         this.volume = volume;
-    }
-
-    public float getVolume() {
-        return volume;
     }
 
     // 异步播放线程
