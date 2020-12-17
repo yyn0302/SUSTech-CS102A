@@ -16,6 +16,8 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static cs102a.aeroplane.frontend.EndGameAndShowRank.endGameAndShowRank;
+
 public class ChessBoard extends JPanel {
     int[] rollResult;                                     // 骰子点数
     ArrayList<ArrayList<Integer>> stackingPlanes;         // 记录有无叠子，子ArrayList存叠一起的飞机number，只有第一个是visible
@@ -203,7 +205,7 @@ public class ChessBoard extends JPanel {
             ?
         }
 
-        new EndGameAndShowRank(this).setVisible(true);
+   endGameAndShowRank.setVisible(true);
     }
 
 
