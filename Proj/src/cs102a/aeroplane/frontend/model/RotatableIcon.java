@@ -12,12 +12,13 @@ import java.awt.*;
  */
 public class RotatableIcon extends ImageIcon implements Icon {
 
-    private Icon icon;
+    private final Icon icon;
     private double degrees;
 
     /**
      * Create a RotatedIcon. The icon will rotate about its center. This
      * constructor will automatically set the Rotate enum to ABOUT_CENTER.
+     *
      * @param icon    the Icon to rotate
      * @param degrees the degrees of rotation
      */
@@ -49,21 +50,21 @@ public class RotatableIcon extends ImageIcon implements Icon {
 
     @Override
     public int getIconWidth() {
-            double radians = Math.toRadians(degrees);
-            double sin = Math.abs(Math.sin(radians));
-            double cos = Math.abs(Math.cos(radians));
-            int width = (int) Math.floor(icon.getIconWidth() * cos + icon.getIconHeight() * sin);
-            return width;
+        double radians = Math.toRadians(degrees);
+        double sin = Math.abs(Math.sin(radians));
+        double cos = Math.abs(Math.cos(radians));
+        int width = (int) Math.floor(icon.getIconWidth() * cos + icon.getIconHeight() * sin);
+        return width;
 
     }
 
     @Override
     public int getIconHeight() {
-            double radians = Math.toRadians(degrees);
-            double sin = Math.abs(Math.sin(radians));
-            double cos = Math.abs(Math.cos(radians));
-            int height = (int) Math.floor(icon.getIconHeight() * cos + icon.getIconWidth() * sin);
-            return height;
+        double radians = Math.toRadians(degrees);
+        double sin = Math.abs(Math.sin(radians));
+        double cos = Math.abs(Math.cos(radians));
+        int height = (int) Math.floor(icon.getIconHeight() * cos + icon.getIconWidth() * sin);
+        return height;
 
     }
 

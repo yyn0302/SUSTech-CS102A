@@ -19,9 +19,9 @@ public class PlayerInfoPanel extends JPanel {
     private static final ImageIcon pic3 = new ImageIcon(path + "玩家3.jpg");
     private static final ImageIcon pic4 = new ImageIcon(path + "玩家4.jpg");
 
-    private JLabel playerLabel;
-    private JLabel nameLabel;
-    private ChessBoard chessBoard;
+    private final JLabel playerLabel;
+    private final JLabel nameLabel;
+    private final ChessBoard chessBoard;
 
     public PlayerInfoPanel(ChessBoard chessBoard) {
         this.chessBoard = chessBoard;

@@ -6,27 +6,28 @@ import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 
 public class PlaneView extends JButton {
     private final int color;
     private final int number;
-    private int state;
     private final int itsHangar;
-
+    // TODO: 2020/12/14 放好棋盘GUI后把棋盘图片左上角重定位(0,0)
+    private final int xOffSet;
+    private final int yOffSet;
+    private final ChessBoard chessboard;    // 引用
+    private int state;
+    private final Aeroplane aeroplane;
     private int numOfStackedPlanes;
     MouseListener ableToMoveTipListener = new MouseListener() {
         @Override
-        // 选择此飞机，禁止其他点击，准备飞到相应位置
+        // 选择此飞机，禁止其他点击，飞到相应位置
         public void mousePressed(MouseEvent e) {
             for (Aeroplane p : chessboard.getPlanes()) {
                 if (p.getNumber() != number) p.getPlaneView().setEnabled(false);
-
+                aeroplane.tryMovingFront(chessboard.getNowMove());
             }
         }
 
@@ -68,18 +69,14 @@ public class PlaneView extends JButton {
         }
     };
 
-    // TODO: 2020/12/14 放好棋盘GUI后把棋盘图片左上角重定位(0,0)
-    private final int xOffSet;
-    private final int yOffSet;
-    private final ChessBoard chessboard;    // 引用
-
-    public PlaneView(ChessBoard chessboard, int number, int color, int itsHangar, int xOffSet, int yOffSet) {
+    public PlaneView(ChessBoard chessboard, int number, int color, int itsHangar, int xOffSet, int yOffSet, Aeroplane aeroplane) {
         this.color = color;
         this.xOffSet = xOffSet;
         this.yOffSet = yOffSet;
         this.chessboard = chessboard;
         this.number = number;
         this.itsHangar = itsHangar;
+        this.aeroplane = aeroplane;
 
         this.numOfStackedPlanes = 1;
         this.state = PlaneState.IN_HANGAR;

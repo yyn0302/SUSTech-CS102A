@@ -74,27 +74,28 @@ public class GameLoader {
                 System.err.println("Cursor replacing...");//读一行，让光标移动到正确预备位置
             }
             try {
-                String[] splitTemp;
-
-                splitTemp = sc.nextLine().split("=");
-                chessBoard.setStep(Integer.parseInt(splitTemp[splitTemp.length - 1]));
-
-                splitTemp = sc.nextLine().split("=");
-                chessBoard.setNowPlayer(Integer.parseInt(splitTemp[splitTemp.length - 1]));
-
-                while (!sc.nextLine().equals("@@PLANE_POSITION")) {
-                    System.err.println("Cursor replacing...");//读一行，让光标移动到正确预备位置
-                }
-                int planeCnt = 0;
-                for (int i = 0; i < 16; i++) {
-                    splitTemp = sc.nextLine().split("P");
-                    try {
-                        chessBoard.getPlanes()[i].setGeneralGridIndex(Integer.parseInt(splitTemp[splitTemp.length - 1]));
-                    } catch (AssertionError e) {
-                        System.err.print(e.getMessage());
-                        break;
-                    }
-                    planeCnt++;
+                    改
+//                String[] splitTemp;
+//
+//                splitTemp = sc.nextLine().split("=");
+//                chessBoard.setStep(Integer.parseInt(splitTemp[splitTemp.length - 1]));
+//
+//                splitTemp = sc.nextLine().split("=");
+//                chessBoard.setNowPlayer(Integer.parseInt(splitTemp[splitTemp.length - 1]));
+//
+//                while (!sc.nextLine().equals("@@PLANE_POSITION")) {
+//                    System.err.println("Cursor replacing...");//读一行，让光标移动到正确预备位置
+//                }
+//                int planeCnt = 0;
+//                for (int i = 0; i < 16; i++) {
+//                    splitTemp = sc.nextLine().split("P");
+//                    try {
+//                        chessBoard.getPlanes()[i].setGeneralGridIndex(Integer.parseInt(splitTemp[splitTemp.length - 1]));
+//                    } catch (AssertionError e) {
+//                        System.err.print(e.getMessage());
+//                        break;
+//                    }
+//                    planeCnt++;
                 }
                 if (planeCnt < 16) throw new SecurityException("呀勒？有效飞机个数怎么不对");
 

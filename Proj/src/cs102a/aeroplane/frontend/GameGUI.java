@@ -12,12 +12,8 @@ import java.awt.event.ActionListener;
 
 public class GameGUI extends JFrame {
     public static GameGUI window = new GameGUI("飞行棋[当前 " + " 步]");
-    private ChessBoard chessBoard = new ChessBoard();
-    private PlayerInfoPanel playerInfoPanel;
-
-    public PlayerInfoPanel getPlayerInfoPanel() {
-        return playerInfoPanel;
-    }
+    private final ChessBoard chessBoard = new ChessBoard();
+    private final PlayerInfoPanel playerInfoPanel;
 
     public GameGUI(String title) {
         this.setTitle(title);
@@ -72,6 +68,10 @@ public class GameGUI extends JFrame {
 
     public static void popGameGUI() {
         window.setVisible(true);
+    }
+
+    public PlayerInfoPanel getPlayerInfoPanel() {
+        return playerInfoPanel;
     }
 
     public void refresh() {

@@ -9,7 +9,7 @@ import java.awt.*;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class Start {
-    private static JFrame startFrame = new JFrame("飞行棋");
+    private static final JFrame startFrame = new JFrame("飞行棋");
 
     public static void main(String[] args) {
         startFrame.setLocationRelativeTo(null);
