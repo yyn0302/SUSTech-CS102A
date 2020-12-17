@@ -49,7 +49,7 @@ public class GameGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 window.dispose();
                 //打开startMenu
-
+                Start.popStart();
             }
         });
         savePanel.add(resetButton);
