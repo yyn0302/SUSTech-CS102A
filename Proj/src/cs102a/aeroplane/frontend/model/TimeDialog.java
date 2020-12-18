@@ -8,8 +8,8 @@ import java.util.concurrent.TimeUnit;
 
 public class TimeDialog {
 
-    private final JLabel label = new JLabel();
-    private JDialog dialog;
+    private JLabel label;
+    private JDialog dialog = new JDialog();
 
     private int seconds;
 
@@ -19,19 +19,21 @@ public class TimeDialog {
      * @param closeInSec     以秒记的自动关闭时间，可以提前按按钮关闭
      */
     public void showDialog(JFrame jFrameOfButton, String message, int closeInSec) {
+        dialog.setLayout(null);
+
         seconds = closeInSec;
-        label.setText(message);
+        label = new JLabel(message, JLabel.CENTER);
         label.setBounds(80, 10, 200, 20);
 
         ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
 
-        JButton confirm = new JButton("Ok ok...");
-        confirm.setBounds(100, 40, 60, 20);
+        JButton confirm = new JButton("好咯...");
+        confirm.setBounds(140, 120, 50, 60);
         confirm.addActionListener(e -> TimeDialog.this.dialog.dispose());
 
         dialog = new JDialog(jFrameOfButton, true);
         dialog.setTitle("给你" + seconds + "秒，看好啦");
-        dialog.setLayout(null);
+        dialog.setLayout(new GridLayout(2, 1));
         dialog.add(label);
         dialog.add(confirm);
 
@@ -45,9 +47,9 @@ public class TimeDialog {
             }
         }, 1, 1, TimeUnit.SECONDS);
 
-        dialog.pack();
-        dialog.setSize(new Dimension(350, 100));
-        dialog.setLocationRelativeTo(jFrameOfButton);
+//        dialog.pack();
+        dialog.setSize(new Dimension(250, 100));
+        dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
 }

@@ -20,7 +20,7 @@ public class GameLoader {
     // TODO: 2020/12/12 放个 TimeDialog 提示导入中的异常类型
     public static void load(ChessBoard chessBoard) {
         // 备份当前棋盘数据
-        int stepBkp = chessBoard.getStep();
+//        int stepBkp = chessBoard.getStep();
         int nowPlayerBkp = chessBoard.getNowPlayer();
         int[] planeIndexBkp = new int[16];
         for (int i = 0; i < 16; i++) {
@@ -32,7 +32,7 @@ public class GameLoader {
         } catch (Exception e) {
             // TODO: 2020/12/12 放个 TimeDialog 提示导入中的异常类型
             // 恢复备份的数据
-            chessBoard.setStep(stepBkp);
+//            chessBoard.setStep(stepBkp);
             chessBoard.setNowPlayer(nowPlayerBkp);
             for (int i = 0; i < 16; i++) {
                 chessBoard.getPlanes()[i].setGeneralGridIndexAndMove(planeIndexBkp[i]);
@@ -74,7 +74,7 @@ public class GameLoader {
                 System.err.println("Cursor replacing...");//读一行，让光标移动到正确预备位置
             }
             try {
-                    改
+                // FIXME: 2020/12/18 改
 //                String[] splitTemp;
 //
 //                splitTemp = sc.nextLine().split("=");
@@ -96,8 +96,8 @@ public class GameLoader {
 //                        break;
 //                    }
 //                    planeCnt++;
-                }
-                if (planeCnt < 16) throw new SecurityException("呀勒？有效飞机个数怎么不对");
+//                }
+//                if (planeCnt < 16) throw new SecurityException("呀勒？有效飞机个数怎么不对");
 
             } catch (NumberFormatException e) {
                 throw new Exception("先辈，读档失败了 QAQ");

@@ -1,73 +1,90 @@
 package cs102a.aeroplane.frontend;
 
-import cs102a.aeroplane.frontend.model.BackgroundPanel;
+import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.PlayerInfoPanel;
+import cs102a.aeroplane.frontend.model.TimeDialog;
 import cs102a.aeroplane.model.ChessBoard;
+import cs102a.aeroplane.savegame.GameSaver;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+// FIXME: 2020/12/18 效果不好就全部调整为绝对布局
 public class GameGUI extends JFrame {
-    public static GameGUI window = new GameGUI("飞行棋[当前 " + " 步]");
-    private final ChessBoard chessBoard = new ChessBoard();
-    private final PlayerInfoPanel playerInfoPanel;
+    public static GameGUI window = new GameGUI("飞行棋");
+
+    // TODO: 2020/12/18 当棋子出现偏移时修改xy方向偏置
+    private ChessBoard chessBoard = new ChessBoard(window, 0, 0);
+    private PlayerInfoPanel playerInfoPanel;
 
     public GameGUI(String title) {
+        this.setSize(1300, 1000);
+
+        this.setLayout(null);
+        // 以启用绝对布局
+
         this.setTitle(title);
         String path = SystemSelect.getImagePath();
-        JPanel chessBoardPanel = new BackgroundPanel((new ImageIcon(path + "开始图片.jpg").getImage()));
+
+        // 背景图片
+        ImageIcon background = new ImageIcon(path + (GameInfo.getTheme() == 1 ? "海王主题.jpg" : "灵笼主题.jpg"));
+        JLabel label = new JLabel(background);
+        label.setBounds(0, 0, this.getWidth(), this.getHeight());
+        JPanel imagePanel = (JPanel) this.getContentPane();
+        imagePanel.setOpaque(false);
+        this.getLayeredPane().add(label, -1);
+
 
         JPanel rightSidePanel = new JPanel();
         this.setLayout(new GridLayout(1, 2, 50, 50));//大小有待后续调整
         rightSidePanel.setLayout(new GridLayout(2, 1, 20, 20));
+
         //玩家面板
         playerInfoPanel = new PlayerInfoPanel(chessBoard);
 
         //保存面板
         JPanel savePanel = new JPanel();
         savePanel.setLayout(new GridLayout(3, 1, 10, 10));//大小有待调整
-        JButton resetButton = new JButton("重置");
-        JButton saveButton = new JButton("保存");
-        JButton returnButton = new JButton("返回");
+        JButton resetButton = new JButton(new ImageIcon(path+"reset.jpg"));
+        JButton saveButton = new JButton(new ImageIcon(path+"save.png"));
+        JButton returnButton = new JButton(new ImageIcon(path+"back.png"));
 
-        resetButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //重置游戏的后台
-            }
+        // FIXME: 2020/12/18 不知道对不对
+        resetButton.addActionListener(e -> {
+            chessBoard=null;
+            System.gc();
+            chessBoard=new ChessBoard(window,0,0);
         });
 
-        saveButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //保存游戏的后台
-            }
+        saveButton.addActionListener(e -> {
+            GameSaver.save(chessBoard);
+            new TimeDialog().showDialog(window,"成功保存",3);
         });
 
-        returnButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                window.dispose();
-                //打开startMenu
-                Start.popStart();
-            }
+        returnButton.addActionListener(e -> {
+            window.setVisible(false);
+            //打开startMenu
+            Start.popStart();
         });
+
         savePanel.add(resetButton);
         savePanel.add(saveButton);
         savePanel.add(returnButton);
         savePanel.setPreferredSize(new Dimension(100, 100));//大小有待后续调整
+
         //窗口初始化
         rightSidePanel.add(playerInfoPanel);
         rightSidePanel.add(savePanel);
-        this.add(chessBoardPanel);
-        this.add(rightSidePanel);
-        this.setVisible(true);
-        this.setSize(800, 600);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    }
 
-    public static void popGameGUI() {
-        window.setVisible(true);
+        this.add(chessBoard);
+        chessBoard.setBounds(0,0,1000,1000);
+
+        this.add(rightSidePanel);
+        rightSidePanel.setBounds(1100,0,200,1000);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setResizable(false);
+        this.setVisible(true);
     }
 
     public PlayerInfoPanel getPlayerInfoPanel() {
@@ -75,6 +92,18 @@ public class GameGUI extends JFrame {
     }
 
     public void refresh() {
+//         FIXME: 2020/12/18 增加效果按键，刷新剩余个数
+    }
 
+    public ChessBoard getChessBoard() {
+        return chessBoard;
+    }
+
+    public void setChessBoard(ChessBoard chessBoard) {
+        this.chessBoard = chessBoard;
+    }
+
+    public static void main(String[] args) {
+        window.setVisible(true);
     }
 }

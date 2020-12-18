@@ -1,6 +1,7 @@
 package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.GameInfo;
+import cs102a.aeroplane.frontend.model.RotatableIcon;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.util.SystemSelect;
@@ -10,6 +11,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * @apiNote 点击按键时会自动移动叠子，虽然他们是 invisible & disabled
+ * 棋子移动到终点会自动解散叠子状态
+ * @deprecated 有时间把继承JButton改为clickable JFrame，显示效果更好
+ */
 public class PlaneView extends JButton {
     private final int color;
     private final int number;
@@ -28,14 +34,13 @@ public class PlaneView extends JButton {
         public void mousePressed(MouseEvent e) {
             for (Aeroplane p : chessboard.getPlanes()) {
                 if (p.getNumber() != number) p.getPlaneView().setEnabled(false);
-                if (aeroplane.indexOfTeam == -1)  // 不在队伍,自己移动自己
-                    aeroplane.tryMovingFront(chessboard.getNowMove());
-                else {
+                aeroplane.tryMovingFront(chessboard.getNowMove());
+                if (aeroplane.indexOfTeam != -1)  // 在队伍,移动队员
                     for (Aeroplane a : chessboard.getPlanes()) {
                         if (a.getColor() == color && a.indexOfTeam == aeroplane.indexOfTeam)
-                        // 驱动所有队内成员一起移动
+                            // 驱动所有队内成员一起移动
+                            a.getPlaneView().moveTo(aeroplane.getGeneralGridIndex());
                     }
-                }
             }
         }
 
@@ -59,7 +64,7 @@ public class PlaneView extends JButton {
                     themeSelectedIconPath.append("ye.png");
                     break;
             }
-            setIcon(new ImageIcon(themeSelectedIconPath.toString()));
+            setIcon(new RotatableIcon(themeSelectedIconPath.toString(), 0));
         }
 
         // 做了个移入移出的可选择的提示
@@ -114,56 +119,16 @@ public class PlaneView extends JButton {
                 themeSelectedIconPath.append("ye.png");
                 break;
         }
-        this.setIcon(new ImageIcon(themeSelectedIconPath.toString()));
+        this.setIcon(new RotatableIcon(themeSelectedIconPath.toString(), BoardCoordinate.REVOLVE_ANGLE[aeroplane.getGeneralGridIndex()]));
     }
 
     public void moveTo(int generalIndex) {
         this.setBounds(xOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][0] - BoardCoordinate.GRID_SIZE / 2,
                 yOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][1] - BoardCoordinate.GRID_SIZE / 2,
                 BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
-        // FIXME: 2020/12/17 旋转
-//        this.setRotation(BoardCoordinate.REVOLVE_ANGLE[generalGridIndex]);
-//        try {
-//            BufferedImage origin;
-//            BufferedImage rotated90 = rotate(original, 90.0d);
-//            BufferedImage rotatedMinus90 = rotate(original, -90.0d);
-//
-//            JPanel panel = new JPanel();
-//            panel.add(new JLabel(new ImageIcon(original)));
-//            panel.add(new JLabel(new ImageIcon(rotated90)));
-//            panel.add(new JLabel(new ImageIcon(rotatedMinus90)));
-//
-//            JOptionPane.showMessageDialog(null, panel, null, JOptionPane.PLAIN_MESSAGE, null);
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        }
+        this.setIcon(new RotatableIcon(this.getIcon(), BoardCoordinate.REVOLVE_ANGLE[aeroplane.getGeneralGridIndex()]));
     }
 
-//    /**
-//     * @param image   BufferedImage original = ImageIO.read(img);
-//     *                BufferedImage rotated90 = rotate(original, 90.0d);
-//     * @param degrees in degrees
-//     * @return a rotated BufferedImage can be given to new ImageIcon()
-//     */
-//    private BufferedImage rotate(BufferedImage image, Double degrees) {
-//        double radians = Math.toRadians(degrees);
-//        double sin = Math.abs(Math.sin(radians));
-//        double cos = Math.abs(Math.cos(radians));
-//        int newWidth = (int) Math.round(image.getWidth() * cos + image.getHeight() * sin);
-//        int newHeight = (int) Math.round(image.getWidth() * sin + image.getHeight() * cos);
-//
-//        BufferedImage rotate = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-//        Graphics2D g2d = rotate.createGraphics();
-//        int x = (newWidth - image.getWidth()) / 2;
-//        int y = (newHeight - image.getHeight()) / 2;
-//        AffineTransform at = new AffineTransform();
-//        at.setToRotation(radians, x + (image.getWidth() / 2), y + (image.getHeight() / 2));
-//        at.translate(x, y);
-//        g2d.setTransform(at);
-//        g2d.drawImage(image, 0, 0, null);
-//        g2d.dispose();
-//        return rotate;
-//    }
 
     public void readyToBeSelected() {
         for (ActionListener actionListener : this.getActionListeners()) {
@@ -174,6 +139,8 @@ public class PlaneView extends JButton {
     }
 
     public void finish() {
+        chessboard.teamIndexUsed[color][aeroplane.indexOfTeam] = false;
+        aeroplane.indexOfTeam = -1;
         moveTo(itsHangar);
         StringBuilder themeSelectedIconPath = new StringBuilder();
         themeSelectedIconPath.append(SystemSelect.getImagePath());

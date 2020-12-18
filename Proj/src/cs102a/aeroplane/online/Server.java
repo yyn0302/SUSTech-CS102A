@@ -69,7 +69,7 @@ public class Server implements Closeable {
             throw new IOException("呐呐，先辈！连接有些小问题唔...");
         }
     }
-
+//写
     /**
      * @return 获取游戏相关状态变更/结束等广播
      * @description: 将信息写入输出流

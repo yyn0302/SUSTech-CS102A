@@ -22,7 +22,7 @@ public class EnterSuperMode extends JFrame {
         this.setAlwaysOnTop(true);
 
         JPanel base = new JPanel();
-        base.setLayout(new GridLayout(1, 2, 10, 5));
+        base.setLayout(new GridLayout(2, 1, 10, 5));
         base.setPreferredSize(new Dimension(150, 150));
 
 
@@ -30,7 +30,7 @@ public class EnterSuperMode extends JFrame {
         JPasswordField pwd = new JPasswordField();
 
         JPanel upPanel = new JPanel();
-        upPanel.setLayout(new GridLayout(2, 2, 10, 20));
+        upPanel.setLayout(new GridLayout(1, 2, 10, 20));
         upPanel.add(tip);
         upPanel.add(pwd);
 
@@ -44,11 +44,9 @@ public class EnterSuperMode extends JFrame {
                     Settings.enterSuperMode.setText("已获取管理权限");
                     Settings.enterSuperMode.setEnabled(false);
                     GameInfo.setSuperUser(true);
-
                 } else {
                     isRightPwd = false;
-                    TimeDialog td = new TimeDialog();
-                    td.showDialog(EnterSuperMode.window, "密码错误 (pwd = 020924)", 2);
+                    new TimeDialog().showDialog(window, "密码错误 (pwd = 020924)", 2);
                     EnterSuperMode.window.setVisible(false);
                 }
             } catch (NullPointerException ex) {

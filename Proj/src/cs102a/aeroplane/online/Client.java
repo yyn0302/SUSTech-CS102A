@@ -1,5 +1,7 @@
 package cs102a.aeroplane.online;
 
+import cs102a.aeroplane.GameInfo;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -7,7 +9,7 @@ import java.net.Socket;
 // Reference: https://blog.csdn.net/fansongy/article/details/7767129
 public class Client extends Server {
 
-//    public Client localClient=new Client()
+    public Client localClient=new Client(GameInfo.getServerIp());
 
     protected InputStream inputStream;
     protected OutputStream outputStream;
@@ -25,7 +27,7 @@ public class Client extends Server {
             e.printStackTrace();
         }
     }
-
+//写
 //    FIXME:2020/12/12
 
     public void getAndApplyChange() {

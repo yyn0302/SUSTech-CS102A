@@ -74,6 +74,8 @@ public abstract class Goods {
         base.add(rowPanel4);
 
         itemDetail.add(base);
+        itemDetail.setLocationRelativeTo(null);
+        itemDetail.pack();
         itemDetail.setDefaultCloseOperation(itemDetail.HIDE_ON_CLOSE);
     }
 

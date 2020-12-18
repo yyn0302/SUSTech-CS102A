@@ -113,11 +113,17 @@ public class Settings extends JFrame {
 
 
         JPanel rowPanel1 = new JPanel();
-        rowPanel1.setLayout(new GridLayout(2, 1, 10, 10));
+        rowPanel1.setLayout(new GridLayout(1, 2, 10, 10));
         rowPanel1.add(themeLabel);
         rowPanel1.add(themeSettings);
         rowPanel1.setOpaque(false);
         rowPanel1.setPreferredSize(new Dimension(400, 150));
+
+        JPanel onlinePanel = new JPanel();
+        onlinePanel.setLayout(new GridLayout(1, 2, 10, 10));
+        onlinePanel.add(onlineLabel);
+        onlinePanel.setOpaque(false);
+        onlinePanel.add(changeOnlineMode);
 
         JPanel rowPanel2 = new JPanel();
         rowPanel2.setLayout(new GridLayout(1, 5, 5, 10));
@@ -138,9 +144,11 @@ public class Settings extends JFrame {
         String path = SystemSelect.getImagePath();
         JPanel backgroundPanel = new BackgroundPanel((new ImageIcon(path + "开始图片.jpg").getImage()));
         backgroundPanel.setOpaque(false);
-        backgroundPanel.setLayout(new GridLayout(3, 1, 10, 10));
-        backgroundPanel.setPreferredSize(new Dimension(150, 150));
+        backgroundPanel.setLayout(new GridLayout(4, 1));
+//        backgroundPanel.setLayout(new GridLayout(3, 1, 10, 10));
+        backgroundPanel.setPreferredSize(new Dimension(200, 200));
         backgroundPanel.add(rowPanel1);
+        backgroundPanel.add(onlinePanel);
         backgroundPanel.add(rowPanel2);
         backgroundPanel.add(rowPanel3);
 

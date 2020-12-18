@@ -8,7 +8,6 @@ import java.io.File;
 // play(boolean)
 public class Sound {
     private static final String musicPath = SystemSelect.getMusicPath();
-    public final static Sound ONE_STEP = new Sound(new File(String.format("%sNormMove.wav", musicPath)));
     public final static Sound JUMP = new Sound(new File(String.format("%sJump.wav", musicPath)));
     public final static Sound JET = new Sound(new File(String.format("%sFly.wav", musicPath)));
     public final static Sound CRACK = new Sound(new File(String.format("%sCrack.wav", musicPath)));

@@ -2,7 +2,6 @@ package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.Battle;
-import cs102a.aeroplane.frontend.EndGameAndShowRank;
 import cs102a.aeroplane.frontend.GameGUI;
 import cs102a.aeroplane.frontend.SetStep;
 import cs102a.aeroplane.frontend.model.TimeDialog;
@@ -40,7 +39,7 @@ public class ChessBoard extends JPanel {
 
     public ChessBoard(GameGUI gameGUI, int xOffSet, int yOffSet) {
         this.state = GameState.GAME_READY;
-        this.nowPlayer = -1;
+        this.nowPlayer = 0;
         this.gameGUI = gameGUI;
 
         this.winner1Index = -1;
@@ -87,9 +86,9 @@ public class ChessBoard extends JPanel {
             else playerType[i] = GameState.COMPUTER;
         }
 
-        // TODO: 2020/12/16 如果是联网模式，还要初始化myCamp xxxx
-        if (GameInfo.isIsOnlineGame()) ?
-
+        // TODO: 2020/12/16 如果是联网模式，还要初始化myCamp
+//        if (GameInfo.isIsOnlineGame()) ?
+// FIXME: 2020/12/18 在线模式
         state = GameState.GAME_START;
 
         // 还原飞机位置
@@ -108,12 +107,13 @@ public class ChessBoard extends JPanel {
             playerSteps[nowPlayer] += 1;
             rollAndApply();
         } else {  // 联机模式，在己方看来其他三个是人是AI都一样，在他们回合都是要等待diceNumber和飞机编号
-            if (nowPlayer == myColor) {     //己方回合
-                rollAndApply();
-                Client.uploadChanges();
-            } else {   // 其他玩家回合
-                Client.getAndApplyChange();
-            }
+//            if (nowPlayer == myColor) {     //己方回合
+//                rollAndApply();
+//                Client.uploadChanges();
+//            } else {   // 其他玩家回合
+//                Client.getAndApplyChange();
+//            }
+            // FIXME: 2020/12/18 增加在线游戏模式
         }
     }
 
@@ -124,7 +124,7 @@ public class ChessBoard extends JPanel {
         ArrayList<Integer> outsidePlanes = new ArrayList<>();
         // 是否全在机场
         for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
-            if (!planes[i].isInHangar() && !planes[i].isFinished()) {
+            if (!planes[i].isInHangar() && planes[i].notFinished()) {
                 outsidePlanes.add(i);       // 添加在外面的飞机
             }
         }
@@ -133,7 +133,7 @@ public class ChessBoard extends JPanel {
         if (ableToTakeOff) {
             // 是起飞的点数则当前回合的所有飞机都可飞
             for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
-                if (!planes[i].isFinished())
+                if (planes[i].notFinished())
                     planes[i].getPlaneView().readyToBeSelected();
             }
         } else {
@@ -166,7 +166,7 @@ public class ChessBoard extends JPanel {
             // 先确定当前玩家有没有赢
             boolean flag = true;
             for (int number : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
-                if (!planes[number].isFinished()) {
+                if (planes[number].notFinished()) {
                     flag = false;
                     break;
                 }
@@ -203,16 +203,18 @@ public class ChessBoard extends JPanel {
     // 结束游戏
     public void endGame() {
         // TODO: 2020/12/8 联网模式还要广播游戏结束
-        if (GameInfo.isIsOnlineGame()) {
-            ?
-        }
-
-   endGameAndShowRank.setVisible(true);
+//        if (GameInfo.isIsOnlineGame()) {
+//            ?
+//        }
+        // FIXME: 2020/12/18 在线模式
+        endGameAndShowRank.setVisible(true);
     }
 
     public void battleInTeam(int indexOfMyTeam, int indexOfTargetGrid) {
-        while(hasOtherPlane(indexOfMyTeam)||hasOtherPlane(indexOfTargetGrid)){
-            if(Battle.isWinner()){}
+        while (planesInTeam(indexOfMyTeam) > 0 || hasOtherPlane(indexOfTargetGrid)) {
+            if (Battle.isWinner())
+                getOppoPlanes(indexOfTargetGrid).get(getOppoPlanes(indexOfTargetGrid).size() - 1).backToHangarDueToCrash();
+            else getPartners(indexOfMyTeam).get(getPartners(indexOfMyTeam).size() - 1).backToHangarDueToCrash();
         }
     }
 
@@ -228,11 +230,18 @@ public class ChessBoard extends JPanel {
         return false;
     }
 
+    // 判断index上有没有我方的棋子
+    public boolean hasMyPlane(int index) {
+        for (Aeroplane plane : planes)
+            if (plane.getGeneralGridIndex() == index && plane.getColor() == nowPlayer) return true;
+        return false;
+    }
+
     // 判断当前组内还有没有棋子
     public int planesInTeam(int teamNumber) {
         int cnt = 0;
-        for (int i:BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer])
-            if (planes[i].indexOfTeam==teamNumber) cnt++;
+        for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer])
+            if (planes[i].indexOfTeam == teamNumber) cnt++;
         return cnt;
     }
 
@@ -241,6 +250,23 @@ public class ChessBoard extends JPanel {
         LinkedList<Aeroplane> p = new LinkedList<>();
         for (Aeroplane plane : planes) {
             if (plane.getGeneralGridIndex() == index && plane.getColor() != nowPlayer) p.add(plane);
+        }
+        return p;
+    }
+
+    // 获取所有当前格子上任意一架
+    public LinkedList<Aeroplane> getMyPlanes(int index) {
+        LinkedList<Aeroplane> p = new LinkedList<>();
+        for (Aeroplane plane : planes) {
+            if (plane.getGeneralGridIndex() == index && plane.getColor() == nowPlayer) p.add(plane);
+        }
+        return p;
+    }
+
+    public LinkedList<Aeroplane> getPartners(int indexOfMyTeam) {
+        LinkedList<Aeroplane> p = new LinkedList<>();
+        for (Aeroplane plane : planes) {
+            if (plane.indexOfTeam == indexOfMyTeam && plane.getColor() == nowPlayer) p.add(plane);
         }
         return p;
     }
@@ -272,11 +298,9 @@ public class ChessBoard extends JPanel {
     }
 
 
-
     /*
      * util methods for external accessing
      */
-
     public ArrayList<Integer> getMovedPlanes() {
         return movedPlanes;
     }
@@ -299,5 +323,28 @@ public class ChessBoard extends JPanel {
 
     public int getNowMove() {
         return nowMove;
+    }
+
+    public int getWinner1Index() {
+        return winner1Index;
+    }
+
+    public int getWinner2Index() {
+        return winner2Index;
+    }
+
+    public int getWinner3Index() {
+        return winner3Index;
+    }
+
+    public int getWinner4Index() {
+        for (int i = 0; i < 4; i++) {
+            if (i != winner1Index && i != winner2Index && i != winner3Index) return i;
+        }
+        return -1;
+    }
+
+    public int[] getPlayerSteps() {
+        return playerSteps;
     }
 }

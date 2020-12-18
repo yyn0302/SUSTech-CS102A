@@ -6,7 +6,17 @@ public class GameInfo {
     private static boolean isCheatMode = false;
     private static int theme = 1;
     private static int HumanPlayerCnt = 4;
+
     private static boolean isOnlineGame = false;
+    private static String serverIp=null;
+
+    public static String getServerIp() {
+        return serverIp;
+    }
+
+    public static void setServerIp(String serverIp) {
+        GameInfo.serverIp = serverIp;
+    }
 
     private static String[] playerName = {"A", "B", "C", "D"};
 

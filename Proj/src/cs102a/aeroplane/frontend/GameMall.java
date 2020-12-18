@@ -31,16 +31,28 @@ public class GameMall extends JFrame {
 
         JLabel playerLabel = new JLabel("当前身份：");
         player1.addActionListener(e -> {
-            if (player1.isSelected()) asPlayer = 0;
+            if (player1.isSelected()) {
+                asPlayer = 0;
+                refreshInfo();
+            }
         });
         player2.addActionListener(e -> {
-            if (player2.isSelected()) asPlayer = 1;
+            if (player2.isSelected()) {
+                asPlayer = 1;
+                refreshInfo();
+            }
         });
         player3.addActionListener(e -> {
-            if (player3.isSelected()) asPlayer = 2;
+            if (player3.isSelected()) {
+                asPlayer = 2;
+                refreshInfo();
+            }
         });
         player4.addActionListener(e -> {
-            if (player4.isSelected()) asPlayer = 3;
+            if (player4.isSelected()) {
+                asPlayer = 3;
+                refreshInfo();
+            }
         });
 
         ButtonGroup playerSelect = new ButtonGroup();

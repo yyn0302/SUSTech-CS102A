@@ -15,21 +15,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
-public class LoadHistory extends JFrame {
+public class LoadHistory {
 
-    private final ArrayList<String> nameList = new ArrayList<>();
+    public static JFrame window = new JFrame();
+    private ArrayList<String> nameList = new ArrayList<>();
     private String historySelected;
 
     public LoadHistory(String title) {
-        this.setTitle(title);
+        window.setTitle(title);
 
         JPanel panel = new BackgroundPanel(new ImageIcon(SystemSelect.getImagePath() + "读档图片.jpg").getImage());
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(3, 1, 20, 150));
-        mainPanel.setPreferredSize(new Dimension(600, 600));
+        mainPanel.setLayout(new GridLayout(3, 1, 20, 20));
+        mainPanel.setPreferredSize(new Dimension(400, 240));
 
-        JLabel chooseLabel = new JLabel("选择一个存档");
-        chooseLabel.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 30));
+        JLabel chooseLabel = new JLabel("选择一个存档",JLabel.CENTER);
+        chooseLabel.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 40));
 
         getFiles();
         JComboBox<String> chooseList = new JComboBox<>();
@@ -48,24 +49,29 @@ public class LoadHistory extends JFrame {
 
         JButton confirmButton = new JButton("确定");
         confirmButton.addActionListener(e -> {
-            if (historySelected != null && !historySelected.equals("没有游戏档案哦"))
+            if (historySelected != null && !historySelected.equals("没有游戏档案哦")) {
                 GameLoader.setFileName(historySelected);
-            else {
+                window.setVisible(false);
+                GameGUI.window.setVisible(true);
+            } else {
                 TimeDialog td = new TimeDialog();
-                td.showDialog(this, "不能读档哦", 2);
+                td.showDialog(window, "不能读档哦", 2);
+                window.setVisible(false);
                 Start.popStart();
             }
-            dispose();
         });
+//        confirmButton.setSize(new Dimension(30,20));
 
         mainPanel.add(chooseLabel);
         mainPanel.add(chooseList);
         mainPanel.add(confirmButton);
         mainPanel.setOpaque(false);
         panel.add(mainPanel);
-        this.add(panel);
-        this.setSize(800, 600);
-        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        window.add(panel);
+        window.setSize(600, 300);
+        window.setLocationRelativeTo(null);
+        window.setResizable(false);
+        window.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
 
     public void getFiles() {
@@ -76,12 +82,11 @@ public class LoadHistory extends JFrame {
         try {
             for (File value : list) {
                 String name = value.getName();
-//                String[] name = value.getName().split(".a");    // 把后缀名切开
                 Date d = new Date(value.lastModified());
                 String dateString = simpleFormat.format(d);
                 nameList.add(name + "@保存时间:" + dateString);
-//                nameList.add(name[0] + "@保存时间:" + dateString);
             }
+            if (list.length == 0) nameList.add("没有游戏档案哦");
         } catch (NullPointerException np) {
             nameList.add("没有游戏档案哦");
         }
