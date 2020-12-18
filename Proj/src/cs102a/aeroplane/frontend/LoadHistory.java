@@ -24,7 +24,7 @@ public class LoadHistory {
     public LoadHistory(String title) {
         window.setTitle(title);
 
-        JPanel panel = new BackgroundPanel(new ImageIcon(SystemSelect.getImagePath() + "读档图片.jpg").getImage());
+        JPanel panel = new BackgroundPanel(new ImageIcon(SystemSelect.getImagePath() + "loadFile.jpg").getImage());
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(3, 1, 20, 20));
         mainPanel.setPreferredSize(new Dimension(400, 240));

@@ -9,12 +9,12 @@ public class MatchDicePicture {
 
     public static ImageIcon getImage(int point) {
         String path = SystemSelect.getImagePath();
-        ImageIcon pic1 = new ImageIcon(path + "1.jpg");
-        ImageIcon pic2 = new ImageIcon(path + "2.jpg");
-        ImageIcon pic3 = new ImageIcon(path + "3.jpg");
-        ImageIcon pic4 = new ImageIcon(path + "4.jpg");
-        ImageIcon pic5 = new ImageIcon(path + "5.jpg");
-        ImageIcon pic6 = new ImageIcon(path + "6.jpg");
+        ImageIcon pic1 = new ImageIcon(path + "dice_1.png");
+        ImageIcon pic2 = new ImageIcon(path + "dice_2.png");
+        ImageIcon pic3 = new ImageIcon(path + "dice_3.png");
+        ImageIcon pic4 = new ImageIcon(path + "dice_4.png");
+        ImageIcon pic5 = new ImageIcon(path + "dice_5.png");
+        ImageIcon pic6 = new ImageIcon(path + "dice_6.png");
 
         switch (point) {
             case 1:

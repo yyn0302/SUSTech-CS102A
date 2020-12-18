@@ -17,7 +17,6 @@ public class SetStep {
 
 
     public static int askPlayerStep(int[] rollResult) {
-        stepSelected = 0;
         popCustomerChoiceFrame(rollResult);
         return stepSelected;
     }
@@ -26,7 +25,9 @@ public class SetStep {
     // 弹窗，只有设置好步数才能关闭
     public static void popCustomerChoiceFrame(int[] rollResult) {
         JFrame setStepFrame = new JFrame("选择棋子要走的步数");
-        setStepFrame.setSize(400, 400);
+        setStepFrame.setSize(350, 300);
+        setStepFrame.setResizable(false);
+        setStepFrame.setLocationRelativeTo(null);
         setStepFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         // 作弊模式直接选择步数
@@ -48,12 +49,11 @@ public class SetStep {
             basePanel.add(confirmButton);
 
             String picPath = SystemSelect.getImagePath();
-            JPanel picPanel = new BackgroundPanel((new ImageIcon(picPath + "骰子背景图.jpg").getImage()));
+            JPanel picPanel = new BackgroundPanel((new ImageIcon(picPath + "setStep.jpg").getImage()));
             picPanel.add(basePanel);
 
             setStepFrame.add(picPanel);
         }
-
         //显示骰子，显示下拉菜单让用户选择
         else {
             int self = rollResult[0];
@@ -67,24 +67,26 @@ public class SetStep {
 
             JButton confirmButton = new JButton("确定");
             confirmButton.addActionListener(e -> {
-                if (stepSelected != 0) setStepFrame.dispose();
+                setStepFrame.dispose();
             });
 
 
-            JPanel dicePanel = new JPanel(new GridLayout(1, 2));
+            JPanel dicePanel = new JPanel(new GridLayout(1, 2,0,20));
             dicePanel.add(selfDiceLabel, oppoDiceLabel);
 
             JPanel choicePanel = new JPanel(new GridLayout(1, 1));
             choicePanel.add(choiceComboBox);
 
             JPanel basePanel = new JPanel(new GridLayout(3, 1));
+            basePanel.setOpaque(false);
             basePanel.setPreferredSize(new Dimension(150, 150));
             basePanel.add(dicePanel);
             basePanel.add(choicePanel);
             basePanel.add(confirmButton);
 
-            String picPath = SystemSelect.getImagePath();
-            JPanel picPanel = new BackgroundPanel((new ImageIcon(picPath + "骰子背景图.jpg").getImage()));
+            JPanel picPanel = new BackgroundPanel(new ImageIcon(SystemSelect.getImagePath() + "/setStep.jpg").getImage());
+            picPanel.setOpaque(false);
+            picPanel.setLayout(new GridLayout(1,1));
             picPanel.add(basePanel);
 
             setStepFrame.add(picPanel);
@@ -96,7 +98,7 @@ public class SetStep {
     // 获取一个装满所有可能步数和配置好listener的JComboBox
     public static JComboBox<Integer> getPossibleChoice(int[] rollResult) {
         ArrayList<Integer> possibleChoice = new ArrayList<>();
-        if (GameInfo.isIsCheatMode()) {
+        if (!GameInfo.isIsCheatMode()) {
             if (rollResult[0] + rollResult[1] <= 12)
                 possibleChoice.add(rollResult[0] + rollResult[1]);
             if (rollResult[0] - rollResult[1] > 0)
@@ -121,6 +123,12 @@ public class SetStep {
             int index = i;
             stepChoices.addItemListener(e -> SetStep.stepSelected = possibleChoice.get(index));
         }
+        stepSelected=possibleChoice.get(0);
         return stepChoices;
+    }
+
+    public static void main(String[] args) {
+        int[] a={2,5};
+        SetStep.askPlayerStep(a);
     }
 }

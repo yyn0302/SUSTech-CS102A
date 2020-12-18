@@ -14,18 +14,24 @@ public class Start {
     public static void main(String[] args) {
         JLabel title = new JLabel("飞行棋",JLabel.CENTER);
         title.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 50));
-        title.setForeground(Color.CYAN);
+        title.setForeground(Color.BLACK);
         title.setOpaque(false);
 
         JButton startButton = new JButton("开始游戏");
-        startButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 16));
+        startButton.setOpaque(false);
+        startButton.setBorder(null);
+        startButton.setForeground(Color.YELLOW);
+        startButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 26));
         startButton.addActionListener(e -> {
             startFrame.setVisible(false);
             GameGUI.window.setVisible(true);
         });
 
         JButton continueButton = new JButton("继续游戏");
-        continueButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 16));
+        continueButton.setOpaque(false);
+        continueButton.setBorder(null);
+        continueButton.setForeground(Color.YELLOW);
+        continueButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 26));
         continueButton.addActionListener(e -> {
             startFrame.setVisible(false);
             LoadHistory loadHistory = new LoadHistory("读档");
@@ -33,22 +39,29 @@ public class Start {
         });
 
         JButton storeButton = new JButton("道具商店");
-        storeButton.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
+        storeButton.setOpaque(false);
+        storeButton.setBorder(null);
+        storeButton.setForeground(Color.white);
+        storeButton.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 24));
         storeButton.addActionListener(e -> GameMall.window.setVisible(true));
 
         JButton settingButton = new JButton("游戏设置");
-        settingButton.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
+        settingButton.setOpaque(false);
+        settingButton.setBorder(null);
+        settingButton.setForeground(Color.white);
+        settingButton.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 24));
         settingButton.addActionListener(e -> {
-            startFrame.setVisible(true);
-            Settings.window.setVisible(false);
+            startFrame.setVisible(false);
+            Settings.window.setVisible(true);
         });
 
 
         JPanel subStartPanel = new JPanel();
-        subStartPanel.setLayout(new GridLayout(5, 1, 10, 40));
+        subStartPanel.setLayout(new GridLayout(6, 1, 10, 40));
         subStartPanel.setPreferredSize(new Dimension(300, 500));
         subStartPanel.setBackground(null);
         subStartPanel.setOpaque(false);
+        subStartPanel.add(new JLabel());
         subStartPanel.add(title);
         subStartPanel.add(startButton);
         subStartPanel.add(continueButton);
@@ -56,7 +69,7 @@ public class Start {
         subStartPanel.add(settingButton);
 
         String picPath = SystemSelect.getImagePath();
-        JPanel startPanel = new BackgroundPanel((new ImageIcon(picPath + "开始图片.jpg").getImage()));
+        JPanel startPanel = new BackgroundPanel((new ImageIcon(picPath + "start.jpg").getImage()));
         startPanel.add(subStartPanel);
         startFrame.add(startPanel);
         startFrame.setSize(400, 600);

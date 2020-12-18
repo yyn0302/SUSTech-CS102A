@@ -16,13 +16,19 @@ public class Settings extends JFrame {
     public Settings(String title) {
 
         this.setTitle(title);
-        this.setSize(800, 600);
+        this.setSize(400, 600);
         this.setLocationRelativeTo(null);
 
-
-        JLabel themeLabel = new JLabel("当前主题：海王");
+        JLabel themeLabel = new JLabel("当前主题：海王", JLabel.CENTER);
+        themeLabel.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 20));
+        themeLabel.setForeground(Color.WHITE);
+        themeLabel.setOpaque(false);
 
         JButton themeSettings = new JButton("-> 灵笼主题");
+        themeSettings.setOpaque(false);
+        themeSettings.setBorder(null);
+        themeSettings.setForeground(Color.WHITE);
+        themeSettings.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         themeSettings.addActionListener(e -> {
             if (GameInfo.getTheme() == 1) {
                 themeSettings.setText("-> 海王主题");
@@ -33,12 +39,24 @@ public class Settings extends JFrame {
                 themeLabel.setText("当前主题：海王");
                 GameInfo.setTheme(1);
             }
+            themeSettings.setOpaque(false);
+            themeSettings.setBorder(null);
+            themeSettings.setForeground(Color.WHITE);
+            themeSettings.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         });
 
 
         JLabel modeLabel = new JLabel("当前模式：正常");
+        modeLabel.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 20));
+        modeLabel.setForeground(Color.WHITE);
+        modeLabel.setOpaque(false);
+
 
         JButton changeCheatMode = new JButton("-> 作弊模式");
+        changeCheatMode.setOpaque(false);
+        changeCheatMode.setBorder(null);
+        changeCheatMode.setForeground(Color.WHITE);
+        changeCheatMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         changeCheatMode.addActionListener(e -> {
             if (!GameInfo.isIsCheatMode()) {
                 changeCheatMode.setText("-> 正常模式");
@@ -49,12 +67,23 @@ public class Settings extends JFrame {
                 modeLabel.setText("当前模式：正常");
                 GameInfo.setIsCheatMode(false);
             }
+            changeCheatMode.setOpaque(false);
+            changeCheatMode.setBorder(null);
+            changeCheatMode.setForeground(Color.WHITE);
+            changeCheatMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         });
 
 
-        JLabel onlineLabel = new JLabel("联机模式：关");
+        JLabel onlineLabel = new JLabel("联机模式：关", JLabel.CENTER);
+        onlineLabel.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 20));
+        onlineLabel.setForeground(Color.WHITE);
+        onlineLabel.setOpaque(false);
 
         JButton changeOnlineMode = new JButton("-> 开");
+        changeOnlineMode.setOpaque(false);
+        changeOnlineMode.setBorder(null);
+        changeOnlineMode.setForeground(Color.WHITE);
+        changeOnlineMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         changeOnlineMode.addActionListener(e -> {
             if (!GameInfo.isIsOnlineGame()) {
                 changeOnlineMode.setText("-> 开");
@@ -65,15 +94,39 @@ public class Settings extends JFrame {
                 onlineLabel.setText("联机模式：开");
                 GameInfo.setIsOnlineGame(false);
             }
+            changeOnlineMode.setOpaque(false);
+            changeOnlineMode.setBorder(null);
+            changeOnlineMode.setForeground(Color.WHITE);
+            changeOnlineMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         });
 
 
-        JLabel humanCntLabel = new JLabel("人类玩家数：");
+        JLabel humanCntLabel = new JLabel("人类：", JLabel.CENTER);
+        humanCntLabel.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 20));
+        humanCntLabel.setForeground(Color.WHITE);
+        humanCntLabel.setOpaque(false);
 
         JRadioButton rb1 = new JRadioButton("1");
         JRadioButton rb2 = new JRadioButton("2");
         JRadioButton rb3 = new JRadioButton("3");
         JRadioButton rb4 = new JRadioButton("4", true);
+        rb1.setOpaque(false);
+        rb1.setBorder(null);
+        rb1.setForeground(Color.WHITE);
+        rb1.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
+        rb2.setOpaque(false);
+        rb2.setBorder(null);
+        rb2.setForeground(Color.WHITE);
+        rb2.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
+        rb3.setOpaque(false);
+        rb3.setBorder(null);
+        rb3.setForeground(Color.WHITE);
+        rb3.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
+        rb4.setOpaque(false);
+        rb4.setBorder(null);
+        rb4.setForeground(Color.WHITE);
+        rb4.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
+
         rb1.addActionListener(e -> {
             if (rb1.isSelected()) GameInfo.setHumanPlayerCnt(1);
         });
@@ -99,6 +152,10 @@ public class Settings extends JFrame {
 
 
         enterSuperMode = new JButton("获取管理权限");
+        enterSuperMode.setOpaque(false);
+        enterSuperMode.setBorder(null);
+        enterSuperMode.setForeground(Color.red);
+        enterSuperMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 14));
         enterSuperMode.addActionListener(e -> {
             if (!GameInfo.isSuperUser()) {
                 EnterSuperMode.window.setVisible(true);
@@ -107,10 +164,35 @@ public class Settings extends JFrame {
                     enterSuperMode.setEnabled(false);
                     GameInfo.setSuperUser(true);
                     GameMall.window.userInfoPanel.setEnabled(true);
+                    enterSuperMode.setOpaque(false);
+                    enterSuperMode.setBorder(null);
+                    enterSuperMode.setForeground(Color.gray);
+                    enterSuperMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 14));
                 }
             }
         });
+        JPanel enterSuperModePanel = new JPanel();
+        enterSuperModePanel.setLayout(new GridLayout(3, 3, 10, 10));
+        enterSuperModePanel.setOpaque(false);
+        enterSuperModePanel.add(new JLabel());
+        enterSuperModePanel.add(new JLabel());
+        enterSuperModePanel.add(new JLabel());
+        enterSuperModePanel.add(new JLabel());
+        enterSuperModePanel.add(enterSuperMode);
+        enterSuperModePanel.add(new JLabel());
+        enterSuperModePanel.add(new JLabel());
+        enterSuperModePanel.add(new JLabel());
+        enterSuperModePanel.add(new JLabel());
 
+        JButton back = new JButton("返回菜单");
+        back.setOpaque(false);
+        back.setBorder(null);
+        back.setForeground(Color.white);
+        back.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 18));
+        back.addActionListener(e -> {
+            window.setVisible(false);
+            Start.popStart();
+        });
 
         JPanel rowPanel1 = new JPanel();
         rowPanel1.setLayout(new GridLayout(1, 2, 10, 10));
@@ -125,39 +207,39 @@ public class Settings extends JFrame {
         onlinePanel.setOpaque(false);
         onlinePanel.add(changeOnlineMode);
 
-        JPanel rowPanel2 = new JPanel();
-        rowPanel2.setLayout(new GridLayout(1, 5, 5, 10));
-        rowPanel2.add(humanCntLabel);
-        rowPanel2.add(rb1);
-        rowPanel2.add(rb2);
-        rowPanel2.add(rb3);
-        rowPanel2.add(rb4);
-        rowPanel2.setOpaque(false);
-        rowPanel2.setPreferredSize(new Dimension(600, 300));
 
-        JPanel rowPanel3 = new JPanel();
-        rowPanel3.setLayout(new GridLayout(1, 1, 10, 10));
-        rowPanel3.add(enterSuperMode);
-        rowPanel3.setOpaque(false);
-        rowPanel3.setPreferredSize(new Dimension(400, 150));
+        JPanel cnt = new JPanel();
+        cnt.setLayout(new GridLayout(1, 4));
+        cnt.add(rb1);
+        cnt.add(rb2);
+        cnt.add(rb3);
+        cnt.add(rb4);
+        cnt.setOpaque(false);
+
+        JPanel rowPanel2 = new JPanel();
+        rowPanel2.setLayout(new GridLayout(1, 2, 10, 0));
+        rowPanel2.add(humanCntLabel);
+        rowPanel2.add(cnt);
+        rowPanel2.setOpaque(false);
 
         String path = SystemSelect.getImagePath();
-        JPanel backgroundPanel = new BackgroundPanel((new ImageIcon(path + "开始图片.jpg").getImage()));
+        JPanel backgroundPanel = new BackgroundPanel(new ImageIcon(path + "setting.jpg").getImage());
         backgroundPanel.setOpaque(false);
-        backgroundPanel.setLayout(new GridLayout(4, 1));
-//        backgroundPanel.setLayout(new GridLayout(3, 1, 10, 10));
-        backgroundPanel.setPreferredSize(new Dimension(200, 200));
+        backgroundPanel.setLayout(new GridLayout(5, 1, 10, 10));
         backgroundPanel.add(rowPanel1);
         backgroundPanel.add(onlinePanel);
         backgroundPanel.add(rowPanel2);
-        backgroundPanel.add(rowPanel3);
+        backgroundPanel.add(enterSuperModePanel);
+        backgroundPanel.add(back);
 
 
-        JPanel setSizePanel = new JPanel(new GridLayout(3, 1, 10, 50));
-        setSizePanel.setPreferredSize(new Dimension(800, 600));
+        JPanel setSizePanel = new JPanel(new GridLayout(1, 1));
+        setSizePanel.setPreferredSize(new Dimension(300, 500));
         setSizePanel.add(backgroundPanel);
 
-        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-        this.add(backgroundPanel);
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        this.add(setSizePanel);
     }
 }
