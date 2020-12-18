@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 
 public class GameGUI extends JFrame {
     public static GameGUI window = new GameGUI("飞行棋[当前 " + " 步]");
-    private final ChessBoard chessBoard = new ChessBoard();
+    private final ChessBoard chessBoard = new ChessBoard(window, , );
     private final PlayerInfoPanel playerInfoPanel;
 
     public GameGUI(String title) {

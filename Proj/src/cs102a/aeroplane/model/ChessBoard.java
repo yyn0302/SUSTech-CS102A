@@ -88,7 +88,9 @@ public class ChessBoard extends JPanel {
         }
 
         // TODO: 2020/12/16 如果是联网模式，还要初始化myCamp xxxx
-        if (GameInfo.isIsOnlineGame()) ?
+        if (GameInfo.isIsOnlineGame())?{
+            //联网
+        }
 
         state = GameState.GAME_START;
 
@@ -204,6 +206,7 @@ public class ChessBoard extends JPanel {
     public void endGame() {
         // TODO: 2020/12/8 联网模式还要广播游戏结束
         if (GameInfo.isIsOnlineGame()) {
+            //
             ?
         }
 

@@ -28,7 +28,7 @@ public class Client extends Server {
 
 //    FIXME:2020/12/12
 
-    public void getAndApplyChange() {
+    public static void getAndApplyChange() {
 //        加标识符
 
     }
@@ -42,7 +42,7 @@ public class Client extends Server {
         }
     }
 
-    public void uploadChanges() {
+    public static void uploadChanges() {
 
     }
 
