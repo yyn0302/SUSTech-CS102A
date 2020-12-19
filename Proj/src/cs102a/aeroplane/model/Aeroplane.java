@@ -25,7 +25,7 @@ public class Aeroplane {
         this.itsHangar = itsHangar;
         this.indexOfTeam = -1;
         selfPathIndex = -1;
-
+//planeView为Planeview 对象
         planeView = new PlaneView(chessBoard, number, color, itsHangar, xOffSet, yOffSet, this);
     }
 
