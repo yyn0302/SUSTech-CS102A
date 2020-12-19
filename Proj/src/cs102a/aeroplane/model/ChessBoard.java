@@ -112,7 +112,7 @@ public class ChessBoard extends JPanel {
 
     // 开始回合
     public void beginTurn() {
-//        GameGUI.window.getPlayerInfoPanel().refresh();
+        nowGamingGUI.getPlayerInfoPanel().refresh();
         // FIXME: 2020/12/19 加回去上面这行
         // FIXME: 2020/12/19 加回去上面这行
         // FIXME: 2020/12/19 加回去上面这行
@@ -136,7 +136,6 @@ public class ChessBoard extends JPanel {
     private void rollAndApply() {
         rollResult[0] = Dice.roll();
         rollResult[1] = Dice.roll();
-        nowMove = SetStep.askPlayerStep(rollResult);
 
         ArrayList<Integer> outsidePlanes = new ArrayList<>();
         // 是否全在机场
@@ -148,6 +147,7 @@ public class ChessBoard extends JPanel {
 
         boolean ableToTakeOff = rollResult[0] == 6 || rollResult[1] == 6;
         if (ableToTakeOff) {
+            nowMove = SetStep.askPlayerStep(rollResult);
             // 是起飞的点数则当前回合的所有飞机都可飞
             for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
                 if (planes[i].notFinished())
@@ -163,6 +163,7 @@ public class ChessBoard extends JPanel {
                 } while (nowPlayer == winner1Index || nowPlayer == winner2Index || nowPlayer == winner3Index);
                 beginTurn();
             } else {
+                nowMove = SetStep.askPlayerStep(rollResult);
                 for (Integer i : outsidePlanes) {
                     planes[i].getPlaneView().readyToBeSelected();
                 }

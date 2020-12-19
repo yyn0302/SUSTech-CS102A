@@ -163,4 +163,8 @@ public class GameGUI extends JFrame {
     public ChessBoard getChessBoard() {
         return chessBoard;
     }
+
+    public PlayerInfoPanel getPlayerInfoPanel() {
+        return playerInfoPanel;
+    }
 }
