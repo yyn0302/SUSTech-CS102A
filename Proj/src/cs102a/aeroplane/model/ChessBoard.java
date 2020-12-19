@@ -35,6 +35,7 @@ public class ChessBoard extends JPanel {
         this.state = GameState.GAME_READY;
         this.nowPlayer = 0;
         this.nowGamingGUI = nowGamingGUI;
+        this.rollResult = new int[2];
 //    public ChessBoard(GameGUI gameGUI, int xOffSet, int yOffSet) {
 //        this.state = GameState.GAME_READY;
 //        this.nowPlayer = 0;
@@ -82,7 +83,10 @@ public class ChessBoard extends JPanel {
         if (GameInfo.getTheme() == 1) Sound.GAMING_THEME1.play(true);
         else Sound.GAMING_THEME2.play(true);
 
-        for (Aeroplane aeroplane : planes) aeroplane.getPlaneView().moveTo(aeroplane.getPlaneView().getItsHangar());
+        for (Aeroplane aeroplane : planes) {
+            this.add(aeroplane.getPlaneView());
+            aeroplane.getPlaneView().moveTo(aeroplane.getPlaneView().getItsHangar());
+        }
 
         playerType = new int[4];
         for (int i = 0; i < 4; i++) {
@@ -130,13 +134,14 @@ public class ChessBoard extends JPanel {
     }
 
     private void rollAndApply() {
-        rollResult = new int[]{Dice.roll(), Dice.roll()};
+        rollResult[0] = Dice.roll();
+        rollResult[1] = Dice.roll();
         nowMove = SetStep.askPlayerStep(rollResult);
 
         ArrayList<Integer> outsidePlanes = new ArrayList<>();
         // 是否全在机场
         for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
-            if (!planes[i].isInHangar() && planes[i].notFinished()) {
+            if (!(planes[i].isInHangar() && planes[i].notFinished())) {
                 outsidePlanes.add(i);       // 添加在外面的飞机
             }
         }
