@@ -1,6 +1,5 @@
 package cs102a.aeroplane.frontend;
 
-import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
 import cs102a.aeroplane.frontend.model.TimeDialog;
 import cs102a.aeroplane.savegame.GameLoader;
@@ -55,7 +54,12 @@ public class LoadHistory {
             if (historySelected != null && !historySelected.equals("没有游戏档案哦")) {
                 GameLoader.setFileName(historySelected);
                 window.setVisible(false);
-                new GameGUI().setVisible(true);
+                try {
+                    GameLoader.tryToLoad();
+                } catch (Exception em) {
+                    new TimeDialog().showDialog(Settings.window, em.getMessage(), 3);
+                    Start.popStart();
+                }
             } else {
                 TimeDialog td = new TimeDialog();
                 td.showDialog(window, "不能读档哦", 2);

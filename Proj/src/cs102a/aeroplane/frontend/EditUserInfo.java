@@ -35,7 +35,6 @@ public class EditUserInfo extends JFrame {
 
         JButton confirmButton = new JButton("保存");
         confirmButton.addActionListener(e -> {
-
             try {
                 Wallet.editBalance(GameMall.getAsPlayer(), balanceTextField.getText());
             } catch (AssertionError ex) {

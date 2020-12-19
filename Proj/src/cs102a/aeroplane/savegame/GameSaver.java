@@ -61,6 +61,10 @@ public class GameSaver {
                         "15P%d\n" +
                         "16P%d",
                 chessBoard.getNowPlayer(),
+                chessBoard.getPlayerSteps()[0],
+                chessBoard.getPlayerSteps()[1],
+                chessBoard.getPlayerSteps()[2],
+                chessBoard.getPlayerSteps()[3],
                 chessBoard.getPlanes()[0].getGeneralGridIndex(),
                 chessBoard.getPlanes()[1].getGeneralGridIndex(),
                 chessBoard.getPlanes()[2].getGeneralGridIndex(),
@@ -84,6 +88,7 @@ public class GameSaver {
                     new FileOutputStream(filePath, true)));      // FileOutputStream 第二个参数：追加写入/覆写
             bufferedWriter.write(gameInfo);
             bufferedWriter.write(stepInfo);
+            bufferedWriter.flush();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

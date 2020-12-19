@@ -85,7 +85,7 @@ public class ChessBoard extends JPanel {
 
         for (Aeroplane aeroplane : planes) {
             this.add(aeroplane.getPlaneView());
-            aeroplane.getPlaneView().moveTo(aeroplane.getPlaneView().getItsHangar());
+            aeroplane.backToHangarForInit();
         }
 
         playerType = new int[4];
@@ -99,11 +99,6 @@ public class ChessBoard extends JPanel {
 // FIXME: 2020/12/18 在线模式
         state = GameState.GAME_START;
 
-        // 还原飞机位置
-        for (Aeroplane plane : planes) {
-            plane.backToHangarForInit();
-        }
-
         // 随机决定哪方先开始
         nowPlayer = new Random().nextInt(4);
         beginTurn();
@@ -113,12 +108,6 @@ public class ChessBoard extends JPanel {
     // 开始回合
     public void beginTurn() {
         nowGamingGUI.getPlayerInfoPanel().refresh();
-        // FIXME: 2020/12/19 加回去上面这行
-        // FIXME: 2020/12/19 加回去上面这行
-        // FIXME: 2020/12/19 加回去上面这行
-        // FIXME: 2020/12/19 加回去上面这行
-        // FIXME: 2020/12/19 加回去上面这行
-        // FIXME: 2020/12/19 加回去上面这行
         if (!GameInfo.isIsOnlineGame()) {
             playerSteps[nowPlayer] += 1;
             rollAndApply();
