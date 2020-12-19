@@ -10,34 +10,41 @@ import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
 
+import static cs102a.aeroplane.GameInfo.chessBoard;
+
 public class GameGUI extends JFrame {
-    public static GameGUI window = new GameGUI();
+
     public static ImageIcon background;
+
     // TODO: 2020/12/18 当棋子出现偏移时修改xy方向偏置
-    public ChessBoard chessBoard = new ChessBoard(this, 0, 0);
+
     private PlayerInfoPanel playerInfoPanel;
 
-    public GameGUI() {
-        this.add(new ChessBoard(GameGUI.window, 0, 0));
+    String path = SystemSelect.getImagePath();
 
+    JButton resetButton = new JButton("重置");
+    JButton saveButton = new JButton("保存");
+    JButton returnButton = new JButton("返回");
+    JPanel backgroundPanel;
+    ImageIcon boardImg = new ImageIcon(path + "blankBoard.png");
+    JPanel boardImgPanel = new BackgroundPanel(boardImg.getImage());
+
+
+    public GameGUI() {
         this.setSize(900, 800);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setLayout(null);       // 以启用绝对布局
 
         this.setTitle("飞行棋");
-        String path = SystemSelect.getImagePath();
 
         // 背景图片
         background = new ImageIcon(path + (GameInfo.getTheme() == 1 ? "海王主题.png" : "灵笼主题.jpg"));
-        JPanel backgroundPanel = new BackgroundPanel(background.getImage());
+        backgroundPanel = new BackgroundPanel(background.getImage());
         backgroundPanel.setLayout(null);
         backgroundPanel.setBounds(0, 0, 900, 800);
-//        backgroundPanel.setOpaque(false);
 
 
-        ImageIcon boardImg = new ImageIcon(path + "blankBoard.png");
-        JPanel boardImgPanel = new BackgroundPanel(boardImg.getImage());
         boardImgPanel.setOpaque(false);
         boardImgPanel.setLayout(null);
         boardImgPanel.setBounds(0, 0, 800, 800);
@@ -55,9 +62,6 @@ public class GameGUI extends JFrame {
         backgroundPanel.add(playerInfoPanel);
 
         //util面板
-        JButton resetButton = new JButton("重置");
-        JButton saveButton = new JButton("保存");
-        JButton returnButton = new JButton("返回");
         resetButton.setBounds(818, 560, 60, 60);
         saveButton.setBounds(818, 630, 60, 60);
         returnButton.setBounds(818, 700, 60, 60);
@@ -69,16 +73,17 @@ public class GameGUI extends JFrame {
         resetButton.addActionListener(e -> {
             chessBoard = null;
             System.gc();
-            chessBoard = new ChessBoard(window, 0, 0);
+            chessBoard = new ChessBoard(0, 0);
         });
         saveButton.addActionListener(e -> {
             GameSaver.save(chessBoard);
-            new TimeDialog().showDialog(window, "成功保存", 3);
+            new TimeDialog().showDialog(Settings.window, "成功保存", 3);
         });
         returnButton.addActionListener(e -> {
-            window.setVisible(false);
+            this.setVisible(false);
             //打开startMenu
             Start.popStart();
+
         });
 
         backgroundPanel.add(resetButton);
@@ -90,24 +95,15 @@ public class GameGUI extends JFrame {
         this.add(backgroundPanel);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
-
         chessBoard.startGame();
     }
 
 
     public void refresh() {
-//         FIXME: 2020/12/18 增加效果按键，刷新剩余个数
+         playerInfoPanel.refresh();
     }
 
     public ChessBoard getChessBoard() {
         return chessBoard;
     }
-
-    public void setChessBoard(ChessBoard chessBoard) {
-        this.chessBoard = chessBoard;
-    }
-
-   /* public static void main(String[] args) {
-        window.setVisible(true);
-    }*/
 }

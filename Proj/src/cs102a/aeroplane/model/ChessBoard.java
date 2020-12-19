@@ -20,7 +20,9 @@ import java.util.Random;
 import static cs102a.aeroplane.frontend.EndGameAndShowRank.endGameAndShowRank;
 
 public class ChessBoard extends JPanel {
-    private GameGUI gameGUI;                                // 句柄
+//    private GameGUI gameGUI;                                // 句柄
+//    private GameGUI gameGUI;                                // 句柄
+//    private GameGUI gameGUI;                                // 句柄
     private Aeroplane[] planes;                             // 16架飞机
     private int[] playerSteps;                              // 截止胜利走了多少步
     int[] rollResult;                                       // 骰子点数
@@ -37,10 +39,13 @@ public class ChessBoard extends JPanel {
     protected boolean[][] teamIndexUsed = new boolean[4][2];// 当前队伍已经有飞机
 
 
-    public ChessBoard(GameGUI gameGUI, int xOffSet, int yOffSet) {
+    public ChessBoard(int xOffSet, int yOffSet) {
         this.state = GameState.GAME_READY;
         this.nowPlayer = 0;
-        this.gameGUI = gameGUI;
+//    public ChessBoard(GameGUI gameGUI, int xOffSet, int yOffSet) {
+//        this.state = GameState.GAME_READY;
+//        this.nowPlayer = 0;
+//        this.gameGUI = gameGUI;
 
         this.setLayout(null);
         this.setSize(new Dimension(800,800));
@@ -155,7 +160,7 @@ public class ChessBoard extends JPanel {
         } else {
             // 不是起飞点数则只有在外面的飞机可以飞
             if (outsidePlanes.isEmpty()) {
-                new TimeDialog().showDialog(gameGUI, "你骰出了" + rollResult[0] +
+                new TimeDialog().showDialog((JFrame)this.getParent(), "你骰出了" + rollResult[0] +
                         "和" + rollResult[1] + "，不满足起飞条件，轮到下一玩家", 3);
                 do {
                     nowPlayer = (nowPlayer + 1) % 4;

@@ -1,6 +1,12 @@
 package cs102a.aeroplane;
 
+import cs102a.aeroplane.frontend.GameGUI;
+import cs102a.aeroplane.model.ChessBoard;
+
 public class GameInfo {
+    public static ChessBoard chessBoard = new ChessBoard(0, 0);
+    public static GameGUI windowGUI = new GameGUI();
+
 
     private static boolean superUser = false;
     private static boolean isCheatMode = false;
