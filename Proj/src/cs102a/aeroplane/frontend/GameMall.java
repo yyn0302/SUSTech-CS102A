@@ -190,6 +190,14 @@ public class GameMall extends JFrame {
         this.player3.setText("玩家3：" + GameInfo.getPlayerName()[2]);
         this.player4.setText("玩家4：" + GameInfo.getPlayerName()[3]);
 
+        GoodsList.bomb.asPlayer = asPlayer;
+        GoodsList.takeOffAnyway.asPlayer = asPlayer;
+        GoodsList.makeMeWin.asPlayer = asPlayer;
+
+        GoodsList.bomb.refresh();
+        GoodsList.takeOffAnyway.refresh();
+        GoodsList.makeMeWin.refresh();
+
         this.editWallet.setEnabled(GameInfo.isSuperUser());
     }
 }
