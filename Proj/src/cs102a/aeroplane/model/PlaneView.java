@@ -14,7 +14,6 @@ import java.awt.event.MouseListener;
 /**
  * @apiNote 点击按键时会自动移动叠子，虽然他们是 invisible & disabled
  * 棋子移动到终点会自动解散叠子状态
- * @deprecated 有时间把继承JButton改为clickable JFrame，显示效果更好
  */
 public class PlaneView extends JButton {
     private final int color;
