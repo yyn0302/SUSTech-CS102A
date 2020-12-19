@@ -8,6 +8,7 @@ import cs102a.aeroplane.util.SystemSelect;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 // 只需要用 SetStep.askPlayerStep(rollResult)
@@ -25,28 +26,41 @@ public class SetStep {
     // 弹窗，只有设置好步数才能关闭
     public static void popCustomerChoiceFrame(int[] rollResult) {
         JFrame setStepFrame = new JFrame("选择棋子要走的步数");
-        setStepFrame.setSize(350, 300);
+        setStepFrame.setSize(300, 250);
+        setStepFrame.setAlwaysOnTop(true);
         setStepFrame.setResizable(false);
         setStepFrame.setLocationRelativeTo(null);
         setStepFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         // 作弊模式直接选择步数
         if (GameInfo.isIsCheatMode()) {
-            JComboBox<Integer> choiceComboBox = getPossibleChoice(rollResult);
+
+            JComboBox<Integer> choiceComboBox = new JComboBox<>();
+            for (int i = 1; i <= 12; i++) {
+                choiceComboBox.addItem(i);
+                choiceComboBox.addItemListener(e -> SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(choiceComboBox.getSelectedItem()).toString()));
+            }
+            choiceComboBox.setOpaque(false);
+            stepSelected = 1;
+
 
             JButton confirmButton = new JButton("确定");
-            confirmButton.addActionListener(e -> {
-                if (stepSelected != 0) setStepFrame.dispose();
-            });
+            confirmButton.setOpaque(false);
+            confirmButton.setBorder(null);
+            confirmButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 24));
+            confirmButton.setForeground(Color.blue);
+            confirmButton.addActionListener(e -> setStepFrame.dispose());
 
 
             JPanel choicePanel = new JPanel(new GridLayout(1, 1));
             choicePanel.add(choiceComboBox);
+            choicePanel.setOpaque(false);
 
             JPanel basePanel = new JPanel(new GridLayout(2, 1));
             basePanel.setPreferredSize(new Dimension(150, 150));
             basePanel.add(choicePanel);
             basePanel.add(confirmButton);
+            basePanel.setOpaque(false);
 
             String picPath = SystemSelect.getImagePath();
             JPanel picPanel = new BackgroundPanel((new ImageIcon(picPath + "setStep.jpg").getImage()));
@@ -60,33 +74,46 @@ public class SetStep {
             int oppo = rollResult[1];
             JLabel selfDiceLabel = new JLabel();
             JLabel oppoDiceLabel = new JLabel();
+            selfDiceLabel.setOpaque(false);
+            oppoDiceLabel.setOpaque(false);
             selfDiceLabel.setIcon(MatchDicePicture.getImage(self));
             oppoDiceLabel.setIcon(MatchDicePicture.getImage(oppo));
+            selfDiceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            oppoDiceLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
             JComboBox<Integer> choiceComboBox = getPossibleChoice(rollResult);
+            choiceComboBox.setOpaque(false);
 
             JButton confirmButton = new JButton("确定");
-            confirmButton.addActionListener(e -> {
-                setStepFrame.dispose();
-            });
+            confirmButton.setOpaque(false);
+            confirmButton.addActionListener(e -> setStepFrame.dispose());
 
 
-            JPanel dicePanel = new JPanel(new GridLayout(1, 2,0,20));
-            dicePanel.add(selfDiceLabel, oppoDiceLabel);
+            JPanel dicePanel = new JPanel(new GridLayout(1, 2));
+            dicePanel.setOpaque(false);
+            dicePanel.add(selfDiceLabel);
+            dicePanel.add(oppoDiceLabel);
 
-            JPanel choicePanel = new JPanel(new GridLayout(1, 1));
+            JPanel buttonPanel = new JPanel(new GridLayout(3, 1));
+            buttonPanel.setOpaque(false);
+            buttonPanel.add(new JLabel());
+            buttonPanel.add(confirmButton);
+            buttonPanel.add(new JLabel());
+
+            JPanel choicePanel = new JPanel(new GridLayout(1, 2));
+            choicePanel.setOpaque(false);
             choicePanel.add(choiceComboBox);
+            choicePanel.add(buttonPanel);
 
-            JPanel basePanel = new JPanel(new GridLayout(3, 1));
+            JPanel basePanel = new JPanel(new GridLayout(2, 1, 0, 20));
             basePanel.setOpaque(false);
-            basePanel.setPreferredSize(new Dimension(150, 150));
+            basePanel.setPreferredSize(new Dimension(150, 100));
             basePanel.add(dicePanel);
             basePanel.add(choicePanel);
-            basePanel.add(confirmButton);
 
-            JPanel picPanel = new BackgroundPanel(new ImageIcon(SystemSelect.getImagePath() + "setStep.jpg").getImage());
-            picPanel.setOpaque(false);
-            picPanel.setLayout(new GridLayout(1,1));
+            String picPath = SystemSelect.getImagePath();
+            JPanel picPanel = new BackgroundPanel((new ImageIcon(picPath + "setStep.jpg").getImage()));
+            picPanel.setLayout(new GridLayout(1, 1));
             picPanel.add(basePanel);
 
             setStepFrame.add(picPanel);
@@ -99,18 +126,18 @@ public class SetStep {
     public static JComboBox<Integer> getPossibleChoice(int[] rollResult) {
         ArrayList<Integer> possibleChoice = new ArrayList<>();
         if (!GameInfo.isIsCheatMode()) {
-            if (rollResult[0] + rollResult[1] <= 12)
-                possibleChoice.add(rollResult[0] + rollResult[1]);
-            if (rollResult[0] - rollResult[1] > 0)
-                possibleChoice.add(rollResult[0] - rollResult[1]);
-            if (rollResult[1] - rollResult[0] > 0)
-                possibleChoice.add(rollResult[1] - rollResult[0]);
-            if (rollResult[0] * rollResult[1] <= 12)
-                possibleChoice.add(rollResult[1] * rollResult[0]);
-            if ((rollResult[0] / (float) rollResult[1]) % 1f == 0f)
-                possibleChoice.add(rollResult[0] / rollResult[1]);
-            if ((rollResult[1] / (float) rollResult[0]) % 1f == 0f)
-                possibleChoice.add(rollResult[1] / rollResult[0]);
+            int a = rollResult[0] + rollResult[1];
+            int b = rollResult[0] - rollResult[1];
+            int c = rollResult[1] - rollResult[0];
+            int e = rollResult[0] * rollResult[1];
+            float f = rollResult[0] / (float) rollResult[1];
+            float g = rollResult[1] / (float) rollResult[0];
+            if (a <= 12) possibleChoice.add(a);
+            if (b > 0 && b != a) possibleChoice.add(b);
+            if (c > 0 && c != a) possibleChoice.add(c);
+            if (e <= 12 && e != a && e != b && e != c) possibleChoice.add(e);
+            if (f % 1f == 0f && f != a && f != b && f != c && f != e) possibleChoice.add((int) f);
+            if (g % 1f == 0f && g != a && g != b && g != c && g != e && g != f) possibleChoice.add((int) g);
         } else {
             for (int i = 1; i <= 12; i++) {
                 possibleChoice.add(i);
@@ -118,17 +145,9 @@ public class SetStep {
         }
 
         JComboBox<Integer> stepChoices = new JComboBox<>();
-        for (int i = 0; i < possibleChoice.size(); i++) {
-            stepChoices.addItem(possibleChoice.get(i));
-            int index = i;
-            stepChoices.addItemListener(e -> SetStep.stepSelected = possibleChoice.get(index));
-        }
-        stepSelected=possibleChoice.get(0);
+        for (Integer integer : possibleChoice) stepChoices.addItem(integer);
+        stepChoices.addItemListener(e -> SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(stepChoices.getSelectedItem()).toString()));
+        stepSelected = possibleChoice.get(0);
         return stepChoices;
-    }
-
-    public static void main(String[] args) {
-        int[] a={2,5};
-        SetStep.askPlayerStep(a);
     }
 }

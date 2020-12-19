@@ -83,7 +83,7 @@ public class GameMall extends JFrame {
         playerSelect.add(player3);
         playerSelect.add(player4);
 
-        JPanel userSelectPanel = new JPanel(new GridLayout(2, 2,-5,-15));
+        JPanel userSelectPanel = new JPanel(new GridLayout(2, 2, -5, -15));
         userSelectPanel.add(player1);
         userSelectPanel.add(player2);
         userSelectPanel.add(player3);
@@ -91,13 +91,13 @@ public class GameMall extends JFrame {
         userSelectPanel.setOpaque(false);
 
 
-        this.userBalanceLabel.setText(String.format("        账户余额：%.2f金币",Wallet.getBalance(asPlayer)));
+        this.userBalanceLabel.setText(String.format("        账户余额：%.2f金币", Wallet.getBalance(asPlayer)));
         userBalanceLabel.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 18));
         userBalanceLabel.setForeground(Color.WHITE);
         userBalanceLabel.setOpaque(false);
 
 
-        this.userDiscountLabel.setText(String.format("        优惠方案：%.2f折",Wallet.getDiscountAsPercent(asPlayer) * 100));
+        this.userDiscountLabel.setText(String.format("        优惠方案：%d折", (int) (Wallet.getDiscountAsPercent(asPlayer) * 100)));
         userDiscountLabel.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 18));
         userDiscountLabel.setForeground(Color.WHITE);
         userDiscountLabel.setOpaque(false);
@@ -108,7 +108,7 @@ public class GameMall extends JFrame {
         editWallet.setForeground(Color.red);
         editWallet.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 14));
 
-        JPanel editWalletPanel=new JPanel(new GridLayout(1,3));
+        JPanel editWalletPanel = new JPanel(new GridLayout(1, 3));
         editWalletPanel.add(new JLabel());
         editWalletPanel.add(editWallet);
         editWalletPanel.add(new JLabel());
@@ -172,7 +172,7 @@ public class GameMall extends JFrame {
         setSizePanel.add(backgroundPanel);
 
 
-        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.add(setSizePanel);
@@ -183,8 +183,8 @@ public class GameMall extends JFrame {
     }
 
     public final void refreshInfo() {
-        this.userBalanceLabel.setText("        账户余额：" + Wallet.getBalance(asPlayer) + "金币");
-        this.userDiscountLabel.setText("        优惠方案：" + Wallet.getDiscountAsPercent(asPlayer) * 100 + "折");
+        this.userBalanceLabel.setText(String.format("        账户余额：%.2f金币", Wallet.getBalance(asPlayer)));
+        this.userDiscountLabel.setText(String.format("        优惠方案：%d折", (int) (Wallet.getDiscountAsPercent(asPlayer) * 100)));
         this.player1.setText("玩家1：" + GameInfo.getPlayerName()[0]);
         this.player2.setText("玩家2：" + GameInfo.getPlayerName()[1]);
         this.player3.setText("玩家3：" + GameInfo.getPlayerName()[2]);

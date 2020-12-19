@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 
 public class TimeDialog {
 
-    private JLabel label;
     private JDialog dialog = new JDialog();
 
     private int seconds;
@@ -22,7 +21,7 @@ public class TimeDialog {
         dialog.setLayout(null);
 
         seconds = closeInSec;
-        label = new JLabel(message, JLabel.CENTER);
+        JLabel label = new JLabel(message, JLabel.CENTER);
         label.setBounds(80, 10, 200, 20);
 
         ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();

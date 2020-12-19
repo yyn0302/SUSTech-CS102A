@@ -1,6 +1,8 @@
 package cs102a.aeroplane.frontend;
 
+import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
+import cs102a.aeroplane.gamemall.GoodsList;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
@@ -33,7 +35,6 @@ public class Start {
         continueButton.setForeground(Color.YELLOW);
         continueButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 26));
         continueButton.addActionListener(e -> {
-            startFrame.setVisible(false);
             LoadHistory loadHistory = new LoadHistory("读档");
             loadHistory.window.setVisible(true);
         });
@@ -45,6 +46,7 @@ public class Start {
         storeButton.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 24));
         storeButton.addActionListener(e -> {
             startFrame.setVisible(false);
+            GameMall.window.editWallet.setEnabled(GameInfo.isSuperUser());
             GameMall.window.setVisible(true);
         });
 
@@ -81,15 +83,8 @@ public class Start {
         startFrame.setResizable(false);
         startFrame.setVisible(true);
         startFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        //fixme 记得删
-        //fixme 记得删
-        //fixme 记得删
-        //fixme 记得删
-        Battle.isWinner();
-        //fixme 记得删
-        //fixme 记得删
-        //fixme 记得删
-        //fixme 记得删
+
+        EndGameAndShowRank.endGameAndShowRank.setVisible(true);
     }
 
     public static void popStart() {

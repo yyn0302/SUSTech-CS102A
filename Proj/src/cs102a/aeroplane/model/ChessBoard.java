@@ -42,9 +42,12 @@ public class ChessBoard extends JPanel {
         this.nowPlayer = 0;
         this.gameGUI = gameGUI;
 
-        this.winner1Index = -1;
-        this.winner2Index = -1;
-        this.winner3Index = -1;
+        this.winner1Index = 0;
+        this.winner2Index = 1;
+        this.winner3Index = 2;
+//        this.winner1Index = -1;
+//        this.winner2Index = -1;
+//        this.winner3Index = -1;
 
         this.playerSteps = new int[]{0, 0, 0, 0};
         this.continueRoll = 0;

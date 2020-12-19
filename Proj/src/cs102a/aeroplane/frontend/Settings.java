@@ -168,7 +168,7 @@ public class Settings extends JFrame {
                     enterSuperMode.setBorder(null);
                     enterSuperMode.setForeground(Color.gray);
                     enterSuperMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 14));
-                    GameMall.window.editWallet.setEnabled(GameInfo.isSuperUser());
+                    GameMall.window.editWallet.setEnabled(true);
                 }
             }
         });

@@ -11,13 +11,15 @@ public class EndGameAndShowRank extends JFrame {
 
     public EndGameAndShowRank(String title) {
         this.setTitle(title);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
 
         String path = SystemSelect.getImagePath();
 
         GridBagLayout gridBagLayout = new GridBagLayout();
 
         JPanel mainPanel = new JPanel(gridBagLayout);
-        mainPanel.setPreferredSize(new Dimension(1000, 1000));
+        mainPanel.setPreferredSize(new Dimension(300, 500));
 
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.fill = GridBagConstraints.BOTH;
@@ -173,8 +175,10 @@ public class EndGameAndShowRank extends JFrame {
         mainPanel.add(info2ofNumber4);
         mainPanel.add(confirmButton);
         mainPanel.setOpaque(false);
+
         this.add(mainPanel);
-        this.setSize(1000, 1000);
+
+        this.setSize(400, 600);
         this.setVisible(true);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }

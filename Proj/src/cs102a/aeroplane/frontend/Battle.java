@@ -4,7 +4,6 @@ import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
 import cs102a.aeroplane.frontend.model.MatchDicePicture;
 import cs102a.aeroplane.util.Dice;
-import cs102a.aeroplane.util.SystemSelect;
 import cs102a.aeroplane.util.Timer;
 
 import javax.swing.*;
@@ -27,8 +26,10 @@ public class Battle {
         battleFrame.setResizable(false);
 
         // 作弊模式没有骰子，直接显示选择胜负两个按钮
-        if (!GameInfo.isIsCheatMode()) {
+        if (GameInfo.isIsCheatMode()) {
             JLabel tipLabel = new JLabel("选择想在此轮Battle中的胜负");
+            tipLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            tipLabel.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 20));
 
             JButton winButton = new JButton("赢");
             JButton lossButton = new JButton("输");
@@ -44,12 +45,14 @@ public class Battle {
             JPanel labelPanel = new JPanel(new GridLayout(1, 1));
             labelPanel.add(tipLabel);
 
-            JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
+            JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 30, 0));
             buttonPanel.add(winButton);
             buttonPanel.add(lossButton);
+            buttonPanel.add(new JLabel());
+            buttonPanel.add(new JLabel());
 
-            JPanel basePanel = new JPanel(new GridLayout(2, 1));
-            basePanel.setPreferredSize(new Dimension(300, 200));
+            JPanel basePanel = new JPanel(new GridLayout(2, 1, 5, 10));
+            basePanel.setPreferredSize(new Dimension(300, 250));
             basePanel.add(labelPanel);
             basePanel.add(buttonPanel);
 
@@ -74,7 +77,7 @@ public class Battle {
             oppoDiceLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
             JLabel tipLabel1 = new JLabel(String.format("你摇出 %d  %s  对方摇出 %d", self, (self < oppo ? " < " : " > "), oppo));
-            JLabel tipLabel2 = new JLabel(self < oppo ? "\n你人没了" : "\n你赢啦");
+            JLabel tipLabel2 = new JLabel(self < oppo ? "\n你输了" : "\n你赢啦");
             tipLabel1.setHorizontalAlignment(SwingConstants.CENTER);
             tipLabel2.setHorizontalAlignment(SwingConstants.CENTER);
             tipLabel1.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 20));
@@ -100,8 +103,8 @@ public class Battle {
             battleFrame.add(picPanel);
             battleFrame.setVisible(true);
 
-            Timer.delay(1000);
-//            battleFrame.dispose();
+            Timer.delay(1500);
+            battleFrame.dispose();
         }
     }
 

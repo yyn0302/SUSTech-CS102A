@@ -1,7 +1,6 @@
 package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
-import cs102a.aeroplane.frontend.model.DecimalLimitedDocument;
 import cs102a.aeroplane.frontend.model.InputLimiter;
 import cs102a.aeroplane.frontend.model.TimeDialog;
 import cs102a.aeroplane.gamemall.Wallet;
@@ -24,14 +23,13 @@ public class EditUserInfo extends JFrame {
         jp1.add(nameTextField);
 
         JLabel balanceLabel = new JLabel("余额(金币)：");
-        JTextField balanceTextField = new JTextField(Wallet.getBalance(GameMall.getAsPlayer()) + "");
-        balanceTextField.setDocument(new DecimalLimitedDocument());
+        JTextField balanceTextField = new JTextField(String.valueOf(Wallet.getBalance(GameMall.getAsPlayer())));
         JPanel jp2 = new JPanel(new GridLayout(1, 2));
         jp2.add(balanceLabel);
         jp2.add(balanceTextField);
 
         JLabel discountLabel = new JLabel("优惠方案(%)：");
-        JTextField discountTextField = new JTextField(Wallet.getDiscountAsPercent(GameMall.getAsPlayer()) * 100 + "");
+        JTextField discountTextField = new JTextField(String.format("%d", (int) (Wallet.getDiscountAsPercent(GameMall.getAsPlayer()) * 100)));
         discountTextField.addKeyListener(new InputLimiter());
         JPanel jp3 = new JPanel(new GridLayout(1, 2));
         jp3.add(discountLabel);
