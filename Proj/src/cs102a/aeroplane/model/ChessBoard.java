@@ -12,6 +12,7 @@ import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.util.Dice;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -33,24 +34,21 @@ public class ChessBoard extends JPanel {
     private int winner3Index;                               // 胜利者
     private int[] playerType;                               // 四个玩家类型，人类、AI
     private int myColor = -1;                               // 自己阵营，联机时
-    protected boolean[][] teamIndexUsed = new boolean[4][2];  // 当前队伍已经有飞机
+    protected boolean[][] teamIndexUsed = new boolean[4][2];// 当前队伍已经有飞机
 
 
     public ChessBoard(GameGUI gameGUI, int xOffSet, int yOffSet) {
         this.state = GameState.GAME_READY;
         this.nowPlayer = 0;
-//        this.gameGUI = gameGUI;
+        this.gameGUI = gameGUI;
 
-        this.winner1Index = 0;
-        this.winner2Index = 1;
-        this.winner3Index = 2;
-//        this.winner1Index = -1;
-//        this.winner2Index = -1;
-//        this.winner3Index = -1;
-        // FIXME: 2020/12/19 改回去
-        // FIXME: 2020/12/19 改回去
-        // FIXME: 2020/12/19 改回去
-        // FIXME: 2020/12/19 改回去
+        this.setLayout(null);
+        this.setSize(new Dimension(800,800));
+        this.setOpaque(false);
+
+        this.winner1Index = -1;
+        this.winner2Index = -1;
+        this.winner3Index = -1;
 
         this.playerSteps = new int[]{0, 0, 0, 0};
         this.continueRoll = 0;
@@ -75,6 +73,10 @@ public class ChessBoard extends JPanel {
                 new Aeroplane(this, PlaneState.YELLOW, 14, 17, xOffSet, yOffSet),
                 new Aeroplane(this, PlaneState.YELLOW, 15, 18, xOffSet, yOffSet)
         };
+
+//        for (int i = 0; i<16;i++) {
+//            this.add(planes[i].getPlaneView());
+//        }
     }
 
 

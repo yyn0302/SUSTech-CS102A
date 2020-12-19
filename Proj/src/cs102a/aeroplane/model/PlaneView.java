@@ -6,6 +6,7 @@ import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -90,6 +91,8 @@ public class PlaneView extends JButton {
         this.number = number;
         this.itsHangar = itsHangar;
         this.aeroplane = aeroplane;
+
+        this.setSize(new Dimension(BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE));
 
         this.numOfStackedPlanes = 1;
         this.state = PlaneState.IN_HANGAR;

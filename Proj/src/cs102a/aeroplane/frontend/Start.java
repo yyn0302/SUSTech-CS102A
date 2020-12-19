@@ -2,7 +2,6 @@ package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
-import cs102a.aeroplane.gamemall.GoodsList;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
@@ -83,8 +82,6 @@ public class Start {
         startFrame.setResizable(false);
         startFrame.setVisible(true);
         startFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-       // EndGameAndShowRank.endGameAndShowRank.setVisible(true);
     }
 
     public static void popStart() {

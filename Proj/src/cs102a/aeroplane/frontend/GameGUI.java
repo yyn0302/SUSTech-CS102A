@@ -4,7 +4,6 @@ import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
 import cs102a.aeroplane.frontend.model.PlayerInfoPanel;
 import cs102a.aeroplane.frontend.model.TimeDialog;
-import cs102a.aeroplane.model.Aeroplane;
 import cs102a.aeroplane.model.ChessBoard;
 import cs102a.aeroplane.savegame.GameSaver;
 import cs102a.aeroplane.util.SystemSelect;
@@ -16,11 +15,11 @@ public class GameGUI extends JFrame {
     public static GameGUI window = new GameGUI();
     public static ImageIcon background;
     // TODO: 2020/12/18 当棋子出现偏移时修改xy方向偏置
-    public ChessBoard chessBoard = new ChessBoard(null, 0, 0);
+    public ChessBoard chessBoard = new ChessBoard(this, 0, 0);
     private PlayerInfoPanel playerInfoPanel;
 
     public GameGUI() {
-        this.add(new ChessBoard(GameGUI.window,0,0));
+        this.add(new ChessBoard(GameGUI.window, 0, 0));
 
         this.setSize(900, 800);
         this.setLocationRelativeTo(null);
@@ -31,72 +30,73 @@ public class GameGUI extends JFrame {
         String path = SystemSelect.getImagePath();
 
         // 背景图片
-        background = new ImageIcon(path + (GameInfo.getTheme() == 1 ? "海王主题.jpg" : "灵笼主题.jpg"));
+        background = new ImageIcon(path + (GameInfo.getTheme() == 1 ? "海王主题.png" : "灵笼主题.jpg"));
         JPanel backgroundPanel = new BackgroundPanel(background.getImage());
+        backgroundPanel.setLayout(null);
         backgroundPanel.setBounds(0, 0, 900, 800);
         backgroundPanel.setOpaque(false);
         backgroundPanel.setVisible(true);
-        this.add(backgroundPanel);
 
-        JPanel rightSidePanel = new JPanel();
-        this.setLayout(new GridLayout(1, 2, 50, 50));//大小有待后续调整
-        rightSidePanel.setLayout(new GridLayout(2, 1, 20, 20));
+
+        //窗口初始化
+        ImageIcon boardImg = new ImageIcon(path + "blankBoard.png");
+        JPanel boardImgPanel = new BackgroundPanel(boardImg.getImage());
+        boardImgPanel.setLayout(null);
+        boardImgPanel.setBounds(0, 0, 800, 800);
+
+        chessBoard.setBounds(0, 0, 800, 800);
+        chessBoard.setOpaque(false);
+        boardImgPanel.add(chessBoard);
+
+        boardImgPanel.setOpaque(false);
+        backgroundPanel.add(boardImgPanel);
 
         //玩家面板
         playerInfoPanel = new PlayerInfoPanel(chessBoard);
 
         //保存面板
-        JPanel savePanel = new JPanel();
-        savePanel.setLayout(new GridLayout(3, 1, 10, 10));//大小有待调整
-        JButton resetButton = new JButton(new ImageIcon(path+"reset.jpg"));
-        JButton saveButton = new JButton(new ImageIcon(path+"save.png"));
-        JButton returnButton = new JButton(new ImageIcon(path+"back.png"));
+        JButton resetButton = new JButton("重置");
+        JButton saveButton = new JButton("保存");
+        JButton returnButton = new JButton("返回");
+//        JButton resetButton = new JButton(new ImageIcon(path + "reset.jpg"));
+//        JButton saveButton = new JButton(new ImageIcon(path + "save.png"));
+//        JButton returnButton = new JButton(new ImageIcon(path + "back.png"));
+        resetButton.setBounds(838, 580, 60, 60);
+        saveButton.setBounds(838, 650, 60, 60);
+        returnButton.setBounds(838, 720, 60, 60);
+        resetButton.setOpaque(false);
+        saveButton.setOpaque(false);
+        returnButton.setOpaque(false);
 
         // FIXME: 2020/12/18 不知道对不对
         resetButton.addActionListener(e -> {
-            chessBoard=null;
+            chessBoard = null;
             System.gc();
-            chessBoard=new ChessBoard(window,0,0);
+            chessBoard = new ChessBoard(window, 0, 0);
         });
-
         saveButton.addActionListener(e -> {
             GameSaver.save(chessBoard);
-            new TimeDialog().showDialog(window,"成功保存",3);
+            new TimeDialog().showDialog(window, "成功保存", 3);
         });
-
         returnButton.addActionListener(e -> {
             window.setVisible(false);
             //打开startMenu
             Start.popStart();
         });
 
-        savePanel.add(resetButton);
-        savePanel.add(saveButton);
-        savePanel.add(returnButton);
-        savePanel.setPreferredSize(new Dimension(100, 100));//大小有待后续调整
+        backgroundPanel.add(resetButton);
+        backgroundPanel.add(saveButton);
+        backgroundPanel.add(returnButton);
+        backgroundPanel.setOpaque(false);
 
-        //窗口初始化
-//        rightSidePanel.add(playerInfoPanel);
-//        rightSidePanel.add(savePanel);
 
-        chessBoard.setBounds(0,0,800,800);
-        this.add(chessBoard);
-
-//        rightSidePanel.setBounds(900,0,200,800);
-//        this.add(rightSidePanel);
-
+        this.add(backgroundPanel);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
 
         chessBoard.startGame();
-        for(Aeroplane aeroplane:chessBoard.getPlanes()){
-            this.add(aeroplane.getPlaneView());
-        }
     }
 
-    public PlayerInfoPanel getPlayerInfoPanel() {
-        return playerInfoPanel;
-    }
 
     public void refresh() {
 //         FIXME: 2020/12/18 增加效果按键，刷新剩余个数

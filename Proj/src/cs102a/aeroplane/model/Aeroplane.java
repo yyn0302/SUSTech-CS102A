@@ -1,12 +1,9 @@
 package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.frontend.Battle;
-import cs102a.aeroplane.frontend.GameGUI;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.presets.Sound;
-
-import javax.swing.*;
 
 import static cs102a.aeroplane.presets.BoardCoordinate.COLOR_PATH;
 
@@ -30,38 +27,9 @@ public class Aeroplane {
         selfPathIndex = -1;
 
         planeView = new PlaneView(chessBoard, number, color, itsHangar, xOffSet, yOffSet, this);
-        planeView.moveTo(itsHangar);
         chessBoard.add(planeView);
     }
 
-    public PlaneView getPlaneView() {
-        return planeView;
-    }
-
-    public int getColor() {
-        return color;
-    }
-
-    public int getState() {
-        return planeView.getState();
-    }
-
-    public void setState(int state) {
-        this.planeView.setState(state);
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public int getGeneralGridIndex() {
-        return generalGridIndex;
-    }
-
-
-    public boolean isInHangar() {
-        return planeView.getState() == PlaneState.IN_HANGAR;
-    }
 
     /**
      * @param steps 选择向前移动的步数
@@ -253,6 +221,35 @@ public class Aeroplane {
         planeView.setIconAsPlaneNum(1);
         planeView.setEnabled(false);
     }
+
+    public PlaneView getPlaneView() {
+        return planeView;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public int getState() {
+        return planeView.getState();
+    }
+
+    public void setState(int state) {
+        this.planeView.setState(state);
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public int getGeneralGridIndex() {
+        return generalGridIndex;
+    }
+
+    public boolean isInHangar() {
+        return planeView.getState() == PlaneState.IN_HANGAR;
+    }
+
 
 //    public static void main(String[] args) {
 //        JFrame battleFrame = new JFrame("Battle");
