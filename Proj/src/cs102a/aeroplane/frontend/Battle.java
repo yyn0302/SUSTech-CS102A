@@ -20,11 +20,14 @@ public class Battle {
 
     public static void popBattleFrame() {
         JFrame battleFrame = new JFrame("Battle");
-        battleFrame.setSize(400, 400);
+        battleFrame.setSize(300, 250);
         battleFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        battleFrame.setLocationRelativeTo(null);
+        battleFrame.setAlwaysOnTop(true);
+        battleFrame.setResizable(false);
 
         // 作弊模式没有骰子，直接显示选择胜负两个按钮
-        if (GameInfo.isIsCheatMode()) {
+        if (!GameInfo.isIsCheatMode()) {
             JLabel tipLabel = new JLabel("选择想在此轮Battle中的胜负");
 
             JButton winButton = new JButton("赢");
@@ -46,12 +49,11 @@ public class Battle {
             buttonPanel.add(lossButton);
 
             JPanel basePanel = new JPanel(new GridLayout(2, 1));
-            basePanel.setPreferredSize(new Dimension(150, 150));
+            basePanel.setPreferredSize(new Dimension(300, 200));
             basePanel.add(labelPanel);
             basePanel.add(buttonPanel);
 
-            String picPath = SystemSelect.getImagePath();
-            JPanel picPanel = new BackgroundPanel((new ImageIcon(picPath + "骰子背景图.jpg").getImage()));
+            JPanel picPanel = new BackgroundPanel(null);
             picPanel.add(basePanel);
 
             battleFrame.add(picPanel);
@@ -59,37 +61,47 @@ public class Battle {
             battleFrame.setVisible(true);
         }
 
-        //显示骰子，显示下拉菜单让用户选择
+        //显示骰子
         else {
-            int self = Dice.roll();
-            int oppo = Dice.roll();
+            int[] result = Dice.rollDices();
+            int self = result[0];
+            int oppo = result[1];
             JLabel selfDiceLabel = new JLabel();
             JLabel oppoDiceLabel = new JLabel();
             selfDiceLabel.setIcon(MatchDicePicture.getImage(self));
             oppoDiceLabel.setIcon(MatchDicePicture.getImage(oppo));
+            selfDiceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            oppoDiceLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-            JLabel tipLabel1 = new JLabel("你摇出" + self + (self < oppo ? " < " : " > ") +
-                    "对方摇出" + oppo + (self < oppo ? "\n你输啦" : "\n你赢啦"));
+            JLabel tipLabel1 = new JLabel(String.format("你摇出 %d  %s  对方摇出 %d", self, (self < oppo ? " < " : " > "), oppo));
+            JLabel tipLabel2 = new JLabel(self < oppo ? "\n你人没了" : "\n你赢啦");
+            tipLabel1.setHorizontalAlignment(SwingConstants.CENTER);
+            tipLabel2.setHorizontalAlignment(SwingConstants.CENTER);
+            tipLabel1.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 20));
+            tipLabel2.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 24));
+            tipLabel2.setForeground(Color.red);
 
             JPanel dicePanel = new JPanel(new GridLayout(1, 2));
-            dicePanel.add(selfDiceLabel, oppoDiceLabel);
+            dicePanel.add(selfDiceLabel);
+            dicePanel.add(oppoDiceLabel);
 
-            JPanel tipPanel = new JPanel(new GridLayout(1, 1));
+            JPanel tipPanel = new JPanel(new GridLayout(2, 1));
             tipPanel.add(tipLabel1);
+            tipPanel.add(tipLabel2);
 
             JPanel basePanel = new JPanel(new GridLayout(2, 1));
-            basePanel.setPreferredSize(new Dimension(150, 150));
-            basePanel.add(dicePanel, tipPanel);
+            basePanel.setPreferredSize(new Dimension(300, 200));
+            basePanel.add(dicePanel);
+            basePanel.add(tipPanel);
 
-            String picPath = SystemSelect.getImagePath();
-            JPanel picPanel = new BackgroundPanel((new ImageIcon(picPath + "骰子背景图.jpg").getImage()));
+            JPanel picPanel = new BackgroundPanel(null);
             picPanel.add(basePanel);
 
             battleFrame.add(picPanel);
             battleFrame.setVisible(true);
 
             Timer.delay(1000);
-            battleFrame.dispose();
+//            battleFrame.dispose();
         }
     }
 

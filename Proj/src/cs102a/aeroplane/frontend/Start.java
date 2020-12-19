@@ -81,6 +81,15 @@ public class Start {
         startFrame.setResizable(false);
         startFrame.setVisible(true);
         startFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //fixme 记得删
+        //fixme 记得删
+        //fixme 记得删
+        //fixme 记得删
+        Battle.isWinner();
+        //fixme 记得删
+        //fixme 记得删
+        //fixme 记得删
+        //fixme 记得删
     }
 
     public static void popStart() {
