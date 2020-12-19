@@ -9,7 +9,6 @@ import cs102a.aeroplane.savegame.GameSaver;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class GameGUI extends JFrame {
     public static GameGUI window = new GameGUI();
@@ -34,13 +33,12 @@ public class GameGUI extends JFrame {
         JPanel backgroundPanel = new BackgroundPanel(background.getImage());
         backgroundPanel.setLayout(null);
         backgroundPanel.setBounds(0, 0, 900, 800);
-        backgroundPanel.setOpaque(false);
-        backgroundPanel.setVisible(true);
+//        backgroundPanel.setOpaque(false);
 
 
-        //窗口初始化
         ImageIcon boardImg = new ImageIcon(path + "blankBoard.png");
         JPanel boardImgPanel = new BackgroundPanel(boardImg.getImage());
+        boardImgPanel.setOpaque(false);
         boardImgPanel.setLayout(null);
         boardImgPanel.setBounds(0, 0, 800, 800);
 
@@ -48,22 +46,21 @@ public class GameGUI extends JFrame {
         chessBoard.setOpaque(false);
         boardImgPanel.add(chessBoard);
 
-        boardImgPanel.setOpaque(false);
         backgroundPanel.add(boardImgPanel);
 
         //玩家面板
         playerInfoPanel = new PlayerInfoPanel(chessBoard);
+        playerInfoPanel.setBounds(820, 30, 60, 130);
+        playerInfoPanel.setOpaque(false);
+        backgroundPanel.add(playerInfoPanel);
 
-        //保存面板
+        //util面板
         JButton resetButton = new JButton("重置");
         JButton saveButton = new JButton("保存");
         JButton returnButton = new JButton("返回");
-//        JButton resetButton = new JButton(new ImageIcon(path + "reset.jpg"));
-//        JButton saveButton = new JButton(new ImageIcon(path + "save.png"));
-//        JButton returnButton = new JButton(new ImageIcon(path + "back.png"));
-        resetButton.setBounds(838, 580, 60, 60);
-        saveButton.setBounds(838, 650, 60, 60);
-        returnButton.setBounds(838, 720, 60, 60);
+        resetButton.setBounds(818, 560, 60, 60);
+        saveButton.setBounds(818, 630, 60, 60);
+        returnButton.setBounds(818, 700, 60, 60);
         resetButton.setOpaque(false);
         saveButton.setOpaque(false);
         returnButton.setOpaque(false);
