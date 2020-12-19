@@ -84,7 +84,7 @@ public class Start {
         startFrame.setVisible(true);
         startFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        EndGameAndShowRank.endGameAndShowRank.setVisible(true);
+       // EndGameAndShowRank.endGameAndShowRank.setVisible(true);
     }
 
     public static void popStart() {

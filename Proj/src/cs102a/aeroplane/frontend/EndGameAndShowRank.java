@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class EndGameAndShowRank extends JFrame {
-    public static EndGameAndShowRank endGameAndShowRank = new EndGameAndShowRank("游戏结束");
+    public static EndGameAndShowRank endGameAndShowRank = new EndGameAndShowRank("排行榜");
 
     public EndGameAndShowRank(String title) {
         this.setTitle(title);
