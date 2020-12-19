@@ -76,7 +76,8 @@ public class GameSaver {
                 chessBoard.getPlanes()[12].getGeneralGridIndex(),
                 chessBoard.getPlanes()[13].getGeneralGridIndex(),
                 chessBoard.getPlanes()[14].getGeneralGridIndex(),
-                chessBoard.getPlanes()[15].getGeneralGridIndex());
+                chessBoard.getPlanes()[15].getGeneralGridIndex()
+        );
 
         try {
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(

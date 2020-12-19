@@ -11,6 +11,7 @@ import cs102a.aeroplane.savegame.GameSaver;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class GameGUI extends JFrame {
 
@@ -98,6 +99,27 @@ public class GameGUI extends JFrame {
             Sound.GAMING_THEME2.end();
         });
 
+        JButton changeCheatMode = new JButton("正常");
+        changeCheatMode.setOpaque(false);
+        changeCheatMode.setBorder(null);
+        changeCheatMode.setForeground(Color.WHITE);
+        changeCheatMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
+        changeCheatMode.setBounds(818,180,60,30);
+        changeCheatMode.addActionListener(e -> {
+            if (!GameInfo.isIsCheatMode()) {
+                changeCheatMode.setText("作弊");
+                GameInfo.setIsCheatMode(true);
+            } else {
+                changeCheatMode.setText("正常");
+                GameInfo.setIsCheatMode(false);
+            }
+            changeCheatMode.setOpaque(false);
+            changeCheatMode.setBorder(null);
+            changeCheatMode.setForeground(Color.WHITE);
+            changeCheatMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
+        });
+
+
         vipButton.setBounds(818, 310, 60, 60);
         bombButton.setBounds(818, 380, 60, 60);
         takeOffButton.setBounds(818, 450, 60, 60);
@@ -127,6 +149,7 @@ public class GameGUI extends JFrame {
         backgroundPanel.add(bombButton);
         backgroundPanel.add(takeOffButton);
         backgroundPanel.add(playerInfoPanel);
+        backgroundPanel.add(changeCheatMode);
         backgroundPanel.setOpaque(false);
 
 

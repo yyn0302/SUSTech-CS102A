@@ -1,10 +1,7 @@
 package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.GameInfo;
-import cs102a.aeroplane.frontend.Battle;
-import cs102a.aeroplane.frontend.EndGameAndShowRank;
-import cs102a.aeroplane.frontend.GameGUI;
-import cs102a.aeroplane.frontend.SetStep;
+import cs102a.aeroplane.frontend.*;
 import cs102a.aeroplane.frontend.model.TimeDialog;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.GameState;
@@ -154,7 +151,7 @@ public class ChessBoard extends JPanel {
         } else {
             // 不是起飞点数则只有在外面的飞机可以飞
             if (outsidePlanes.isEmpty()) {
-                new TimeDialog().showDialog((JFrame) this.getParent(), "你骰出了" + rollResult[0] +
+                new TimeDialog().showDialog(Settings.window, "你骰出了" + rollResult[0] +
                         "和" + rollResult[1] + "，不满足起飞条件，轮到下一玩家", 3);
                 do {
                     nowPlayer = (nowPlayer + 1) % 4;

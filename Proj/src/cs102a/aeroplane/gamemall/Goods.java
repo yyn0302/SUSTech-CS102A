@@ -12,12 +12,15 @@ import java.awt.*;
 public abstract class Goods {
 
     private final float price;
-    private int asPlayer;       // 记录本页的购买等信息/活动与此用户相关
+    public int asPlayer;       // 记录本页的购买等信息/活动与此用户相关
     private int[] storeCnt = {0, 0, 0, 0};
 
     public JFrame itemDetail = new JFrame();
-    JLabel possessionLabel = new JLabel("拥有件数" + storeCnt[asPlayer]);
+    JLabel possessionLabel;
 
+    JLabel nameLabel;
+    JLabel priceLabel;
+    JButton buyButton;
 
     // 实例化一个介绍页面，默认invisible
     public Goods(float price, String itemName, String intro) {
@@ -28,18 +31,19 @@ public abstract class Goods {
         this.itemDetail.setResizable(false);
         this.itemDetail.setAlwaysOnTop(true);
 
-        JLabel nameLabel = new JLabel(itemName);
+        nameLabel = new JLabel(itemName);
         nameLabel.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 32));
 
-        JLabel priceLabel = new JLabel(price + "金币");
+        priceLabel = new JLabel(price + "金币");
         priceLabel.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 20));
 
+        possessionLabel = new JLabel("拥有件数" + storeCnt[asPlayer]);
         possessionLabel.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 20));
 
         JLabel introLabel = new JLabel(intro);
         introLabel.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 14));
 
-        JButton buyButton = new JButton(Wallet.getDiscountAsPercent(asPlayer) == 1.00f ?
+        buyButton = new JButton(Wallet.getDiscountAsPercent(asPlayer) == 1.00f ?
                 "花费" + this.price + "金币购买一件" : String.format("优惠价 %.2f 金币", this.price * Wallet.getDiscountAsPercent(asPlayer)));
         buyButton.addActionListener(e -> {
             try {
@@ -83,6 +87,11 @@ public abstract class Goods {
         itemDetail.setDefaultCloseOperation(itemDetail.HIDE_ON_CLOSE);
     }
 
+    public void refresh() {
+        possessionLabel.setText("拥有件数" + storeCnt[asPlayer]);
+        buyButton.setText(Wallet.getDiscountAsPercent(asPlayer) == 1.00f ?
+                "花费" + this.price + "金币购买一件" : String.format("优惠价 %.2f 金币", this.price * Wallet.getDiscountAsPercent(asPlayer)));
+    }
 
     public void purchase(int purchaser) throws Exception {
         if (price * Wallet.getDiscountAsPercent(purchaser) <= Wallet.getBalance(purchaser)) {
