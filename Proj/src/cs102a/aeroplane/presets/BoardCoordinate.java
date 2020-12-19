@@ -5,7 +5,7 @@ public class BoardCoordinate {
      * 棋子所有能到达的位置
      * 一共97个位置，按下列顺序编号
      */
-    public static final int[][] GRID_CENTER_OFFSET = {
+    public static final int[][] GRID_CENTER_OFFSET_1000 = {
             {112, 830}, {112, 889}, {164, 830}, {164, 889}, {277, 941},        // 蓝方机场及出发点
             {112, 107}, {112, 163}, {164, 107}, {164, 163}, {53, 277},             // 绿方机场及出发点
             {832, 107}, {832, 163}, {889, 107}, {889, 163}, {721, 50},        // 红方机场及出发点
@@ -33,7 +33,17 @@ public class BoardCoordinate {
             {499, 499}                                                      // 终点
     };
 
-    public static final int GRID_SIZE = 50;
+    public static final int[][] GRID_CENTER_OFFSET = new int[97][2];
+
+    public BoardCoordinate() {
+        for (int i = 0; i < 97; i++) {
+            GRID_CENTER_OFFSET[i][0] = (int) (GRID_CENTER_OFFSET_1000[i][0] * 0.8);
+            GRID_CENTER_OFFSET[i][1] = (int) (GRID_CENTER_OFFSET_1000[i][1] * 0.8);
+        }
+    }
+
+    public static final int GRID_SIZE = 40;
+//    public static final int GRID_SIZE = 50;
 
     // 各色飞机编号数组
     public static final int[][] COLOR_PLANE_NUMBER = {
@@ -41,31 +51,6 @@ public class BoardCoordinate {
             {4, 5, 6, 7},       // 绿
             {8, 9, 10, 11},     // 红
             {12, 13, 14, 15}    // 黄
-    };
-
-    // 棋子图片在每格需要旋转的角度
-    public static final int[] REVOLVE_ANGLE = {
-            0, 0, 0, 0, 0,
-            90, 90, 90, 90, 90,
-            180, 180, 180, 180, 180,
-            270, 270, 270, 270, 270,
-            0, 0, 0,
-            270, 270, 270, 270,
-            0, 0, 0, 0, 0, 0,
-            90, 90, 90,
-            0, 0, 0, 0,
-            90, 90, 90, 90, 90, 90,
-            180, 180, 180,
-            90, 90, 90, 90,
-            180, 180, 180, 180, 180, 180,
-            270, 270, 270,
-            180, 180, 180, 180,
-            270, 270, 270, 270, 270, 270,
-            0, 0, 0, 0, 0, 0,                           // 蓝直道
-            90, 90, 90, 90, 90, 90,                     // 绿直道
-            180, 180, 180, 180, 180, 180,               // 红直道
-            270, 270, 270, 270, 270, 270,               // 黄直道
-            0                                           // 终点
     };
 
     // 所有格子数

@@ -3,27 +3,23 @@ package cs102a.aeroplane.presets;
 import cs102a.aeroplane.util.MusicPlayer;
 import cs102a.aeroplane.util.SystemSelect;
 
-import java.io.File;
-
 // play(boolean)
 public class Sound {
-    private static final String musicPath = SystemSelect.getMusicPath();
-    public final static Sound JUMP = new Sound(new File(String.format("%sJump.wav", musicPath)));
-    public final static Sound JET = new Sound(new File(String.format("%sFly.wav", musicPath)));
-    public final static Sound CRACK = new Sound(new File(String.format("%sCrack.wav", musicPath)));
-    public final static Sound FINISH_ONE_PLANE = new Sound(new File(String.format("%sFinish.wav", musicPath)));
-    public final static Sound GAMING_THEME1 = new Sound(new File(String.format("%sBGM_Auamen.wav", musicPath)));
-    public final static Sound GAMING_THEME2 = new Sound(new File(String.format("%sBGM_Incarnation.wav", musicPath)));
-    private final File musicFile;
-    MusicPlayer player = new MusicPlayer(this);
+    private static final String basePath = SystemSelect.getMusicPath();
+
+    public final static Sound JUMP = new Sound(String.format("%sJump.wav", basePath));
+    public final static Sound JET = new Sound(String.format("%sFly.wav", basePath));
+    public final static Sound CRACK = new Sound(String.format("%sCrack.wav", basePath));
+    public final static Sound FINISH_ONE_PLANE = new Sound(String.format("%sFinish.wav", basePath));
+    public final static Sound GAMING_THEME1 = new Sound(String.format("%sBGM_Auamen.wav", basePath));
+    public final static Sound GAMING_THEME2 = new Sound(String.format("%sBGM_Incarnation.wav", basePath));
 
 
-    Sound(File musicFile) {
-        this.musicFile = musicFile;
-    }
+    MusicPlayer player;
 
-    public File getMusicFile() {
-        return musicFile;
+
+    public Sound(String musicPath) {
+        player = new MusicPlayer(musicPath);
     }
 
     public final void play(boolean isLoop) {
@@ -43,5 +39,4 @@ public class Sound {
         if (player.getVolume() == 6) player.setVolume(-80);
         else player.setVolume(6);
     }
-
 }

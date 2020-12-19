@@ -5,7 +5,6 @@ import cs102a.aeroplane.frontend.Battle;
 import cs102a.aeroplane.frontend.GameGUI;
 import cs102a.aeroplane.frontend.SetStep;
 import cs102a.aeroplane.frontend.model.TimeDialog;
-import cs102a.aeroplane.online.Client;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.GameState;
 import cs102a.aeroplane.presets.PlaneState;
@@ -20,8 +19,8 @@ import java.util.Random;
 import static cs102a.aeroplane.frontend.EndGameAndShowRank.endGameAndShowRank;
 
 public class ChessBoard extends JPanel {
-    private final GameGUI gameGUI;                          // 句柄
-    private final Aeroplane[] planes;                       // 16架飞机
+    private GameGUI gameGUI;                                // 句柄
+    private Aeroplane[] planes;                             // 16架飞机
     private int[] playerSteps;                              // 截止胜利走了多少步
     int[] rollResult;                                       // 骰子点数
     private ArrayList<Integer> movedPlanes;                 // 记录一个人摇多次时，移动过哪些棋子
@@ -40,7 +39,7 @@ public class ChessBoard extends JPanel {
     public ChessBoard(GameGUI gameGUI, int xOffSet, int yOffSet) {
         this.state = GameState.GAME_READY;
         this.nowPlayer = 0;
-        this.gameGUI = gameGUI;
+//        this.gameGUI = gameGUI;
 
         this.winner1Index = 0;
         this.winner2Index = 1;
@@ -48,6 +47,10 @@ public class ChessBoard extends JPanel {
 //        this.winner1Index = -1;
 //        this.winner2Index = -1;
 //        this.winner3Index = -1;
+        // FIXME: 2020/12/19 改回去
+        // FIXME: 2020/12/19 改回去
+        // FIXME: 2020/12/19 改回去
+        // FIXME: 2020/12/19 改回去
 
         this.playerSteps = new int[]{0, 0, 0, 0};
         this.continueRoll = 0;
@@ -95,7 +98,9 @@ public class ChessBoard extends JPanel {
         state = GameState.GAME_START;
 
         // 还原飞机位置
-        for (Aeroplane plane : planes) plane.backToHangarForInit();
+        for (Aeroplane plane : planes) {
+            plane.backToHangarForInit();
+        }
 
         // 随机决定哪方先开始
         nowPlayer = new Random().nextInt(4);
@@ -105,7 +110,13 @@ public class ChessBoard extends JPanel {
 
     // 开始回合
     public void beginTurn() {
-        GameGUI.window.getPlayerInfoPanel().refresh();
+//        GameGUI.window.getPlayerInfoPanel().refresh();
+        // FIXME: 2020/12/19 加回去上面这行
+        // FIXME: 2020/12/19 加回去上面这行
+        // FIXME: 2020/12/19 加回去上面这行
+        // FIXME: 2020/12/19 加回去上面这行
+        // FIXME: 2020/12/19 加回去上面这行
+        // FIXME: 2020/12/19 加回去上面这行
         if (!GameInfo.isIsOnlineGame()) {
             playerSteps[nowPlayer] += 1;
             rollAndApply();

@@ -1,8 +1,10 @@
 package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
+import cs102a.aeroplane.frontend.model.BackgroundPanel;
 import cs102a.aeroplane.frontend.model.PlayerInfoPanel;
 import cs102a.aeroplane.frontend.model.TimeDialog;
+import cs102a.aeroplane.model.Aeroplane;
 import cs102a.aeroplane.model.ChessBoard;
 import cs102a.aeroplane.savegame.GameSaver;
 import cs102a.aeroplane.util.SystemSelect;
@@ -11,29 +13,30 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameGUI extends JFrame {
-    public static GameGUI window = new GameGUI("飞行棋");
-
+    public static GameGUI window = new GameGUI();
+    public static ImageIcon background;
     // TODO: 2020/12/18 当棋子出现偏移时修改xy方向偏置
-    public ChessBoard chessBoard = new ChessBoard(window, 0, 0);
+    public ChessBoard chessBoard = new ChessBoard(null, 0, 0);
     private PlayerInfoPanel playerInfoPanel;
 
-    public GameGUI(String title) {
+    public GameGUI() {
+        this.add(new ChessBoard(GameGUI.window,0,0));
+
         this.setSize(900, 800);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setLayout(null);       // 以启用绝对布局
 
-        this.setLayout(null);
-        // 以启用绝对布局
-
-        this.setTitle(title);
+        this.setTitle("飞行棋");
         String path = SystemSelect.getImagePath();
 
         // 背景图片
-        ImageIcon background = new ImageIcon(path + (GameInfo.getTheme() == 1 ? "海王主题.jpg" : "灵笼主题.jpg"));
-        JLabel label = new JLabel(background);
-        label.setBounds(0, 0, this.getWidth(), this.getHeight());
-        JPanel imagePanel = (JPanel) this.getContentPane();
-        imagePanel.setOpaque(false);
-        this.getLayeredPane().add(label, -1);
-
+        background = new ImageIcon(path + (GameInfo.getTheme() == 1 ? "海王主题.jpg" : "灵笼主题.jpg"));
+        JPanel backgroundPanel = new BackgroundPanel(background.getImage());
+        backgroundPanel.setBounds(0, 0, 900, 800);
+        backgroundPanel.setOpaque(false);
+        backgroundPanel.setVisible(true);
+        this.add(backgroundPanel);
 
         JPanel rightSidePanel = new JPanel();
         this.setLayout(new GridLayout(1, 2, 50, 50));//大小有待后续调整
@@ -73,17 +76,22 @@ public class GameGUI extends JFrame {
         savePanel.setPreferredSize(new Dimension(100, 100));//大小有待后续调整
 
         //窗口初始化
-        rightSidePanel.add(playerInfoPanel);
-        rightSidePanel.add(savePanel);
+//        rightSidePanel.add(playerInfoPanel);
+//        rightSidePanel.add(savePanel);
 
-        this.add(chessBoard);
         chessBoard.setBounds(0,0,800,800);
+        this.add(chessBoard);
 
-        this.add(rightSidePanel);
-        rightSidePanel.setBounds(900,0,200,800);
+//        rightSidePanel.setBounds(900,0,200,800);
+//        this.add(rightSidePanel);
+
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setResizable(false);
         this.setVisible(true);
+
+        chessBoard.startGame();
+        for(Aeroplane aeroplane:chessBoard.getPlanes()){
+            this.add(aeroplane.getPlaneView());
+        }
     }
 
     public PlayerInfoPanel getPlayerInfoPanel() {

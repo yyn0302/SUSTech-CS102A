@@ -1,7 +1,6 @@
 package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.GameInfo;
-import cs102a.aeroplane.frontend.model.RotatableIcon;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.util.SystemSelect;
@@ -49,6 +48,7 @@ public class PlaneView extends JButton {
         public void mouseEntered(MouseEvent e) {
             StringBuilder themeSelectedIconPath = new StringBuilder();
             themeSelectedIconPath.append(SystemSelect.getImagePath());
+
             themeSelectedIconPath.append("pl_fin_");
             switch (color) {
                 case PlaneState.BLUE:
@@ -64,7 +64,7 @@ public class PlaneView extends JButton {
                     themeSelectedIconPath.append("ye.png");
                     break;
             }
-            setIcon(new RotatableIcon(themeSelectedIconPath.toString(), 0));
+            setIcon(new ImageIcon(themeSelectedIconPath.toString()));
         }
 
         // 做了个移入移出的可选择的提示
@@ -95,6 +95,7 @@ public class PlaneView extends JButton {
         this.state = PlaneState.IN_HANGAR;
         this.setIconAsPlaneNum(1);  // 设置单个飞机图片
         this.moveTo(itsHangar);     // 放上棋盘
+        this.setVisible(true);
     }
 
     // 输入飞机叠子数量，将此飞机设置为对应的图片
@@ -102,6 +103,7 @@ public class PlaneView extends JButton {
     public void setIconAsPlaneNum(int numOfStackedPlanes) {
         this.numOfStackedPlanes = numOfStackedPlanes;
         StringBuilder themeSelectedIconPath = new StringBuilder();
+
         themeSelectedIconPath.append(SystemSelect.getImagePath());
         themeSelectedIconPath.append(GameInfo.getTheme() == 1 ? "t1_p" : "t2_p");
         themeSelectedIconPath.append(numOfStackedPlanes).append("_");
@@ -119,16 +121,14 @@ public class PlaneView extends JButton {
                 themeSelectedIconPath.append("ye.png");
                 break;
         }
-        this.setIcon(new RotatableIcon(themeSelectedIconPath.toString(), BoardCoordinate.REVOLVE_ANGLE[aeroplane.getGeneralGridIndex()]));
+        setIcon(new ImageIcon(themeSelectedIconPath.toString()));
     }
 
     public void moveTo(int generalIndex) {
         this.setBounds(xOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][0] - BoardCoordinate.GRID_SIZE / 2,
                 yOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][1] - BoardCoordinate.GRID_SIZE / 2,
                 BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
-        this.setIcon(new RotatableIcon(this.getIcon(), BoardCoordinate.REVOLVE_ANGLE[aeroplane.getGeneralGridIndex()]));
     }
-
 
     public void readyToBeSelected() {
         for (ActionListener actionListener : this.getActionListeners()) {
@@ -144,6 +144,7 @@ public class PlaneView extends JButton {
         moveTo(itsHangar);
         StringBuilder themeSelectedIconPath = new StringBuilder();
         themeSelectedIconPath.append(SystemSelect.getImagePath());
+
         themeSelectedIconPath.append("pl_fin_");
         switch (color) {
             case PlaneState.BLUE:

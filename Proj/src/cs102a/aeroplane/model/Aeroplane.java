@@ -1,9 +1,12 @@
 package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.frontend.Battle;
+import cs102a.aeroplane.frontend.GameGUI;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.presets.Sound;
+
+import javax.swing.*;
 
 import static cs102a.aeroplane.presets.BoardCoordinate.COLOR_PATH;
 
@@ -27,6 +30,8 @@ public class Aeroplane {
         selfPathIndex = -1;
 
         planeView = new PlaneView(chessBoard, number, color, itsHangar, xOffSet, yOffSet, this);
+        planeView.moveTo(itsHangar);
+        chessBoard.add(planeView);
     }
 
     public PlaneView getPlaneView() {
@@ -248,4 +253,13 @@ public class Aeroplane {
         planeView.setIconAsPlaneNum(1);
         planeView.setEnabled(false);
     }
+
+//    public static void main(String[] args) {
+//        JFrame battleFrame = new JFrame("Battle");
+//        battleFrame.setSize(300, 250);
+//        battleFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+//        battleFrame.setLocationRelativeTo(null);
+//        battleFrame.setAlwaysOnTop(true);
+//        battleFrame.setResizable(false);
+//    }
 }

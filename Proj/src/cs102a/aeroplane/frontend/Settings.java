@@ -24,6 +24,8 @@ public class Settings extends JFrame {
         themeLabel.setForeground(Color.WHITE);
         themeLabel.setOpaque(false);
 
+        String path = SystemSelect.getImagePath();
+
         JButton themeSettings = new JButton("-> 灵笼主题");
         themeSettings.setOpaque(false);
         themeSettings.setBorder(null);
@@ -39,6 +41,7 @@ public class Settings extends JFrame {
                 themeLabel.setText("当前主题：海王");
                 GameInfo.setTheme(1);
             }
+            GameGUI.background = new ImageIcon(path + (GameInfo.getTheme() == 1 ? "海王主题.jpg" : "灵笼主题.jpg"));
             themeSettings.setOpaque(false);
             themeSettings.setBorder(null);
             themeSettings.setForeground(Color.WHITE);
@@ -222,7 +225,6 @@ public class Settings extends JFrame {
         rowPanel2.add(cnt);
         rowPanel2.setOpaque(false);
 
-        String path = SystemSelect.getImagePath();
         JPanel backgroundPanel = new BackgroundPanel(new ImageIcon(path + "setting.jpg").getImage());
         backgroundPanel.setOpaque(false);
         backgroundPanel.setLayout(new GridLayout(5, 1, 10, 10));

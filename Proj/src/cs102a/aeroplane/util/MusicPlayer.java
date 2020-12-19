@@ -1,7 +1,5 @@
 package cs102a.aeroplane.util;
 
-import cs102a.aeroplane.presets.Sound;
-
 import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -17,8 +15,8 @@ public class MusicPlayer {
 
     private playSoundThread playSoundThread;
 
-    public MusicPlayer(Sound sound) {
-        this.file = sound.getMusicFile();
+    public MusicPlayer(String musicPath) {
+        this.file = new File(musicPath);
     }
 
     // 播放音乐
@@ -76,7 +74,6 @@ public class MusicPlayer {
                     while (isPlaying && (len = audioInputStream.read(buf)) != -1) {
                         sourceDataLine.write(buf, 0, len);
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
