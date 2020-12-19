@@ -2,8 +2,6 @@ package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
-import cs102a.aeroplane.model.Aeroplane;
-import cs102a.aeroplane.model.ChessBoard;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
@@ -13,6 +11,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class Start {
     private static final JFrame startFrame = new JFrame("飞行棋");
+
 
     public static void main(String[] args) {
         JLabel title = new JLabel("飞行棋", JLabel.CENTER);

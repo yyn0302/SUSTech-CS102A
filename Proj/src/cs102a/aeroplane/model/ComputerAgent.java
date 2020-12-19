@@ -1,6 +1,7 @@
 package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.GameInfo;
+import cs102a.aeroplane.util.Timer;
 
 import java.util.ArrayList;
 
@@ -40,7 +41,7 @@ public class ComputerAgent {
 //    }
 
     public static void selectAndClick() {
-//        Timer.delay(300);
+        Timer.delay(300);
 
     }
 }

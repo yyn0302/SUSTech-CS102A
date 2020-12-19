@@ -104,7 +104,7 @@ public class GameGUI extends JFrame {
         changeCheatMode.setBorder(null);
         changeCheatMode.setForeground(Color.WHITE);
         changeCheatMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
-        changeCheatMode.setBounds(818,180,60,30);
+        changeCheatMode.setBounds(818, 180, 60, 30);
         changeCheatMode.addActionListener(e -> {
             if (!GameInfo.isIsCheatMode()) {
                 changeCheatMode.setText("作弊");

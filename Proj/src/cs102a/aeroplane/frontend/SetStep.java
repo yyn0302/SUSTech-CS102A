@@ -3,6 +3,7 @@ package cs102a.aeroplane.frontend;
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
 import cs102a.aeroplane.frontend.model.MatchDicePicture;
+import cs102a.aeroplane.model.ChessBoard;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
@@ -11,21 +12,15 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-// 只需要用 SetStep.askPlayerStep(rollResult)
 public class SetStep {
 
-    private static int stepSelected;
-
-
-    public static int askPlayerStep(int[] rollResult) {
-        popCustomerChoiceFrame(rollResult);
-        return stepSelected;
-    }
-
+    public static int stepSelected;
+//    public static GameGUI nowGamingGUI;
 
     // 弹窗，只有设置好步数才能关闭
-    public static void popCustomerChoiceFrame(int[] rollResult) {
+    public static void askPlayerStep(GameGUI nowGamingGUI,ChessBoard chessBoard, int[] rollResult, boolean flag) {
         JFrame setStepFrame = new JFrame("选择棋子要走的步数");
+        nowGamingGUI.getPlayerInfoPanel().refresh();
         setStepFrame.setSize(300, 250);
         setStepFrame.setAlwaysOnTop(true);
         setStepFrame.setResizable(false);
@@ -41,15 +36,19 @@ public class SetStep {
                 choiceComboBox.addItemListener(e -> SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(choiceComboBox.getSelectedItem()).toString()));
             }
             choiceComboBox.setOpaque(false);
-            stepSelected = 1;
-
 
             JButton confirmButton = new JButton("确定");
             confirmButton.setOpaque(false);
             confirmButton.setBorder(null);
             confirmButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 24));
             confirmButton.setForeground(Color.blue);
-            confirmButton.addActionListener(e -> setStepFrame.dispose());
+            confirmButton.addActionListener(e -> {
+                SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(choiceComboBox.getSelectedItem()).toString());
+                setStepFrame.dispose();
+                chessBoard.nowMove=stepSelected;
+                if (flag) chessBoard.continueAfterAsk();
+                else chessBoard.continueAfterAskFalse();
+            });
 
 
             JPanel choicePanel = new JPanel(new GridLayout(1, 1));
@@ -86,7 +85,13 @@ public class SetStep {
 
             JButton confirmButton = new JButton("确定");
             confirmButton.setOpaque(false);
-            confirmButton.addActionListener(e -> setStepFrame.dispose());
+            confirmButton.addActionListener(e -> {
+                SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(choiceComboBox.getSelectedItem()).toString());
+                setStepFrame.dispose();
+                chessBoard.nowMove=stepSelected;
+                if (flag) chessBoard.continueAfterAsk();
+                else chessBoard.continueAfterAskFalse();
+            });
 
 
             JPanel dicePanel = new JPanel(new GridLayout(1, 2));
@@ -117,6 +122,7 @@ public class SetStep {
             picPanel.add(basePanel);
 
             setStepFrame.add(picPanel);
+
         }
 
         setStepFrame.setVisible(true);
@@ -147,7 +153,7 @@ public class SetStep {
         JComboBox<Integer> stepChoices = new JComboBox<>();
         for (Integer integer : possibleChoice) stepChoices.addItem(integer);
         stepChoices.addItemListener(e -> SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(stepChoices.getSelectedItem()).toString()));
-        stepSelected = possibleChoice.get(0);
+        stepSelected = -1;
         return stepChoices;
     }
 }

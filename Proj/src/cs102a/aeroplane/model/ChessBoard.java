@@ -16,12 +16,14 @@ import java.util.Random;
 
 public class ChessBoard extends JPanel {
     private Aeroplane[] planes;                             // 16架飞机
+    private int xOffSet;
+    private int yOffSet;
     private int[] playerSteps;                              // 截止胜利走了多少步
     int[] rollResult;                                       // 骰子点数
     private ArrayList<Integer> movedPlanes;                 // 记录一个人摇多次时，移动过哪些棋子
     private int state;                                      // 状态（游戏未开始，游戏已开始，游戏结束）  // 重置游戏后先进入GAME_READY，完成后GAME_START
     private int nowPlayer;                                  // 当前回合
-    private int nowMove;                                    // 当前玩家选择的准备对任何飞机的移动步数    // 要起飞则在判断至少一个6后接受任意的nowStep
+    public int nowMove;                                    // 当前玩家选择的准备对任何飞机的移动步数    // 要起飞则在判断至少一个6后接受任意的nowStep
     private int continueRoll;                               // 记录连投的次数
     private int winner1Index;                               // 胜利者
     private int winner2Index;                               // 胜利者
@@ -41,6 +43,9 @@ public class ChessBoard extends JPanel {
         this.setSize(800, 800);
         this.setOpaque(false);
 
+        this.xOffSet=xOffSet;
+        this.yOffSet=yOffSet;
+
         this.winner1Index = -1;
         this.winner2Index = -1;
         this.winner3Index = -1;
@@ -48,6 +53,24 @@ public class ChessBoard extends JPanel {
         this.playerSteps = new int[]{0, 0, 0, 0};
         this.continueRoll = 0;
         this.movedPlanes = new ArrayList<>();
+
+        playerType = new int[4];
+        for (int i = 0; i < 4; i++) {
+            if (i < GameInfo.getHumanPlayerCnt()) playerType[i] = GameState.HUMAN;
+            else playerType[i] = GameState.COMPUTER;
+        }
+
+        this.setLayout(null);
+    }
+
+
+    /**
+     * @apiNote 开局即放入ChessBoard并只需调用此方法，其他的自动执行
+     */
+    public void startGame() {
+        //开始播放bgm
+        if (GameInfo.getTheme() == 1) Sound.GAMING_THEME1.play(true);
+        else Sound.GAMING_THEME2.play(true);
 
         // 初始化飞机
         planes = new Aeroplane[]{
@@ -68,27 +91,8 @@ public class ChessBoard extends JPanel {
                 new Aeroplane(this, PlaneState.YELLOW, 14, 17, xOffSet, yOffSet),
                 new Aeroplane(this, PlaneState.YELLOW, 15, 18, xOffSet, yOffSet)
         };
-    }
 
 
-    /**
-     * @apiNote 开局即放入ChessBoard并只需调用此方法，其他的自动执行
-     */
-    public void startGame() {
-        //开始播放bgm
-        if (GameInfo.getTheme() == 1) Sound.GAMING_THEME1.play(true);
-        else Sound.GAMING_THEME2.play(true);
-
-        for (Aeroplane aeroplane : planes) {
-            this.add(aeroplane.getPlaneView());
-            aeroplane.backToHangarForInit();
-        }
-
-        playerType = new int[4];
-        for (int i = 0; i < 4; i++) {
-            if (i < GameInfo.getHumanPlayerCnt()) playerType[i] = GameState.HUMAN;
-            else playerType[i] = GameState.COMPUTER;
-        }
 
         // TODO: 2020/12/16 如果是联网模式，还要初始化myCamp
 //        if (GameInfo.isIsOnlineGame()) ?
@@ -121,7 +125,7 @@ public class ChessBoard extends JPanel {
     private void rollAndApply() {
         rollResult[0] = Dice.roll();
         rollResult[1] = Dice.roll();
-
+        System.err.println("nowPlayer " + nowPlayer);
         ArrayList<Integer> outsidePlanes = new ArrayList<>();
         // 是否全在机场
         for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
@@ -132,12 +136,8 @@ public class ChessBoard extends JPanel {
 
         boolean ableToTakeOff = rollResult[0] == 6 || rollResult[1] == 6;
         if (ableToTakeOff) {
-            nowMove = SetStep.askPlayerStep(rollResult);
+            SetStep.askPlayerStep(nowGamingGUI,this,rollResult,true);
             // 是起飞的点数则当前回合的所有飞机都可飞
-            for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
-                if (planes[i].notFinished())
-                    planes[i].getPlaneView().readyToBeSelected();
-            }
         } else {
             // 不是起飞点数则只有在外面的飞机可以飞
             if (outsidePlanes.isEmpty()) {
@@ -148,17 +148,37 @@ public class ChessBoard extends JPanel {
                 } while (nowPlayer == winner1Index || nowPlayer == winner2Index || nowPlayer == winner3Index);
                 beginTurn();
             } else {
-                nowMove = SetStep.askPlayerStep(rollResult);
-                for (Integer i : outsidePlanes) {
-                    planes[i].getPlaneView().readyToBeSelected();
-                }
-                outsidePlanes.clear();
+                SetStep.askPlayerStep(nowGamingGUI,this,rollResult,false);
             }
         }
 
         // 如果当前回合是AI，让他选择后点击
-        if (playerType[nowPlayer] == GameState.COMPUTER) ComputerAgent.selectAndClick();
+//        if (playerType[nowPlayer] == GameState.COMPUTER) ComputerAgent.selectAndClick();
     }
+
+    public void continueAfterAsk () {
+        System.err.println(nowMove);
+        for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
+            if (planes[i].notFinished())
+                planes[i].getPlaneView().readyToBeSelected();
+        }
+    }
+
+    public void continueAfterAskFalse () {
+        System.err.println(nowMove);
+        ArrayList<Integer> outsidePlanes = new ArrayList<>();
+        // 是否全在机场
+        for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
+            if (!(planes[i].isInHangar() && planes[i].notFinished())) {
+                outsidePlanes.add(i);       // 添加在外面的飞机
+            }
+        }
+        for (Integer i : outsidePlanes) {
+            planes[i].getPlaneView().readyToBeSelected();
+        }
+        outsidePlanes.clear();
+    }
+
 
     // 结束回合
     public void endTurn() {

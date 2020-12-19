@@ -25,8 +25,9 @@ public class Aeroplane {
         this.itsHangar = itsHangar;
         this.indexOfTeam = -1;
         selfPathIndex = -1;
-//planeView为Planeview 对象
+//planeView为PlaneView 对象
         planeView = new PlaneView(chessBoard, number, color, itsHangar, xOffSet, yOffSet, this);
+        backToHangarForInit();
     }
 
 
@@ -39,6 +40,7 @@ public class Aeroplane {
         if (planeView.getState() == PlaneState.IN_HANGAR) {
             selfPathIndex = 0;
             generalGridIndex = COLOR_PATH[color][0];
+            chessBoard.nowMove--;   // 为了接下来还是他
         } else {
             // 不过终点，先移动再判断特殊规则
             if (selfPathIndex + steps < BoardCoordinate.PATH_LENGTH) {

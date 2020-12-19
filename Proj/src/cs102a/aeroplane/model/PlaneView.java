@@ -1,7 +1,6 @@
 package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.GameInfo;
-import cs102a.aeroplane.frontend.GameGUI;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.util.SystemSelect;
@@ -31,16 +30,19 @@ public class PlaneView extends JButton {
         @Override
         // 选择此飞机，禁止其他点击，飞到相应位置
         public void mousePressed(MouseEvent e) {
+            System.out.println("Click plane " + number);
             for (Aeroplane p : chessboard.getPlanes()) {
                 if (p.getNumber() != number) p.getPlaneView().setEnabled(false);
-                aeroplane.tryMovingFront(chessboard.getNowMove());
-                if (aeroplane.indexOfTeam != -1)  // 在队伍,移动队员
-                    for (Aeroplane a : chessboard.getPlanes()) {
-                        if (a.getColor() == color && a.indexOfTeam == aeroplane.indexOfTeam)
-                            // 驱动所有队内成员一起移动
-                            a.getPlaneView().moveTo(aeroplane.getGeneralGridIndex());
-                    }
             }
+            aeroplane.tryMovingFront(chessboard.getNowMove());
+
+            if (aeroplane.indexOfTeam != -1)  // 在队伍,移动队员
+                for (Aeroplane a : chessboard.getPlanes()) {
+                    if (a.getColor() == color && a.indexOfTeam == aeroplane.indexOfTeam)
+                        // 驱动所有队内成员一起移动
+                        a.getPlaneView().moveTo(aeroplane.getGeneralGridIndex());
+                }
+
         }
 
         // 做了个移入移出的可选择的提示
@@ -100,6 +102,8 @@ public class PlaneView extends JButton {
         this.state = PlaneState.IN_HANGAR;
         this.setIconAsPlaneNum(1);  // 设置单个飞机图片
         this.setVisible(true);
+
+        chessboard.add(this);
     }
 
     // 输入飞机叠子数量，将此飞机设置为对应的图片
@@ -179,5 +183,13 @@ public class PlaneView extends JButton {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    @Override
+    public void setEnabled(boolean flag) {
+        if (!flag) {
+            for (ActionListener actionListener : this.getActionListeners())
+                this.removeActionListener(actionListener);
+        }
     }
 }

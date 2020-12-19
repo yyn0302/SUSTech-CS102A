@@ -28,10 +28,10 @@ public class PlayerInfoPanel extends JPanel {
     public PlayerInfoPanel(ChessBoard chessBoard) {
         this.chessBoard = chessBoard;
         this.setLayout(null);
-        this.setSize(60,130);
+        this.setSize(60, 130);
 
         ImageIcon pic;
-        switch (chessBoard.getNowPlayer()) {
+        switch (chessBoard.getNowPlayer() + 1) {
             case 1:
                 pic = pic2;
                 break;
@@ -46,12 +46,12 @@ public class PlayerInfoPanel extends JPanel {
                 break;
         }
         playerLabel = new JLabel(pic);
-        playerLabel.setSize(50,50);
-        playerLabel.setBounds(5,10,50,50);
+        playerLabel.setSize(50, 50);
+        playerLabel.setBounds(5, 10, 50, 50);
         playerLabel.setOpaque(false);
 
         String color;
-        switch (chessBoard.getNowPlayer()) {
+        switch (chessBoard.getNowPlayer() + 1) {
             case 2:
                 color = "绿";
                 break;
@@ -68,13 +68,13 @@ public class PlayerInfoPanel extends JPanel {
         nameLabel = new JLabel(GameInfo.getPlayerName()[chessBoard.getNowPlayer()]);
         nameLabel.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 20));
         nameLabel.setForeground(Color.WHITE);
-        nameLabel.setBounds(8,80,50,20);
+        nameLabel.setBounds(8, 80, 50, 20);
         nameLabel.setOpaque(false);
 
         colorLabel = new JLabel(color);
         colorLabel.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 15));
         colorLabel.setForeground(Color.WHITE);
-        colorLabel.setBounds(8,110,50,20);
+        colorLabel.setBounds(8, 110, 50, 20);
         colorLabel.setOpaque(false);
 
         this.add(playerLabel);
@@ -84,7 +84,7 @@ public class PlayerInfoPanel extends JPanel {
 
     public void refresh() {
         ImageIcon pic;
-        switch (chessBoard.getNowPlayer()) {
+        switch (chessBoard.getNowPlayer() + 1) {
             case 1:
                 pic = pic2;
                 break;
@@ -101,7 +101,7 @@ public class PlayerInfoPanel extends JPanel {
         playerLabel.setIcon(pic);
 
         String color;
-        switch (chessBoard.getNowPlayer()) {
+        switch (chessBoard.getNowPlayer() + 1) {
             case 2:
                 color = "绿";
                 break;
