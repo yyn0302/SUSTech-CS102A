@@ -47,8 +47,8 @@ public class GameLoader {
                 System.err.println("Cursor replacing...");//读一行，让光标移动到正确预备位置
             }
             try {
-                GameGUI game=new GameGUI();
-                ChessBoard chessBoard=game.getChessBoard();
+                GameGUI game = new GameGUI();
+                ChessBoard chessBoard = game.getChessBoard();
 
                 String[] splitTemp;
 
@@ -56,11 +56,18 @@ public class GameLoader {
                 chessBoard.setNowPlayer(Integer.parseInt(splitTemp[splitTemp.length - 1]));
 
                 splitTemp = sc.nextLine().split("=");
-                chessBoard.getPlayerSteps()[0]=(Integer.parseInt(splitTemp[splitTemp.length - 1]));
-                chessBoard.getPlayerSteps()[1]=(Integer.parseInt(splitTemp[splitTemp.length - 1]));
-                chessBoard.getPlayerSteps()[2]=(Integer.parseInt(splitTemp[splitTemp.length - 1]));
-                chessBoard.getPlayerSteps()[3]=(Integer.parseInt(splitTemp[splitTemp.length - 1]));
+                chessBoard.getPlayerSteps()[0] = (Integer.parseInt(splitTemp[splitTemp.length - 1]));
+                splitTemp = sc.nextLine().split("=");
+                chessBoard.getPlayerSteps()[1] = (Integer.parseInt(splitTemp[splitTemp.length - 1]));
+                splitTemp = sc.nextLine().split("=");
+                chessBoard.getPlayerSteps()[2] = (Integer.parseInt(splitTemp[splitTemp.length - 1]));
+                splitTemp = sc.nextLine().split("=");
+                chessBoard.getPlayerSteps()[3] = (Integer.parseInt(splitTemp[splitTemp.length - 1]));
 
+                splitTemp = sc.nextLine().split("=");
+                chessBoard.setWinner1Index(Integer.parseInt(splitTemp[splitTemp.length - 1]));
+                splitTemp = sc.nextLine().split("=");
+                chessBoard.setWinner2Index(Integer.parseInt(splitTemp[splitTemp.length - 1]));
 
                 while (!sc.nextLine().equals("@@")) {
                     System.err.println("Cursor replacing...");//读一行，让光标移动到正确预备位置
@@ -83,6 +90,8 @@ public class GameLoader {
 
             } catch (NumberFormatException e) {
                 throw new Exception("先辈，读档失败了 QAQ");
+            } catch (SecurityException se) {
+                throw se;
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -95,12 +95,10 @@ public class PlaneView extends JButton {
         this.setBorder(null);
 
         this.setSize(BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
-        this.setVisible(true);
 
         this.numOfStackedPlanes = 1;
         this.state = PlaneState.IN_HANGAR;
         this.setIconAsPlaneNum(1);  // 设置单个飞机图片
-//        this.moveTo(itsHangar);     // 放上棋盘
         this.setVisible(true);
     }
 

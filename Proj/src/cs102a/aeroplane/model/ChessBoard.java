@@ -36,10 +36,6 @@ public class ChessBoard extends JPanel {
         this.nowPlayer = 0;
         this.nowGamingGUI = nowGamingGUI;
         this.rollResult = new int[2];
-//    public ChessBoard(GameGUI gameGUI, int xOffSet, int yOffSet) {
-//        this.state = GameState.GAME_READY;
-//        this.nowPlayer = 0;
-//        this.gameGUI = gameGUI;
 
         this.setLayout(null);
         this.setSize(800, 800);
@@ -105,7 +101,6 @@ public class ChessBoard extends JPanel {
     }
 
 
-
     // 开始回合
     public void beginTurn() {
         nowGamingGUI.getPlayerInfoPanel().refresh();
@@ -147,7 +142,7 @@ public class ChessBoard extends JPanel {
             // 不是起飞点数则只有在外面的飞机可以飞
             if (outsidePlanes.isEmpty()) {
                 new TimeDialog().showDialog(Settings.window, "你骰出了" + rollResult[0] +
-                        "和" + rollResult[1] + "，不满足起飞条件，轮到下一玩家", 3);
+                        "和" + rollResult[1] + "，不满足起飞条件", 3);
                 do {
                     nowPlayer = (nowPlayer + 1) % 4;
                 } while (nowPlayer == winner1Index || nowPlayer == winner2Index || nowPlayer == winner3Index);
@@ -355,5 +350,9 @@ public class ChessBoard extends JPanel {
 
     public int[] getPlayerSteps() {
         return playerSteps;
+    }
+
+    public void setWinner2Index(int parseInt) {
+        this.winner2Index = parseInt;
     }
 }

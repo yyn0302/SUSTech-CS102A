@@ -43,6 +43,8 @@ public class GameSaver {
                         "@G=%d\n"+
                         "@R=%d\n"+
                         "@Y=%d\n"+
+                        "@W1=%d\n"+
+                        "@W2=%d\n"+
                         "@@\n" +
                         "1P%d\n" +
                         "2P%d\n" +
@@ -65,6 +67,8 @@ public class GameSaver {
                 chessBoard.getPlayerSteps()[1],
                 chessBoard.getPlayerSteps()[2],
                 chessBoard.getPlayerSteps()[3],
+                chessBoard.getWinner1Index(),
+                chessBoard.getWinner2Index(),
                 chessBoard.getPlanes()[0].getGeneralGridIndex(),
                 chessBoard.getPlanes()[1].getGeneralGridIndex(),
                 chessBoard.getPlanes()[2].getGeneralGridIndex(),
