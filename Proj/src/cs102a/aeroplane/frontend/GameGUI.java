@@ -107,7 +107,7 @@ public class GameGUI extends JFrame {
         this.chessBoard = chessBoard;
     }
 
-    public static void main(String[] args) {
+   /* public static void main(String[] args) {
         window.setVisible(true);
-    }
+    }*/
 }
