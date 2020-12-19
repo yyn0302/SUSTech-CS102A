@@ -9,6 +9,7 @@ import cs102a.aeroplane.savegame.GameSaver;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
+import java.awt.*;
 
 import static cs102a.aeroplane.GameInfo.chessBoard;
 
@@ -43,9 +44,13 @@ public class GameGUI extends JFrame {
         backgroundPanel = new BackgroundPanel(background.getImage());
         backgroundPanel.setLayout(null);
         backgroundPanel.setBounds(0, 0, 900, 800);
+        backgroundPanel.setOpaque(false);
+        backgroundPanel.setVisible(true);
 
 
-        boardImgPanel.setOpaque(false);
+        //窗口初始化
+        ImageIcon boardImg = new ImageIcon(path + "blankBoard.png");
+        JPanel boardImgPanel = new BackgroundPanel(boardImg.getImage());
         boardImgPanel.setLayout(null);
         boardImgPanel.setBounds(0, 0, 800, 800);
 
@@ -53,13 +58,11 @@ public class GameGUI extends JFrame {
         chessBoard.setOpaque(false);
         boardImgPanel.add(chessBoard);
 
+        boardImgPanel.setOpaque(false);
         backgroundPanel.add(boardImgPanel);
 
         //玩家面板
         playerInfoPanel = new PlayerInfoPanel(chessBoard);
-        playerInfoPanel.setBounds(820, 30, 60, 130);
-        playerInfoPanel.setOpaque(false);
-        backgroundPanel.add(playerInfoPanel);
 
         //util面板
         resetButton.setBounds(818, 560, 60, 60);

@@ -22,13 +22,13 @@ public class PlayerInfoPanel extends JPanel {
 
     private final JLabel playerLabel;
     private final JLabel nameLabel;
-    private final JLabel colorLabel;
     private final ChessBoard chessBoard;
 
     public PlayerInfoPanel(ChessBoard chessBoard) {
         this.chessBoard = chessBoard;
-        this.setLayout(null);
-        this.setSize(60,130);
+        this.setLayout(new GridLayout(2, 1));
+        this.setSize(new Dimension(50, 100));
+        // TODO: 2020/12/13 大小有待调整
 
         ImageIcon pic;
         switch (chessBoard.getNowPlayer()) {
@@ -46,40 +46,31 @@ public class PlayerInfoPanel extends JPanel {
                 break;
         }
         playerLabel = new JLabel(pic);
-        playerLabel.setSize(50,50);
-        playerLabel.setBounds(5,10,50,50);
+        playerLabel.setSize(new Dimension(50,50));
         playerLabel.setOpaque(false);
 
         String color;
         switch (chessBoard.getNowPlayer()) {
             case 2:
-                color = "绿";
+                color = "（绿子）";
                 break;
             case 3:
-                color = "红";
+                color = "（红子）";
                 break;
             case 4:
-                color = "黄";
+                color = "（黄子）";
                 break;
             default:
-                color = "蓝";
+                color = "（蓝子）";
                 break;
         }
-        nameLabel = new JLabel(GameInfo.getPlayerName()[chessBoard.getNowPlayer()]);
-        nameLabel.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 20));
+        nameLabel = new JLabel("当前玩家：" + GameInfo.getPlayerName()[chessBoard.getNowPlayer()] + color);
+        nameLabel.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 20));
         nameLabel.setForeground(Color.WHITE);
-        nameLabel.setBounds(8,80,50,20);
         nameLabel.setOpaque(false);
-
-        colorLabel = new JLabel(color);
-        colorLabel.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 15));
-        colorLabel.setForeground(Color.WHITE);
-        colorLabel.setBounds(8,110,50,20);
-        colorLabel.setOpaque(false);
 
         this.add(playerLabel);
         this.add(nameLabel);
-        this.add(colorLabel);
     }
 
     public void refresh() {
@@ -103,19 +94,18 @@ public class PlayerInfoPanel extends JPanel {
         String color;
         switch (chessBoard.getNowPlayer()) {
             case 2:
-                color = "绿";
+                color = "（绿子）";
                 break;
             case 3:
-                color = "红";
+                color = "（红子）";
                 break;
             case 4:
-                color = "黄";
+                color = "（黄子）";
                 break;
             default:
-                color = "蓝";
+                color = "（蓝子）";
                 break;
         }
-        nameLabel.setText(GameInfo.getPlayerName()[chessBoard.getNowPlayer()]);
-        colorLabel.setText(color);
+        nameLabel.setText("当前玩家：" + GameInfo.getPlayerName()[chessBoard.getNowPlayer()] + color);
     }
 }
