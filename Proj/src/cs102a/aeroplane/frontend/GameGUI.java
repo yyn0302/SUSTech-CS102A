@@ -141,6 +141,7 @@ public class GameGUI extends JFrame {
         playerInfoPanel = new PlayerInfoPanel(chessBoard);
         playerInfoPanel.setBounds(820, 30, 60, 130);
         playerInfoPanel.setOpaque(false);
+//加入边缘的按钮
 
         backgroundPanel.add(resetButton);
         backgroundPanel.add(saveButton);
