@@ -110,6 +110,7 @@ public class ChessBoard extends JPanel {
     }
 
 
+
     // 开始回合
     public void beginTurn() {
         nowGamingGUI.getPlayerInfoPanel().refresh();

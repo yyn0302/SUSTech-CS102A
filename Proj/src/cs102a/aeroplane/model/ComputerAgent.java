@@ -26,6 +26,7 @@ public class ComputerAgent {
             if (f % 1f == 0f && f != a && f != b && f != c && f != e) possibleStep.add((int) f);
             if (g % 1f == 0f && g != a && g != b && g != c && g != e && g != f) possibleStep.add((int) g);
         }
+//待会改掉
 
     }
 
