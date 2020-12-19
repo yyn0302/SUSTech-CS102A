@@ -2,6 +2,8 @@ package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
+import cs102a.aeroplane.model.Aeroplane;
+import cs102a.aeroplane.model.ChessBoard;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
