@@ -16,10 +16,10 @@ public class DecimalLimitedDocument extends PlainDocument {
 
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-        StringBuilder tmp = new StringBuilder(super.getText(0, super.getLength()));
-        tmp.insert(offs, str);
-        Pattern p = Pattern.compile("^-?\\d*(\\.)?\\d*$");
-        Matcher m = p.matcher(tmp.toString());
-        if (m.find()) super.insertString(offs, str, a);
+        StringBuilder tempInput = new StringBuilder(super.getText(0, super.getLength()));
+        tempInput.insert(offs, str);
+        Pattern decimalPattern = Pattern.compile("^-?\\d*(\\.)?\\d*$");
+        Matcher matcher = decimalPattern.matcher(tempInput.toString());
+        if (matcher.find()) super.insertString(offs, str, a);
     }
 }

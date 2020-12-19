@@ -10,16 +10,15 @@ import cs102a.aeroplane.util.SystemSelect;
 import javax.swing.*;
 import java.awt.*;
 
-// FIXME: 2020/12/18 效果不好就全部调整为绝对布局
 public class GameGUI extends JFrame {
     public static GameGUI window = new GameGUI("飞行棋");
 
     // TODO: 2020/12/18 当棋子出现偏移时修改xy方向偏置
-    private ChessBoard chessBoard = new ChessBoard(window, 0, 0);
+    public ChessBoard chessBoard = new ChessBoard(window, 0, 0);
     private PlayerInfoPanel playerInfoPanel;
 
     public GameGUI(String title) {
-        this.setSize(1300, 1000);
+        this.setSize(900, 800);
 
         this.setLayout(null);
         // 以启用绝对布局
@@ -78,10 +77,10 @@ public class GameGUI extends JFrame {
         rightSidePanel.add(savePanel);
 
         this.add(chessBoard);
-        chessBoard.setBounds(0,0,1000,1000);
+        chessBoard.setBounds(0,0,800,800);
 
         this.add(rightSidePanel);
-        rightSidePanel.setBounds(1100,0,200,1000);
+        rightSidePanel.setBounds(900,0,200,800);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setVisible(true);

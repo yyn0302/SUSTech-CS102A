@@ -12,7 +12,7 @@ public class Start {
     private static final JFrame startFrame = new JFrame("飞行棋");
 
     public static void main(String[] args) {
-        JLabel title = new JLabel("飞行棋",JLabel.CENTER);
+        JLabel title = new JLabel("飞行棋", JLabel.CENTER);
         title.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 50));
         title.setForeground(Color.BLACK);
         title.setOpaque(false);
@@ -43,7 +43,10 @@ public class Start {
         storeButton.setBorder(null);
         storeButton.setForeground(Color.white);
         storeButton.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 24));
-        storeButton.addActionListener(e -> GameMall.window.setVisible(true));
+        storeButton.addActionListener(e -> {
+            startFrame.setVisible(false);
+            GameMall.window.setVisible(true);
+        });
 
         JButton settingButton = new JButton("游戏设置");
         settingButton.setOpaque(false);

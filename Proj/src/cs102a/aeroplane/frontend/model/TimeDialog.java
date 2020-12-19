@@ -47,7 +47,6 @@ public class TimeDialog {
             }
         }, 1, 1, TimeUnit.SECONDS);
 
-//        dialog.pack();
         dialog.setSize(new Dimension(250, 100));
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);

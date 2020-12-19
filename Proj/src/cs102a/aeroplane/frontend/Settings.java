@@ -168,6 +168,7 @@ public class Settings extends JFrame {
                     enterSuperMode.setBorder(null);
                     enterSuperMode.setForeground(Color.gray);
                     enterSuperMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 14));
+                    GameMall.window.editWallet.setEnabled(GameInfo.isSuperUser());
                 }
             }
         });
@@ -199,7 +200,6 @@ public class Settings extends JFrame {
         rowPanel1.add(themeLabel);
         rowPanel1.add(themeSettings);
         rowPanel1.setOpaque(false);
-        rowPanel1.setPreferredSize(new Dimension(400, 150));
 
         JPanel onlinePanel = new JPanel();
         onlinePanel.setLayout(new GridLayout(1, 2, 10, 10));

@@ -14,7 +14,7 @@ public abstract class Goods {
     private int asPlayer;       // 记录本页的购买等信息/活动与此用户相关
     private int[] storeCnt = {0, 0, 0, 0};
 
-    public JFrame itemDetail;
+    public JFrame itemDetail=new JFrame();
     JLabel possessionLabel = new JLabel("拥有件数" + storeCnt[asPlayer]);
 
 

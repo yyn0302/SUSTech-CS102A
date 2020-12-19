@@ -13,11 +13,12 @@ import java.awt.*;
 // pip.refresh();
 public class PlayerInfoPanel extends JPanel {
 
-    private static final String path = SystemSelect.getImagePath();
-    private static final ImageIcon pic1 = new ImageIcon(path + "玩家1.jpg");
-    private static final ImageIcon pic2 = new ImageIcon(path + "玩家2.jpg");
-    private static final ImageIcon pic3 = new ImageIcon(path + "玩家3.jpg");
-    private static final ImageIcon pic4 = new ImageIcon(path + "玩家4.jpg");
+    private static String path = SystemSelect.getImagePath();
+
+    private static final ImageIcon pic1 = new ImageIcon(path + "player1.jpg");
+    private static final ImageIcon pic2 = new ImageIcon(path + "player2.jpg");
+    private static final ImageIcon pic3 = new ImageIcon(path + "player3.jpg");
+    private static final ImageIcon pic4 = new ImageIcon(path + "player4.jpg");
 
     private final JLabel playerLabel;
     private final JLabel nameLabel;
@@ -25,8 +26,8 @@ public class PlayerInfoPanel extends JPanel {
 
     public PlayerInfoPanel(ChessBoard chessBoard) {
         this.chessBoard = chessBoard;
-        this.setLayout(new GridLayout(1, 2));
-        this.setPreferredSize(new Dimension(100, 100));
+        this.setLayout(new GridLayout(2, 1));
+        this.setSize(new Dimension(50, 100));
         // TODO: 2020/12/13 大小有待调整
 
         ImageIcon pic;
@@ -45,6 +46,8 @@ public class PlayerInfoPanel extends JPanel {
                 break;
         }
         playerLabel = new JLabel(pic);
+        playerLabel.setSize(new Dimension(50,50));
+        playerLabel.setOpaque(false);
 
         String color;
         switch (chessBoard.getNowPlayer()) {
@@ -62,6 +65,9 @@ public class PlayerInfoPanel extends JPanel {
                 break;
         }
         nameLabel = new JLabel("当前玩家：" + GameInfo.getPlayerName()[chessBoard.getNowPlayer()] + color);
+        nameLabel.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 20));
+        nameLabel.setForeground(Color.WHITE);
+        nameLabel.setOpaque(false);
 
         this.add(playerLabel);
         this.add(nameLabel);

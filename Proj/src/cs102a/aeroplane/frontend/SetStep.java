@@ -84,7 +84,7 @@ public class SetStep {
             basePanel.add(choicePanel);
             basePanel.add(confirmButton);
 
-            JPanel picPanel = new BackgroundPanel(new ImageIcon(SystemSelect.getImagePath() + "/setStep.jpg").getImage());
+            JPanel picPanel = new BackgroundPanel(new ImageIcon(SystemSelect.getImagePath() + "setStep.jpg").getImage());
             picPanel.setOpaque(false);
             picPanel.setLayout(new GridLayout(1,1));
             picPanel.add(basePanel);

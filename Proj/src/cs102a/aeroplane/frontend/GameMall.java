@@ -1,6 +1,7 @@
 package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
+import cs102a.aeroplane.frontend.model.BackgroundPanel;
 import cs102a.aeroplane.gamemall.GoodsList;
 import cs102a.aeroplane.gamemall.Wallet;
 import cs102a.aeroplane.util.SystemSelect;
@@ -23,13 +24,34 @@ public class GameMall extends JFrame {
     JRadioButton player3 = new JRadioButton("玩家3：" + GameInfo.getPlayerName()[2]);
     JRadioButton player4 = new JRadioButton("玩家4：" + GameInfo.getPlayerName()[3]);
 
+
     public GameMall(String title) {
 
         this.setTitle(title);
-        this.setSize(800, 600);
+        this.setSize(400, 600);
         this.setLocationRelativeTo(null);
 
-        JLabel playerLabel = new JLabel("当前身份：");
+        player1.setOpaque(false);
+        player1.setBorder(null);
+        player1.setForeground(Color.WHITE);
+        player1.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
+        player2.setOpaque(false);
+        player2.setBorder(null);
+        player2.setForeground(Color.WHITE);
+        player2.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
+        player3.setOpaque(false);
+        player3.setBorder(null);
+        player3.setForeground(Color.WHITE);
+        player3.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
+        player4.setOpaque(false);
+        player4.setBorder(null);
+        player4.setForeground(Color.WHITE);
+        player4.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
+        player1.setHorizontalAlignment(SwingConstants.CENTER);
+        player2.setHorizontalAlignment(SwingConstants.CENTER);
+        player3.setHorizontalAlignment(SwingConstants.CENTER);
+        player4.setHorizontalAlignment(SwingConstants.CENTER);
+
         player1.addActionListener(e -> {
             if (player1.isSelected()) {
                 asPlayer = 0;
@@ -61,30 +83,48 @@ public class GameMall extends JFrame {
         playerSelect.add(player3);
         playerSelect.add(player4);
 
-        JPanel userSelectPanel = new JPanel(new GridLayout(1, 6));
-        userSelectPanel.add(playerLabel);
-        userSelectPanel.add(new JLabel());
+        JPanel userSelectPanel = new JPanel(new GridLayout(2, 2,-5,-15));
         userSelectPanel.add(player1);
         userSelectPanel.add(player2);
         userSelectPanel.add(player3);
         userSelectPanel.add(player4);
+        userSelectPanel.setOpaque(false);
 
 
-        this.userBalanceLabel.setText("账户余额：" + Wallet.getBalance(asPlayer) + "金币");
-        this.userDiscountLabel.setText("优惠方案：" + Wallet.getDiscountAsPercent(asPlayer) * 100 + "折");
+        this.userBalanceLabel.setText(String.format("        账户余额：%.2f金币",Wallet.getBalance(asPlayer)));
+        userBalanceLabel.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 18));
+        userBalanceLabel.setForeground(Color.WHITE);
+        userBalanceLabel.setOpaque(false);
+
+
+        this.userDiscountLabel.setText(String.format("        优惠方案：%.2f折",Wallet.getDiscountAsPercent(asPlayer) * 100));
+        userDiscountLabel.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 18));
+        userDiscountLabel.setForeground(Color.WHITE);
+        userDiscountLabel.setOpaque(false);
+
         this.editWallet.addActionListener(e -> EditUserInfo.window.setVisible(true));
         this.editWallet.setEnabled(GameInfo.isSuperUser());
+        editWallet.setOpaque(false);
+        editWallet.setForeground(Color.red);
+        editWallet.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 14));
 
-        userInfoPanel = new JPanel(new GridLayout(1, 3));
+        JPanel editWalletPanel=new JPanel(new GridLayout(1,3));
+        editWalletPanel.add(new JLabel());
+        editWalletPanel.add(editWallet);
+        editWalletPanel.add(new JLabel());
+        editWalletPanel.setOpaque(false);
+
+        userInfoPanel = new JPanel(new GridLayout(3, 1));
         userInfoPanel.add(userBalanceLabel);
         userInfoPanel.add(userDiscountLabel);
-        userInfoPanel.add(editWallet);
+        userInfoPanel.add(editWalletPanel);
+        userInfoPanel.setOpaque(false);
 
 
         String path = SystemSelect.getImagePath();
-        ImageIcon bomb = new ImageIcon(path + "炸弹.jpg");
-        ImageIcon boeing = new ImageIcon(path + "波音.jpg");
-        ImageIcon VIP = new ImageIcon(path + "VIP.jpg");
+        ImageIcon bomb = new ImageIcon(path + "bomb.jpg");
+        ImageIcon boeing = new ImageIcon(path + "boeing.jpg");
+        ImageIcon VIP = new ImageIcon(path + "vip.jpg");
 
         JButton bombButton = new JButton(bomb);
         JButton boeingButton = new JButton(boeing);
@@ -102,21 +142,40 @@ public class GameMall extends JFrame {
             GoodsList.makeMeWin.itemDetail.setVisible(true);
         });
 
-        JPanel goodsPanel = new JPanel(new GridLayout(1, 3));
+        JPanel goodsPanel = new JPanel(new GridLayout(1, 3, 0, 20));
         goodsPanel.add(bombButton);
         goodsPanel.add(boeingButton);
         goodsPanel.add(vipButton);
 
-        JPanel base = new JPanel();
-        base.setLayout(new GridLayout(4, 2, 20, 30));
-        base.setPreferredSize(new Dimension(600, 600));
-        base.add(userSelectPanel);
-        base.add(userInfoPanel);
-        base.add(goodsPanel);
+        JButton back = new JButton("返回菜单");
+        back.setOpaque(false);
+        back.setBorder(null);
+        back.setForeground(Color.white);
+        back.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 22));
+        back.addActionListener(e -> {
+            window.setVisible(false);
+            Start.popStart();
+        });
 
 
-        this.add(base);
+        JPanel backgroundPanel = new BackgroundPanel(new ImageIcon(SystemSelect.getImagePath() + "gameMall.jpg").getImage());
+        backgroundPanel.setOpaque(false);
+        backgroundPanel.setLayout(new GridLayout(4, 1, 0, 10));
+        backgroundPanel.add(userSelectPanel);
+        backgroundPanel.add(userInfoPanel);
+        backgroundPanel.add(goodsPanel);
+        backgroundPanel.add(back);
+
+
+        JPanel setSizePanel = new JPanel(new GridLayout(1, 1));
+        setSizePanel.setPreferredSize(new Dimension(260, 500));
+        setSizePanel.add(backgroundPanel);
+
+
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        this.add(setSizePanel);
     }
 
     public static int getAsPlayer() {
@@ -124,8 +183,8 @@ public class GameMall extends JFrame {
     }
 
     public final void refreshInfo() {
-        this.userBalanceLabel.setText("账户余额：" + Wallet.getBalance(asPlayer) + "金币");
-        this.userDiscountLabel.setText("优惠方案：" + Wallet.getDiscountAsPercent(asPlayer) * 100 + "折");
+        this.userBalanceLabel.setText("        账户余额：" + Wallet.getBalance(asPlayer) + "金币");
+        this.userDiscountLabel.setText("        优惠方案：" + Wallet.getDiscountAsPercent(asPlayer) * 100 + "折");
         this.player1.setText("玩家1：" + GameInfo.getPlayerName()[0]);
         this.player2.setText("玩家2：" + GameInfo.getPlayerName()[1]);
         this.player3.setText("玩家3：" + GameInfo.getPlayerName()[2]);

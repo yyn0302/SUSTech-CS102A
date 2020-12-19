@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class EnterSuperMode extends JFrame {
 
-    public static EnterSuperMode window = new EnterSuperMode("确认权限");
+    public static EnterSuperMode window = new EnterSuperMode("输入权限密码");
 
     private static final String PWD = "020924";
     private static boolean isRightPwd = false;
@@ -17,22 +17,22 @@ public class EnterSuperMode extends JFrame {
     public EnterSuperMode(String title) {
 
         this.setTitle(title);
-        this.setSize(320, 200);
+        this.setSize(300, 100);
         this.setLocationRelativeTo(null);
         this.setAlwaysOnTop(true);
 
         JPanel base = new JPanel();
-        base.setLayout(new GridLayout(2, 1, 10, 5));
-        base.setPreferredSize(new Dimension(150, 150));
+        base.setLayout(new GridLayout(2, 1, 0, 0));
+        base.setSize(new Dimension(250, 100));
 
 
-        JLabel tip = new JLabel("输入密码：");
-        JPasswordField pwd = new JPasswordField();
+        JPasswordField pwd = new JPasswordField(20);
 
         JPanel upPanel = new JPanel();
-        upPanel.setLayout(new GridLayout(1, 2, 10, 20));
-        upPanel.add(tip);
+        upPanel.setLayout(new GridLayout(1, 1, 0, 0));
+//        upPanel.add(new JLabel());
         upPanel.add(pwd);
+//        upPanel.add(new JLabel());
 
 
         JButton confirm = new JButton("确定");
@@ -55,13 +55,17 @@ public class EnterSuperMode extends JFrame {
         });
 
         JPanel downPanel = new JPanel();
-        downPanel.setLayout(new GridLayout(1, 1, 10, 10));
+        downPanel.setLayout(new GridLayout(1, 3, 0, 0));
+        downPanel.setOpaque(false);
+        downPanel.add(new JLabel());
         downPanel.add(confirm);
+        downPanel.add(new JLabel());
 
         base.add(upPanel);
         base.add(downPanel);
 
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        this.setResizable(false);
         this.add(base);
     }
 
