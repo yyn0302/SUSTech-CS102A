@@ -2,6 +2,7 @@ package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.Battle;
+import cs102a.aeroplane.frontend.EndGameAndShowRank;
 import cs102a.aeroplane.frontend.GameGUI;
 import cs102a.aeroplane.frontend.SetStep;
 import cs102a.aeroplane.frontend.model.TimeDialog;
@@ -12,17 +13,11 @@ import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.util.Dice;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
-import static cs102a.aeroplane.frontend.EndGameAndShowRank.endGameAndShowRank;
-
 public class ChessBoard extends JPanel {
-//    private GameGUI gameGUI;                                // 句柄
-//    private GameGUI gameGUI;                                // 句柄
-//    private GameGUI gameGUI;                                // 句柄
     private Aeroplane[] planes;                             // 16架飞机
     private int[] playerSteps;                              // 截止胜利走了多少步
     int[] rollResult;                                       // 骰子点数
@@ -37,18 +32,19 @@ public class ChessBoard extends JPanel {
     private int[] playerType;                               // 四个玩家类型，人类、AI
     private int myColor = -1;                               // 自己阵营，联机时
     protected boolean[][] teamIndexUsed = new boolean[4][2];// 当前队伍已经有飞机
+    GameGUI nowGamingGUI;
 
-
-    public ChessBoard(int xOffSet, int yOffSet) {
+    public ChessBoard(int xOffSet, int yOffSet, GameGUI nowGamingGUI) {
         this.state = GameState.GAME_READY;
         this.nowPlayer = 0;
+        this.nowGamingGUI = nowGamingGUI;
 //    public ChessBoard(GameGUI gameGUI, int xOffSet, int yOffSet) {
 //        this.state = GameState.GAME_READY;
 //        this.nowPlayer = 0;
 //        this.gameGUI = gameGUI;
 
         this.setLayout(null);
-        this.setSize(new Dimension(800,800));
+        this.setSize(800, 800);
         this.setOpaque(false);
 
         this.winner1Index = -1;
@@ -78,10 +74,6 @@ public class ChessBoard extends JPanel {
                 new Aeroplane(this, PlaneState.YELLOW, 14, 17, xOffSet, yOffSet),
                 new Aeroplane(this, PlaneState.YELLOW, 15, 18, xOffSet, yOffSet)
         };
-
-//        for (int i = 0; i<16;i++) {
-//            this.add(planes[i].getPlaneView());
-//        }
     }
 
 
@@ -92,6 +84,8 @@ public class ChessBoard extends JPanel {
         //开始播放bgm
         if (GameInfo.getTheme() == 1) Sound.GAMING_THEME1.play(true);
         else Sound.GAMING_THEME2.play(true);
+
+        for (Aeroplane aeroplane : planes) aeroplane.getPlaneView().moveTo(aeroplane.getPlaneView().getItsHangar());
 
         playerType = new int[4];
         for (int i = 0; i < 4; i++) {
@@ -139,8 +133,8 @@ public class ChessBoard extends JPanel {
     }
 
     private void rollAndApply() {
-        int[] rollResult = {Dice.roll(), Dice.roll()};
-        nowMove = SetStep.askPlayerStep(this.rollResult);
+        rollResult = new int[]{Dice.roll(), Dice.roll()};
+        nowMove = SetStep.askPlayerStep(rollResult);
 
         ArrayList<Integer> outsidePlanes = new ArrayList<>();
         // 是否全在机场
@@ -160,7 +154,7 @@ public class ChessBoard extends JPanel {
         } else {
             // 不是起飞点数则只有在外面的飞机可以飞
             if (outsidePlanes.isEmpty()) {
-                new TimeDialog().showDialog((JFrame)this.getParent(), "你骰出了" + rollResult[0] +
+                new TimeDialog().showDialog((JFrame) this.getParent(), "你骰出了" + rollResult[0] +
                         "和" + rollResult[1] + "，不满足起飞条件，轮到下一玩家", 3);
                 do {
                     nowPlayer = (nowPlayer + 1) % 4;
@@ -228,6 +222,7 @@ public class ChessBoard extends JPanel {
 //            ?
 //        }
         // FIXME: 2020/12/18 在线模式
+        EndGameAndShowRank endGameAndShowRank = new EndGameAndShowRank(nowGamingGUI);
         endGameAndShowRank.setVisible(true);
     }
 

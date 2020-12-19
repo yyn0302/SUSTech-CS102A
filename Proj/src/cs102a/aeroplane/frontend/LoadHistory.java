@@ -55,7 +55,7 @@ public class LoadHistory {
             if (historySelected != null && !historySelected.equals("没有游戏档案哦")) {
                 GameLoader.setFileName(historySelected);
                 window.setVisible(false);
-                GameInfo.windowGUI.setVisible(true);
+                new GameGUI().setVisible(true);
             } else {
                 TimeDialog td = new TimeDialog();
                 td.showDialog(window, "不能读档哦", 2);

@@ -25,7 +25,7 @@ public class Start {
         startButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 26));
         startButton.addActionListener(e -> {
 //            startFrame.setVisible(false);
-            GameInfo.windowGUI.setVisible(true);
+            new GameGUI().setVisible(true);
         });
 
         JButton continueButton = new JButton("继续游戏");

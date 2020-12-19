@@ -1,20 +1,13 @@
 package cs102a.aeroplane;
 
-import cs102a.aeroplane.frontend.GameGUI;
-import cs102a.aeroplane.model.ChessBoard;
-
 public class GameInfo {
-    public static ChessBoard chessBoard = new ChessBoard(0, 0);
-    public static GameGUI windowGUI = new GameGUI();
-
-
     private static boolean superUser = false;
     private static boolean isCheatMode = false;
     private static int theme = 1;
     private static int HumanPlayerCnt = 4;
 
     private static boolean isOnlineGame = false;
-    private static String serverIp=null;
+    private static String serverIp = null;
 
     public static String getServerIp() {
         return serverIp;

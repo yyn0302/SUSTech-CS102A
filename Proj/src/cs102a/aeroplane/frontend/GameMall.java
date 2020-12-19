@@ -102,7 +102,7 @@ public class GameMall extends JFrame {
         userDiscountLabel.setForeground(Color.WHITE);
         userDiscountLabel.setOpaque(false);
 
-        this.editWallet.addActionListener(e -> EditUserInfo.window.setVisible(true));
+        this.editWallet.addActionListener(e -> new EditUserInfo().setVisible(true));
         this.editWallet.setEnabled(GameInfo.isSuperUser());
         editWallet.setOpaque(false);
         editWallet.setForeground(Color.red);

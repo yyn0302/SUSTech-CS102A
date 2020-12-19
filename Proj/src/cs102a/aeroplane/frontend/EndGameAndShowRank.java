@@ -7,10 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class EndGameAndShowRank extends JFrame {
-    public static EndGameAndShowRank endGameAndShowRank = new EndGameAndShowRank("排行榜");
 
-    public EndGameAndShowRank(String title) {
-        this.setTitle(title);
+    public EndGameAndShowRank(GameGUI nowGamingGUI) {
+        this.setTitle("排行榜");
         this.setLocationRelativeTo(null);
         this.setResizable(true);
 
@@ -41,9 +40,8 @@ public class EndGameAndShowRank extends JFrame {
         gridBagConstraints.gridheight = 1;
         JButton confirmButton = new JButton("确定");
         confirmButton.addActionListener(e -> {
-            endGameAndShowRank.dispose();
-            GameInfo.chessBoard = null;
-            GameInfo.windowGUI.setVisible(false);
+            dispose();
+            nowGamingGUI.dispose();
             System.gc();
             Start.popStart();
         });
@@ -66,8 +64,8 @@ public class EndGameAndShowRank extends JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.gridheight = 1;
-        JLabel info1ofNumber1 = new JLabel("第一名：玩家" + GameInfo.windowGUI.getChessBoard().getWinner1Index() +
-                "(" + GameInfo.getPlayerName()[GameInfo.windowGUI.getChessBoard().getWinner1Index()] + ")");
+        JLabel info1ofNumber1 = new JLabel("第一名：玩家" + nowGamingGUI.getChessBoard().getWinner1Index() +
+                "(" + GameInfo.getPlayerName()[nowGamingGUI.getChessBoard().getWinner1Index()] + ")");
         gridBagLayout.setConstraints(info1ofNumber1, gridBagConstraints);
 
         //第一名的第三个label
@@ -75,7 +73,7 @@ public class EndGameAndShowRank extends JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.gridheight = 1;
-        JLabel info2ofNumber1 = new JLabel("步数：" + GameInfo.windowGUI.getChessBoard().getPlayerSteps()[GameInfo.windowGUI.getChessBoard().getWinner1Index()]);
+        JLabel info2ofNumber1 = new JLabel("步数：" + nowGamingGUI.getChessBoard().getPlayerSteps()[nowGamingGUI.getChessBoard().getWinner1Index()]);
         gridBagLayout.setConstraints(info2ofNumber1, gridBagConstraints);
 
 
@@ -94,8 +92,8 @@ public class EndGameAndShowRank extends JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.gridheight = 1;
-        JLabel info1ofNumber2 = new JLabel("第二名：玩家" + GameInfo.windowGUI.getChessBoard().getWinner2Index() +
-                "(" + GameInfo.getPlayerName()[GameInfo.windowGUI.getChessBoard().getWinner2Index()] + ")");
+        JLabel info1ofNumber2 = new JLabel("第二名：玩家" + nowGamingGUI.getChessBoard().getWinner2Index() +
+                "(" + GameInfo.getPlayerName()[nowGamingGUI.getChessBoard().getWinner2Index()] + ")");
         gridBagLayout.setConstraints(info1ofNumber2, gridBagConstraints);
 
         //第二名的第三个label
@@ -103,7 +101,7 @@ public class EndGameAndShowRank extends JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.gridheight = 1;
-        JLabel info2ofNumber2 = new JLabel("步数：" + GameInfo.windowGUI.getChessBoard().getPlayerSteps()[GameInfo.windowGUI.getChessBoard().getWinner2Index()]);
+        JLabel info2ofNumber2 = new JLabel("步数：" + nowGamingGUI.getChessBoard().getPlayerSteps()[nowGamingGUI.getChessBoard().getWinner2Index()]);
         gridBagLayout.setConstraints(info2ofNumber2, gridBagConstraints);
 
 
@@ -122,8 +120,8 @@ public class EndGameAndShowRank extends JFrame {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.gridheight = 1;
-        JLabel info1ofNumber3 = new JLabel("第三名：玩家" + GameInfo.windowGUI.getChessBoard().getWinner3Index() +
-                "(" + GameInfo.getPlayerName()[GameInfo.windowGUI.getChessBoard().getWinner3Index()] + ")");
+        JLabel info1ofNumber3 = new JLabel("第三名：玩家" + nowGamingGUI.getChessBoard().getWinner3Index() +
+                "(" + GameInfo.getPlayerName()[nowGamingGUI.getChessBoard().getWinner3Index()] + ")");
         gridBagLayout.setConstraints(info1ofNumber3, gridBagConstraints);
 
         //第三名的第三个label
@@ -131,7 +129,7 @@ public class EndGameAndShowRank extends JFrame {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.gridheight = 1;
-        JLabel info2ofNumber3 = new JLabel("步数：" + GameInfo.windowGUI.getChessBoard().getPlayerSteps()[GameInfo.windowGUI.getChessBoard().getWinner3Index()]);
+        JLabel info2ofNumber3 = new JLabel("步数：" + nowGamingGUI.getChessBoard().getPlayerSteps()[nowGamingGUI.getChessBoard().getWinner3Index()]);
         gridBagLayout.setConstraints(info2ofNumber3, gridBagConstraints);
 
 
@@ -150,8 +148,8 @@ public class EndGameAndShowRank extends JFrame {
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.gridheight = 1;
-        JLabel info1ofNumber4 = new JLabel("第四名：玩家" + GameInfo.windowGUI.getChessBoard().getWinner4Index() +
-                "(" + GameInfo.getPlayerName()[GameInfo.windowGUI.getChessBoard().getWinner4Index()] + ")");
+        JLabel info1ofNumber4 = new JLabel("第四名：玩家" + nowGamingGUI.getChessBoard().getWinner4Index() +
+                "(" + GameInfo.getPlayerName()[nowGamingGUI.getChessBoard().getWinner4Index()] + ")");
         gridBagLayout.setConstraints(info1ofNumber4, gridBagConstraints);
 
         //第四名的第三个label

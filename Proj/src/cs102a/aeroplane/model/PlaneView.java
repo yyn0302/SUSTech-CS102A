@@ -91,13 +91,13 @@ public class PlaneView extends JButton {
         this.number = number;
         this.itsHangar = itsHangar;
         this.aeroplane = aeroplane;
-
-        this.setSize(new Dimension(BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE));
+        this.setVisible(true);
+        this.setSize(BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
 
         this.numOfStackedPlanes = 1;
         this.state = PlaneState.IN_HANGAR;
         this.setIconAsPlaneNum(1);  // 设置单个飞机图片
-        this.moveTo(itsHangar);     // 放上棋盘
+//        this.moveTo(itsHangar);     // 放上棋盘
         this.setVisible(true);
     }
 
@@ -131,6 +131,10 @@ public class PlaneView extends JButton {
         this.setBounds(xOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][0] - BoardCoordinate.GRID_SIZE / 2,
                 yOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][1] - BoardCoordinate.GRID_SIZE / 2,
                 BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
+    }
+
+    public int getItsHangar() {
+        return itsHangar;
     }
 
     public void readyToBeSelected() {

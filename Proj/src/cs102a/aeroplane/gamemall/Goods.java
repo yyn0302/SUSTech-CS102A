@@ -2,6 +2,7 @@ package cs102a.aeroplane.gamemall;
 
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.GameMall;
+import cs102a.aeroplane.frontend.Settings;
 import cs102a.aeroplane.frontend.model.TimeDialog;
 import cs102a.aeroplane.model.ChessBoard;
 
@@ -107,4 +108,12 @@ public abstract class Goods {
     }
 
     public abstract void use(ChessBoard chessBoard);
+
+    public boolean isAbleToUse(ChessBoard chessBoard) {
+        return storeCnt[chessBoard.getNowPlayer()] > 0;
+    }
+
+    public void unableToUse() {
+        new TimeDialog().showDialog(Settings.window, "剩余量不足，无法使用", 2);
+    }
 }

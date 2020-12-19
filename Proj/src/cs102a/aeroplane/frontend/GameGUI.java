@@ -4,16 +4,17 @@ import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
 import cs102a.aeroplane.frontend.model.PlayerInfoPanel;
 import cs102a.aeroplane.frontend.model.TimeDialog;
+import cs102a.aeroplane.gamemall.GoodsList;
 import cs102a.aeroplane.model.ChessBoard;
+import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.savegame.GameSaver;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
-import java.awt.*;
-
-import static cs102a.aeroplane.GameInfo.chessBoard;
 
 public class GameGUI extends JFrame {
+
+    public ChessBoard chessBoard;
 
     public static ImageIcon background;
 
@@ -26,12 +27,19 @@ public class GameGUI extends JFrame {
     JButton resetButton = new JButton("重置");
     JButton saveButton = new JButton("保存");
     JButton returnButton = new JButton("返回");
-    JPanel backgroundPanel;
-    ImageIcon boardImg = new ImageIcon(path + "blankBoard.png");
-    JPanel boardImgPanel = new BackgroundPanel(boardImg.getImage());
 
+    ImageIcon bomb = new ImageIcon(path + "bomb.jpg");
+    ImageIcon boeing = new ImageIcon(path + "boeing.jpg");
+    ImageIcon VIP = new ImageIcon(path + "vip.jpg");
+
+    JButton vipButton = new JButton(VIP);
+    JButton bombButton = new JButton(bomb);
+    JButton takeOffButton = new JButton(boeing);
+
+    JPanel backgroundPanel;
 
     public GameGUI() {
+        chessBoard = new ChessBoard(0, 0, this);
         this.setSize(900, 800);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -76,22 +84,49 @@ public class GameGUI extends JFrame {
         resetButton.addActionListener(e -> {
             chessBoard = null;
             System.gc();
-            chessBoard = new ChessBoard(0, 0);
+            chessBoard = new ChessBoard(0, 0, this);
         });
         saveButton.addActionListener(e -> {
             GameSaver.save(chessBoard);
             new TimeDialog().showDialog(Settings.window, "成功保存", 3);
         });
         returnButton.addActionListener(e -> {
-            this.setVisible(false);
+            dispose();
             //打开startMenu
             Start.popStart();
-
+            Sound.GAMING_THEME1.end();
+            Sound.GAMING_THEME2.end();
         });
+
+        vipButton.setBounds(818, 310, 60, 60);
+        bombButton.setBounds(818, 380, 60, 60);
+        takeOffButton.setBounds(818, 450, 60, 60);
+        vipButton.setOpaque(false);
+        bombButton.setOpaque(false);
+        takeOffButton.setOpaque(false);
+
+        // FIXME: 2020/12/18 不知道对不对
+        vipButton.addActionListener(e -> {
+            GoodsList.makeMeWin.use(chessBoard);
+        });
+        bombButton.addActionListener(e -> {
+            GoodsList.bomb.use(chessBoard);
+        });
+        takeOffButton.addActionListener(e -> {
+            GoodsList.takeOffAnyway.use(chessBoard);
+        });
+
+        playerInfoPanel = new PlayerInfoPanel(chessBoard);
+        playerInfoPanel.setBounds(820, 30, 60, 130);
+        playerInfoPanel.setOpaque(false);
 
         backgroundPanel.add(resetButton);
         backgroundPanel.add(saveButton);
         backgroundPanel.add(returnButton);
+        backgroundPanel.add(vipButton);
+        backgroundPanel.add(bombButton);
+        backgroundPanel.add(takeOffButton);
+        backgroundPanel.add(playerInfoPanel);
         backgroundPanel.setOpaque(false);
 
 
@@ -99,11 +134,6 @@ public class GameGUI extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
         chessBoard.startGame();
-    }
-
-
-    public void refresh() {
-         playerInfoPanel.refresh();
     }
 
     public ChessBoard getChessBoard() {

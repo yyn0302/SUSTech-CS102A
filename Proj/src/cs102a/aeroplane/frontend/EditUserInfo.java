@@ -9,8 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class EditUserInfo extends JFrame {
-    public static EditUserInfo window = new EditUserInfo();
-
     public EditUserInfo() {
         this.setTitle("修改账户信息");
         this.setSize(300, 200);
@@ -42,19 +40,19 @@ public class EditUserInfo extends JFrame {
                 Wallet.editBalance(GameMall.getAsPlayer(), balanceTextField.getText());
             } catch (AssertionError ex) {
                 TimeDialog timeDialog = new TimeDialog();
-                timeDialog.showDialog(window, ex.getMessage(), 3);
+                timeDialog.showDialog(Settings.window, ex.getMessage(), 3);
             }
 
             try {
                 Wallet.setDiscountAsPercent(GameMall.getAsPlayer(), discountTextField.getText());
             } catch (AssertionError ex) {
                 TimeDialog timeDialog = new TimeDialog();
-                timeDialog.showDialog(window, ex.getMessage(), 3);
+                timeDialog.showDialog(Settings.window, ex.getMessage(), 3);
             }
 
             GameInfo.getPlayerName()[GameMall.getAsPlayer()] = nameTextField.getText();
             GameMall.window.refreshInfo();
-            window.setVisible(false);
+            this.dispose();
         });
 
         JPanel base = new JPanel(new GridLayout(4, 1));

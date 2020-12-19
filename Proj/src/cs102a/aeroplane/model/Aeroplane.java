@@ -23,11 +23,10 @@ public class Aeroplane {
         this.number = number;
         this.generalGridIndex = itsHangar;
         this.itsHangar = itsHangar;
-
+        this.indexOfTeam = -1;
         selfPathIndex = -1;
 
         planeView = new PlaneView(chessBoard, number, color, itsHangar, xOffSet, yOffSet, this);
-        chessBoard.add(planeView);
     }
 
 
