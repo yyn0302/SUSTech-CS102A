@@ -1,12 +1,12 @@
 package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.GameInfo;
+import cs102a.aeroplane.frontend.GameGUI;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
