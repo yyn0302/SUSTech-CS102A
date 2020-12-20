@@ -133,7 +133,7 @@ public class Aeroplane {
             } else {
                 // FIXME: 2020/12/16 检查数学计算有没有出错
                 // 回来的路上不可能碰上别人
-                generalGridIndex = COLOR_PATH[color][2 * BoardCoordinate.PATH_LENGTH - selfPathIndex - steps - 1];
+                generalGridIndex = COLOR_PATH[color][2 * BoardCoordinate.PATH_LENGTH - selfPathIndex - steps - 2];
                 selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
             }
         }

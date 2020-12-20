@@ -79,7 +79,8 @@ public class GameLoader {
                 for (int i = 0; i < 16; i++) {
                     splitTemp = sc.nextLine().split("P");
                     try {
-                        chessBoard.getPlanes()[i].setGeneralGridIndexAndMove(Integer.parseInt(splitTemp[splitTemp.length - 1]));
+                        chessBoard.getPlanes()[i].checkStack();
+//                        chessBoard.getPlanes()[i].setGeneralGridIndexAndMove(Integer.parseInt(splitTemp[splitTemp.length - 1]));
                     } catch (AssertionError e) {
                         System.err.print(e.getMessage());
                         break;
