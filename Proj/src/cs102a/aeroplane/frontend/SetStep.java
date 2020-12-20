@@ -24,7 +24,7 @@ public class SetStep {
         setStepFrame.setSize(300, 250);
         setStepFrame.setAlwaysOnTop(true);
         setStepFrame.setResizable(false);
-        setStepFrame.setLocationRelativeTo(null);
+//        setStepFrame.setLocationRelativeTo(null);
         setStepFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         // 作弊模式直接选择步数
