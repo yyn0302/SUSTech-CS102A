@@ -138,6 +138,7 @@ public class PlaneView extends JButton {
         this.setBounds(xOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][0] - BoardCoordinate.GRID_SIZE / 2,
                 yOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][1] - BoardCoordinate.GRID_SIZE / 2,
                 BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
+        System.out.println("moving " + this.number + " to general index " + generalIndex);
     }
 
     public void readyToBeSelected() {

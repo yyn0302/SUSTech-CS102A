@@ -131,12 +131,10 @@ public class ChessBoard extends JPanel {
         for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
             if (!planes[i].isInHangar() && planes[i].notFinished() && !outsidePlanes.contains(i)) {
                 outsidePlanes.add(i);       // 添加在外面的飞机
-                System.out.println("outside added:" + i);
             }
         }
 
         boolean ableToTakeOff = rollResult[0] == 6 || rollResult[1] == 6;
-        System.out.println("able to take off:" + ableToTakeOff);
         if (ableToTakeOff || GameInfo.isIsCheatMode()) {
             SetStep.askPlayerStep(nowGamingGUI, this, rollResult, true);
             // 是起飞的点数则当前回合的所有飞机都可飞
@@ -210,31 +208,27 @@ public class ChessBoard extends JPanel {
                     break;
                 }
             }
-            if (flag) {
-                recordOnePlayerEnd();
-                return true;
-            } else {
-                if (continueRoll >= 2) {
-                    for (int i : movedPlanes) {
-                        for (Aeroplane p : planes) {
-                            if (p.getNumber() == i) {
-                                p.backToHangarForInit();
-                                break;
-                            }
+            if (flag) recordOnePlayerEnd();
+            else if (continueRoll >= 3) {
+                for (int i : movedPlanes) {
+                    for (Aeroplane p : planes) {
+                        if (p.getNumber() == i) {
+                            p.backToHangarForInit();
+                            break;
                         }
                     }
-                    movedPlanes.clear();
-
                 }
-                return true;
+                movedPlanes.clear();
+
             }
+            return true;
         }
     }
 
     public void continueEndTurn() {
         if (rollResult[0] + rollResult[1] >= 10) {
             continueRoll++;
-            if (continueRoll >= 2) {
+            if (continueRoll >= 3) {
                 continueRoll = 0;
                 do {
                     nowPlayer = (nowPlayer + 1) % 4;
