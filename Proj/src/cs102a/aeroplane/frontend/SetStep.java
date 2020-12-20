@@ -162,20 +162,6 @@ public class SetStep {
 
                 chessBoard.getPlanes()[nowMovingNumber].steps = stepSelected;
                 chessBoard.getPlanes()[nowMovingNumber].tryMovingFront();
-//                chessBoard.getPlanes()[nowMovingNumber].tryMovingFront(stepSelected);
-
-//
-//                if(chessBoard.endTurn())
-//                    chessBoard.continueEndTurn();
-//
-
-//                chessBoard.setNowPlayer(chessBoard.getNowPlayer()+1);
-//                chessBoard.endTurn();
-//                chessBoard.endTurn();
-//                chessBoard.endTurn();
-//                chessBoard.endTurn();
-//                chessBoard.endTurn();
-
             });
 
 

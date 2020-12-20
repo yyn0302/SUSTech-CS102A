@@ -57,7 +57,6 @@ public class Aeroplane {
         } else {
             // 不过终点，先移动再判断特殊规则
             if (selfPathIndex + steps < BoardCoordinate.PATH_LENGTH) {
-                System.out.println("moving front");
                 // 判断这一步会不会碰上其他方
 
                 generalGridIndex = COLOR_PATH[color][selfPathIndex + steps];
@@ -69,6 +68,7 @@ public class Aeroplane {
                     // 不是自己格子，battle
                     if (!onSameColorGrid(generalGridIndex)) {
                         if (indexOfTeam == -1) {    // 一对多
+
                             for (Aeroplane p : chessBoard.getOppoPlanes(generalGridIndex)) {
                                 if (Battle.isWinner()) {
                                     p.backToHangarDueToCrash();
@@ -113,20 +113,20 @@ public class Aeroplane {
                     }
                 } else if (onSameColorGrid(generalGridIndex)) {
                     if (isJetGrid(generalGridIndex) == -1) {
-                        planeView.moveTo(generalGridIndex);
-                        Timer.delay(100);
-
                         generalGridIndex = getNextGridWhenOnSelfColorGrid(generalGridIndex);
                         selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
+
+                        planeView.moveTo(generalGridIndex);
+                        Timer.delay(100);
 
                         for (Aeroplane p : chessBoard.getOppoPlanes(generalGridIndex)) p.backToHangarDueToCrash();
                         Sound.JUMP.play(false);
                     } else {
-                        planeView.moveTo(generalGridIndex);
-                        Timer.delay(100);
 
                         generalGridIndex = isJetGrid(generalGridIndex);
                         selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
+                        planeView.moveTo(generalGridIndex);
+                        Timer.delay(100);
 
                         for (Aeroplane p : chessBoard.getOppoPlanes(BoardCoordinate.COLOR_JET[color][1]))
                             p.backToHangarDueToCrash();
@@ -134,12 +134,18 @@ public class Aeroplane {
                         Sound.JET.play(false);
                     }
                 }
+
+                generalGridIndex = getNextGridWhenOnSelfColorGrid(generalGridIndex);
+                selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
+
                 if (chessBoard.selfPlaneNumOnIndex(generalGridIndex) == 2) {     // 跳后可以叠子
                     if (this.indexOfTeam == -1) {      // 未在组，生成新组
                         if (chessBoard.teamIndexUsed[color][0]) {
                             for (Aeroplane p : chessBoard.getMyPlanes(generalGridIndex)) p.indexOfTeam = 1;
+                            chessBoard.teamIndexUsed[color][1] = true;
                         } else {
                             for (Aeroplane p : chessBoard.getMyPlanes(generalGridIndex)) p.indexOfTeam = 0;
+                            chessBoard.teamIndexUsed[color][0] = true;
                         }
                     }
                     // 已在组内，将新棋加入组；或生成了新组，两个棋都加入
@@ -163,8 +169,10 @@ public class Aeroplane {
                     if (this.indexOfTeam == -1) {      // 未在组，生成新组
                         if (chessBoard.teamIndexUsed[color][0]) {
                             for (Aeroplane p : chessBoard.getMyPlanes(generalGridIndex)) p.indexOfTeam = 1;
+                            chessBoard.teamIndexUsed[color][1] = true;
                         } else {
                             for (Aeroplane p : chessBoard.getMyPlanes(generalGridIndex)) p.indexOfTeam = 0;
+                            chessBoard.teamIndexUsed[color][0] = true;
                         }
                     }
                     // 已在组内，将新棋加入组；或生成了新组，两个棋都加入
@@ -189,18 +197,53 @@ public class Aeroplane {
     public void setGeneralGridIndexAndMove(int generalGridIndex) throws AssertionError {
         assert generalGridIndex >= -1 && generalGridIndex <= 96
                 : "先辈这次动作挺小的，但还是被我发现啦！\n棋子怎么可能飞到棋盘外呢？先 辈 大 笨 蛋";
+
         this.generalGridIndex = generalGridIndex;
+        selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
+
         if (generalGridIndex == -1) {
             setState(PlaneState.FINISH);
             planeView.finish();
+            this.backToHangarWhenFinish();
+            return;
         } else if (generalGridIndex == itsHangar) setState(PlaneState.IN_HANGAR);
-        else planeView.moveTo(generalGridIndex);
+        else {planeView.moveTo(generalGridIndex);this.setState(PlaneState.ON_BOARD);}
+        if (chessBoard.selfPlaneNumOnIndex(generalGridIndex) == 2) {     // 跳后可以叠子
+            if (this.indexOfTeam == -1) {      // 未在组，生成新组
+                if (chessBoard.teamIndexUsed[color][0]) {
+                    for (Aeroplane p : chessBoard.getMyPlanes(generalGridIndex)) p.indexOfTeam = 1;
+                    chessBoard.teamIndexUsed[color][1] = true;
+                } else {
+                    for (Aeroplane p : chessBoard.getMyPlanes(generalGridIndex)) p.indexOfTeam = 0;
+                    chessBoard.teamIndexUsed[color][0] = true;
+                }
+            }
+            // 已在组内，将新棋加入组；或生成了新组，两个棋都加入
+            this.indexOfTeam = chessBoard.getMyPlanes(generalGridIndex).get(0).indexOfTeam;
+        } else if (chessBoard.selfPlaneNumOnIndex(generalGridIndex) > 2) {
+            if (this.indexOfTeam == -1) {    // 本棋加入组
+                this.indexOfTeam = 0;         // 逻辑上讲，此时只可能有一组，即index=0
+            } else {      // 两组合并成 index=0
+                for (Aeroplane p : chessBoard.getMyPlanes(generalGridIndex)) p.indexOfTeam = 0;
+                chessBoard.teamIndexUsed[color][1] = false;
+            }
+        }
+
+        if (indexOfTeam != -1) {
+            if (generalGridIndex == BoardCoordinate.COLOR_DESTINATION[color])
+                for (Aeroplane p : chessBoard.getPartners(this.indexOfTeam)) {
+                    p.backToHangarWhenFinish();
+                }
+            else for (Aeroplane p : chessBoard.getPartners(this.indexOfTeam)) {
+                p.planeView.moveTo(generalGridIndex);
+            }
+        }
     }
 
-    public int getNextGridWhenOnSelfColorGrid(int index) {
+    public int getNextGridWhenOnSelfColorGrid(int generalIndex) {
         int result = -1;
         for (int i = 0; i < BoardCoordinate.COLOR_GRID[color].length; i++) {
-            if (index == BoardCoordinate.COLOR_GRID[color][i]
+            if (generalIndex == BoardCoordinate.COLOR_GRID[color][i]
                     && i != BoardCoordinate.COLOR_GRID[color].length - 1) {
                 result = BoardCoordinate.COLOR_GRID[color][i + 1];
                 break;

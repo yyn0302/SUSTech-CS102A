@@ -6,7 +6,6 @@ import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -34,6 +33,7 @@ public class PlaneView extends JButton {
             for (Aeroplane p : chessboard.getPlanes()) {
                 p.getPlaneView().setEnabled(false);
             }
+            aeroplane.steps = chessboard.nowMove;
             aeroplane.tryMovingFront();
 //            aeroplane.tryMovingFront(chessboard.getNowMove());
 
@@ -135,9 +135,13 @@ public class PlaneView extends JButton {
     }
 
     public void moveTo(int generalIndex) {
-        this.setBounds(xOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][0] - BoardCoordinate.GRID_SIZE / 2,
-                yOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][1] - BoardCoordinate.GRID_SIZE / 2,
-                BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
+        if (generalIndex != -1)
+            this.setBounds(xOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][0] - BoardCoordinate.GRID_SIZE / 2,
+                    yOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][1] - BoardCoordinate.GRID_SIZE / 2,
+                    BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
+        else this.finish();
+        if(aeroplane.indexOfTeam != -1)for(Aeroplane a:chessboard.getPartners(aeroplane.indexOfTeam))
+            a.getPlaneView().setIconAsPlaneNum(chessboard.getPartners(aeroplane.indexOfTeam).size());
         System.out.println("moving " + this.number + " to general index " + generalIndex);
     }
 
@@ -147,7 +151,7 @@ public class PlaneView extends JButton {
     }
 
     public void finish() {
-        chessboard.teamIndexUsed[color][aeroplane.indexOfTeam] = false;
+        if (aeroplane.indexOfTeam != -1) chessboard.teamIndexUsed[color][aeroplane.indexOfTeam] = false;
         aeroplane.indexOfTeam = -1;
         moveTo(itsHangar);
         StringBuilder themeSelectedIconPath = new StringBuilder();

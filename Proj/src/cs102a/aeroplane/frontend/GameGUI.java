@@ -157,7 +157,6 @@ public class GameGUI extends JFrame {
         this.add(backgroundPanel);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
-        chessBoard.startGame();
     }
 
     public ChessBoard getChessBoard() {

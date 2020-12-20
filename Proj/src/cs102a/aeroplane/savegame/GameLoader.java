@@ -46,8 +46,10 @@ public class GameLoader {
             while (!sc.nextLine().equals("@@")) {
                 System.err.println("Cursor replacing...");//读一行，让光标移动到正确预备位置
             }
+
+            GameGUI game = new GameGUI();
             try {
-                GameGUI game = new GameGUI();
+                game.setVisible(false);
                 ChessBoard chessBoard = game.getChessBoard();
 
                 String[] splitTemp;
@@ -70,7 +72,7 @@ public class GameLoader {
                 chessBoard.setWinner2Index(Integer.parseInt(splitTemp[splitTemp.length - 1]));
 
                 while (!sc.nextLine().equals("@@")) {
-                    System.err.println("Cursor replacing...");//读一行，让光标移动到正确预备位置
+                    System.err.println("Cursor replacing...");  //读一行，让光标移动到正确预备位置
                 }
 
                 int planeCnt = 0;
@@ -87,12 +89,13 @@ public class GameLoader {
                 if (planeCnt < 16) throw new SecurityException("呀勒？有效飞机个数怎么不对");
 
                 game.setVisible(true);
-
             } catch (NumberFormatException e) {
                 throw new Exception("先辈，读档失败了 QAQ");
             } catch (SecurityException se) {
                 throw se;
             }
+
+            game.getChessBoard().startGame();
         } catch (IOException e) {
             e.printStackTrace();
         }

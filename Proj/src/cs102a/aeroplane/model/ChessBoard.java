@@ -20,11 +20,11 @@ public class ChessBoard extends JPanel {
     private int xOffSet;
     private int yOffSet;
     private int[] playerSteps;                              // 截止胜利走了多少步
-    public int[] rollResult;                                       // 骰子点数
+    public int[] rollResult;                                // 骰子点数
     private ArrayList<Integer> movedPlanes;                 // 记录一个人摇多次时，移动过哪些棋子
     private int state;                                      // 状态（游戏未开始，游戏已开始，游戏结束）  // 重置游戏后先进入GAME_READY，完成后GAME_START
     private int nowPlayer;                                  // 当前回合
-    public int nowMove;                                    // 当前玩家选择的准备对任何飞机的移动步数    // 要起飞则在判断至少一个6后接受任意的nowStep
+    public int nowMove;                                     // 当前玩家选择的准备对任何飞机的移动步数    // 要起飞则在判断至少一个6后接受任意的nowStep
     private int continueRoll;                               // 记录连投的次数
     private int winner1Index;                               // 胜利者
     private int winner2Index;                               // 胜利者
@@ -62,16 +62,6 @@ public class ChessBoard extends JPanel {
         }
 
         this.setLayout(null);
-    }
-
-
-    /**
-     * @apiNote 开局即放入ChessBoard并只需调用此方法，其他的自动执行
-     */
-    public void startGame() {
-        //开始播放bgm
-        if (GameInfo.getTheme() == 1) Sound.GAMING_THEME1.play(true);
-        else Sound.GAMING_THEME2.play(true);
 
         // 初始化飞机
         planes = new Aeroplane[]{
@@ -101,6 +91,46 @@ public class ChessBoard extends JPanel {
 
         // 随机决定哪方先开始
         nowPlayer = new Random().nextInt(4);
+
+    }
+
+
+    /**
+     * @apiNote 开局即放入ChessBoard并只需调用此方法，其他的自动执行
+     */
+    public void startGame() {
+        //开始播放bgm
+        if (GameInfo.getTheme() == 1) Sound.GAMING_THEME1.play(true);
+        else Sound.GAMING_THEME2.play(true);
+
+//        // 初始化飞机
+//        planes = new Aeroplane[]{
+//                new Aeroplane(this, PlaneState.BLUE, 0, 0, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.BLUE, 1, 1, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.BLUE, 2, 2, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.BLUE, 3, 3, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.GREEN, 4, 5, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.GREEN, 5, 6, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.GREEN, 6, 7, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.GREEN, 7, 8, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.RED, 8, 10, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.RED, 9, 11, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.RED, 10, 12, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.RED, 11, 13, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.YELLOW, 12, 15, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.YELLOW, 13, 16, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.YELLOW, 14, 17, xOffSet, yOffSet),
+//                new Aeroplane(this, PlaneState.YELLOW, 15, 18, xOffSet, yOffSet)
+//        };
+//
+//
+//        // TODO: 2020/12/16 如果是联网模式，还要初始化myCamp
+////        if (GameInfo.isIsOnlineGame()) ?
+//// FIXME: 2020/12/18 在线模式
+//        state = GameState.GAME_START;
+//
+//        // 随机决定哪方先开始
+//        nowPlayer = new Random().nextInt(4);
         beginTurn();
     }
 
