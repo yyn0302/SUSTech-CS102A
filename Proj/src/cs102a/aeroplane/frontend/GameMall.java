@@ -150,7 +150,7 @@ public class GameMall extends JFrame {
         JButton back = new JButton("返回菜单");
         back.setOpaque(false);
         back.setBorder(null);
-        back.setForeground(Color.white);
+        back.setForeground(Color.WHITE);
         back.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 22));
         back.addActionListener(e -> {
             window.setVisible(false);

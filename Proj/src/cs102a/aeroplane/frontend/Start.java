@@ -43,7 +43,7 @@ public class Start {
         JButton storeButton = new JButton("道具商店");
         storeButton.setOpaque(false);
         storeButton.setBorder(null);
-        storeButton.setForeground(Color.white);
+        storeButton.setForeground(Color.yellow);
         storeButton.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 24));
         storeButton.addActionListener(e -> {
             startFrame.setVisible(false);
@@ -54,7 +54,7 @@ public class Start {
         JButton settingButton = new JButton("游戏设置");
         settingButton.setOpaque(false);
         settingButton.setBorder(null);
-        settingButton.setForeground(Color.white);
+        settingButton.setForeground(Color.yellow);
         settingButton.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 24));
         settingButton.addActionListener(e -> {
             startFrame.setVisible(false);

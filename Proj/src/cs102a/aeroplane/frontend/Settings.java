@@ -21,7 +21,7 @@ public class Settings extends JFrame {
 
         JLabel themeLabel = new JLabel("当前主题：海王", JLabel.CENTER);
         themeLabel.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 20));
-        themeLabel.setForeground(Color.WHITE);
+        themeLabel.setForeground(Color.BLACK);
         themeLabel.setOpaque(false);
 
         String path = SystemSelect.getImagePath();
@@ -29,7 +29,7 @@ public class Settings extends JFrame {
         JButton themeSettings = new JButton("-> 灵笼主题");
         themeSettings.setOpaque(false);
         themeSettings.setBorder(null);
-        themeSettings.setForeground(Color.WHITE);
+        themeSettings.setForeground(Color.BLACK);
         themeSettings.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         themeSettings.addActionListener(e -> {
             if (GameInfo.getTheme() == 1) {
@@ -43,14 +43,14 @@ public class Settings extends JFrame {
             }
             themeSettings.setOpaque(false);
             themeSettings.setBorder(null);
-            themeSettings.setForeground(Color.WHITE);
+            themeSettings.setForeground(Color.BLACK);
             themeSettings.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         });
 
 
         JLabel modeLabel = new JLabel("当前模式：正常");
         modeLabel.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 20));
-        modeLabel.setForeground(Color.WHITE);
+        modeLabel.setForeground(Color.BLACK);
         modeLabel.setOpaque(false);
         modeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -58,7 +58,7 @@ public class Settings extends JFrame {
         JButton changeCheatMode = new JButton("-> 作弊模式");
         changeCheatMode.setOpaque(false);
         changeCheatMode.setBorder(null);
-        changeCheatMode.setForeground(Color.WHITE);
+        changeCheatMode.setForeground(Color.BLACK);
         changeCheatMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         changeCheatMode.addActionListener(e -> {
             if (!GameInfo.isIsCheatMode()) {
@@ -72,20 +72,20 @@ public class Settings extends JFrame {
             }
             changeCheatMode.setOpaque(false);
             changeCheatMode.setBorder(null);
-            changeCheatMode.setForeground(Color.WHITE);
+            changeCheatMode.setForeground(Color.BLACK);
             changeCheatMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         });
 
 
         JLabel onlineLabel = new JLabel("联机模式：关", JLabel.CENTER);
         onlineLabel.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 20));
-        onlineLabel.setForeground(Color.WHITE);
+        onlineLabel.setForeground(Color.BLACK);
         onlineLabel.setOpaque(false);
 
         JButton changeOnlineMode = new JButton("-> 开");
         changeOnlineMode.setOpaque(false);
         changeOnlineMode.setBorder(null);
-        changeOnlineMode.setForeground(Color.WHITE);
+        changeOnlineMode.setForeground(Color.BLACK);
         changeOnlineMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         changeOnlineMode.addActionListener(e -> {
             if (!GameInfo.isIsOnlineGame()) {
@@ -99,14 +99,14 @@ public class Settings extends JFrame {
             }
             changeOnlineMode.setOpaque(false);
             changeOnlineMode.setBorder(null);
-            changeOnlineMode.setForeground(Color.WHITE);
+            changeOnlineMode.setForeground(Color.BLACK);
             changeOnlineMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         });
 
 
         JLabel humanCntLabel = new JLabel("人类：", JLabel.CENTER);
         humanCntLabel.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 20));
-        humanCntLabel.setForeground(Color.WHITE);
+        humanCntLabel.setForeground(Color.BLACK);
         humanCntLabel.setOpaque(false);
 
         JRadioButton rb1 = new JRadioButton("1");
@@ -115,19 +115,19 @@ public class Settings extends JFrame {
         JRadioButton rb4 = new JRadioButton("4", true);
         rb1.setOpaque(false);
         rb1.setBorder(null);
-        rb1.setForeground(Color.WHITE);
+        rb1.setForeground(Color.BLACK);
         rb1.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         rb2.setOpaque(false);
         rb2.setBorder(null);
-        rb2.setForeground(Color.WHITE);
+        rb2.setForeground(Color.BLACK);
         rb2.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         rb3.setOpaque(false);
         rb3.setBorder(null);
-        rb3.setForeground(Color.WHITE);
+        rb3.setForeground(Color.BLACK);
         rb3.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         rb4.setOpaque(false);
         rb4.setBorder(null);
-        rb4.setForeground(Color.WHITE);
+        rb4.setForeground(Color.BLACK);
         rb4.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
 
         rb1.addActionListener(e -> {
@@ -191,7 +191,7 @@ public class Settings extends JFrame {
         JButton back = new JButton("返回菜单");
         back.setOpaque(false);
         back.setBorder(null);
-        back.setForeground(Color.white);
+        back.setForeground(Color.BLACK);
         back.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 18));
         back.addActionListener(e -> {
             window.setVisible(false);
