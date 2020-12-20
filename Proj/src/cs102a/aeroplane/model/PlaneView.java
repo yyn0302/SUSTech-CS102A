@@ -32,7 +32,7 @@ public class PlaneView extends JButton {
         public void mousePressed(MouseEvent e) {
             System.out.println("Click plane " + number);
             for (Aeroplane p : chessboard.getPlanes()) {
-                if (p.getNumber() != number) p.getPlaneView().setEnabled(false);
+                p.getPlaneView().setEnabled(false);
             }
             aeroplane.tryMovingFront(chessboard.getNowMove());
 
@@ -114,6 +114,7 @@ public class PlaneView extends JButton {
 
         themeSelectedIconPath.append(SystemSelect.getImagePath());
         themeSelectedIconPath.append(GameInfo.getTheme() == 1 ? "t1_p" : "t2_p");
+        if (numOfStackedPlanes == 0) numOfStackedPlanes++;
         themeSelectedIconPath.append(numOfStackedPlanes).append("_");
         switch (color) {
             case PlaneState.BLUE:
@@ -143,9 +144,6 @@ public class PlaneView extends JButton {
     }
 
     public void readyToBeSelected() {
-        for (ActionListener actionListener : this.getActionListeners()) {
-            this.removeActionListener(actionListener);
-        }
         this.addMouseListener(ableToMoveTipListener);
         this.setEnabled(true);
     }
@@ -188,8 +186,8 @@ public class PlaneView extends JButton {
     @Override
     public void setEnabled(boolean flag) {
         if (!flag) {
-            for (ActionListener actionListener : this.getActionListeners())
-                this.removeActionListener(actionListener);
+            for (MouseListener m : this.getMouseListeners())
+                this.removeMouseListener(m);
         }
     }
 }

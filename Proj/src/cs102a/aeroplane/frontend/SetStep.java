@@ -4,6 +4,7 @@ import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
 import cs102a.aeroplane.frontend.model.MatchDicePicture;
 import cs102a.aeroplane.model.ChessBoard;
+import cs102a.aeroplane.util.Dice;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
@@ -91,6 +92,115 @@ public class SetStep {
                 chessBoard.nowMove=stepSelected;
                 if (flag) chessBoard.continueAfterAsk();
                 else chessBoard.continueAfterAskFalse();
+            });
+
+
+            JPanel dicePanel = new JPanel(new GridLayout(1, 2));
+            dicePanel.setOpaque(false);
+            dicePanel.add(selfDiceLabel);
+            dicePanel.add(oppoDiceLabel);
+
+            JPanel buttonPanel = new JPanel(new GridLayout(3, 1));
+            buttonPanel.setOpaque(false);
+            buttonPanel.add(new JLabel());
+            buttonPanel.add(confirmButton);
+            buttonPanel.add(new JLabel());
+
+            JPanel choicePanel = new JPanel(new GridLayout(1, 2));
+            choicePanel.setOpaque(false);
+            choicePanel.add(choiceComboBox);
+            choicePanel.add(buttonPanel);
+
+            JPanel basePanel = new JPanel(new GridLayout(2, 1, 0, 20));
+            basePanel.setOpaque(false);
+            basePanel.setPreferredSize(new Dimension(150, 100));
+            basePanel.add(dicePanel);
+            basePanel.add(choicePanel);
+
+            String picPath = SystemSelect.getImagePath();
+            JPanel picPanel = new BackgroundPanel((new ImageIcon(picPath + "setStep.jpg").getImage()));
+            picPanel.setLayout(new GridLayout(1, 1));
+            picPanel.add(basePanel);
+
+            setStepFrame.add(picPanel);
+
+        }
+
+        setStepFrame.setVisible(true);
+    }
+
+    public static void askPlayerStep(ChessBoard chessBoard, int nowMovingNumber) {
+        JFrame setStepFrame = new JFrame("选择棋子要走的步数");
+        setStepFrame.setSize(300, 250);
+        setStepFrame.setAlwaysOnTop(true);
+        setStepFrame.setResizable(false);
+        setStepFrame.setLocationRelativeTo(null);
+        setStepFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        // 作弊模式直接选择步数
+        if (GameInfo.isIsCheatMode()) {
+
+            JComboBox<Integer> choiceComboBox = new JComboBox<>();
+            for (int i = 1; i <= 12; i++) {
+                choiceComboBox.addItem(i);
+                choiceComboBox.addItemListener(e -> SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(choiceComboBox.getSelectedItem()).toString()));
+            }
+            choiceComboBox.setOpaque(false);
+
+            JButton confirmButton = new JButton("确定");
+            confirmButton.setOpaque(false);
+            confirmButton.setBorder(null);
+            confirmButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 24));
+            confirmButton.setForeground(Color.blue);
+            confirmButton.addActionListener(e -> {
+                SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(choiceComboBox.getSelectedItem()).toString());
+                setStepFrame.dispose();
+                chessBoard.nowMove=stepSelected;
+                System.err.println("nowMovePlane: "+nowMovingNumber);
+                chessBoard.getPlanes()[nowMovingNumber].tryMovingFront(stepSelected);
+            });
+
+
+            JPanel choicePanel = new JPanel(new GridLayout(1, 1));
+            choicePanel.add(choiceComboBox);
+            choicePanel.setOpaque(false);
+
+            JPanel basePanel = new JPanel(new GridLayout(2, 1));
+            basePanel.setPreferredSize(new Dimension(150, 150));
+            basePanel.add(choicePanel);
+            basePanel.add(confirmButton);
+            basePanel.setOpaque(false);
+
+            String picPath = SystemSelect.getImagePath();
+            JPanel picPanel = new BackgroundPanel((new ImageIcon(picPath + "setStep.jpg").getImage()));
+            picPanel.add(basePanel);
+
+            setStepFrame.add(picPanel);
+        }
+        //显示骰子，显示下拉菜单让用户选择
+        else {
+            int self = Dice.roll();
+            int oppo = Dice.roll();
+            JLabel selfDiceLabel = new JLabel();
+            JLabel oppoDiceLabel = new JLabel();
+            selfDiceLabel.setOpaque(false);
+            oppoDiceLabel.setOpaque(false);
+            selfDiceLabel.setIcon(MatchDicePicture.getImage(self));
+            oppoDiceLabel.setIcon(MatchDicePicture.getImage(oppo));
+            selfDiceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            oppoDiceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+            JComboBox<Integer> choiceComboBox = getPossibleChoice(new int[]{self,oppo});
+            choiceComboBox.setOpaque(false);
+
+            JButton confirmButton = new JButton("确定");
+            confirmButton.setOpaque(false);
+            confirmButton.addActionListener(e -> {
+                SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(choiceComboBox.getSelectedItem()).toString());
+                setStepFrame.dispose();
+                chessBoard.nowMove=stepSelected;
+                System.err.println("nowMovePlane: "+nowMovingNumber);
+                chessBoard.getPlanes()[nowMovingNumber].tryMovingFront(stepSelected);
             });
 
 

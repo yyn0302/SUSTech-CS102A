@@ -10,6 +10,7 @@ import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.util.Dice;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -160,6 +161,11 @@ public class ChessBoard extends JPanel {
 
     public void continueAfterAsk() {
         System.err.println(nowMove);
+        for(Aeroplane p:planes){
+            for (ActionListener actionListener : p.getPlaneView().getActionListeners()) {
+                p.getPlaneView().removeActionListener(actionListener);
+            }
+        }
         for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
             if (planes[i].notFinished())
                 planes[i].getPlaneView().readyToBeSelected();
@@ -168,6 +174,13 @@ public class ChessBoard extends JPanel {
 
     public void continueAfterAskFalse() {
         System.err.println(nowMove);
+        for(Aeroplane p:planes){
+            for (ActionListener actionListener : p.getPlaneView().getActionListeners()) {
+                p.getPlaneView().removeActionListener(actionListener);
+            }
+
+        }
+
         ArrayList<Integer> outsidePlanes = new ArrayList<>();
         // 是否全在机场
         for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
@@ -198,6 +211,7 @@ public class ChessBoard extends JPanel {
             }
             if (flag) recordOnePlayerEnd();
             else {
+//                if (!isTakingOff) {
                 if (rollResult[0] + rollResult[1] >= 10) {
                     if (continueRoll < 3) {
                         continueRoll++;
@@ -221,6 +235,7 @@ public class ChessBoard extends JPanel {
                     } while (nowPlayer == winner1Index || nowPlayer == winner2Index || nowPlayer == winner3Index);
                     beginTurn();
                 }
+//                } else beginTurn();
             }
         }
     }
@@ -293,6 +308,9 @@ public class ChessBoard extends JPanel {
         LinkedList<Aeroplane> p = new LinkedList<>();
         for (Aeroplane plane : planes) {
             if (plane.indexOfTeam == indexOfMyTeam && plane.getColor() == nowPlayer) p.add(plane);
+        }
+        if (indexOfMyTeam == -1) {
+            p.clear();
         }
         return p;
     }

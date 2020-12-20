@@ -1,9 +1,12 @@
 package cs102a.aeroplane.model;
 
 import cs102a.aeroplane.frontend.Battle;
+import cs102a.aeroplane.frontend.SetStep;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.presets.Sound;
+
+import java.awt.event.ActionListener;
 
 import static cs102a.aeroplane.presets.BoardCoordinate.COLOR_PATH;
 
@@ -36,13 +39,19 @@ public class Aeroplane {
      * @apiNote 自动判定移动过去后有无特殊事件（如跳子，撞机）发生，包括负责播放音效
      */
     public void tryMovingFront(int steps) {
+        this.planeView.setIconAsPlaneNum(chessBoard.getPartners(indexOfTeam).size());
+
         // 如果能在机场，无论骰出多少，直接走到起飞处
         if (planeView.getState() == PlaneState.IN_HANGAR) {
             selfPathIndex = 0;
             generalGridIndex = COLOR_PATH[color][0];
+            planeView.setState(PlaneState.ON_BOARD);
+            planeView.moveTo(generalGridIndex);
+            SetStep.askPlayerStep(chessBoard, number);
+            return;
         } else {
             // 不过终点，先移动再判断特殊规则
-            if (selfPathIndex+steps < BoardCoordinate.PATH_LENGTH) {
+            if (selfPathIndex + steps < BoardCoordinate.PATH_LENGTH) {
                 System.out.println("moving front");
                 // 判断这一步会不会碰上其他方
                 generalGridIndex = COLOR_PATH[color][selfPathIndex + steps];
@@ -125,7 +134,7 @@ public class Aeroplane {
                 }
             }
         }
-        System.out.println("move to general index "+generalGridIndex);
+        System.out.println("move to general index " + generalGridIndex);
         move();
     }
 
