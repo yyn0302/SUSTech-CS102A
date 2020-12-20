@@ -133,7 +133,7 @@ public class Aeroplane {
             } else {
                 // FIXME: 2020/12/16 检查数学计算有没有出错
                 // 回来的路上不可能碰上别人
-                generalGridIndex = COLOR_PATH[color][2 * BoardCoordinate.PATH_LENGTH - selfPathIndex - steps];
+                generalGridIndex = COLOR_PATH[color][2 * BoardCoordinate.PATH_LENGTH - selfPathIndex - steps - 1];
                 selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
             }
         }
@@ -182,36 +182,6 @@ public class Aeroplane {
         else {
             planeView.moveTo(generalGridIndex);
             this.setState(PlaneState.ON_BOARD);
-        }
-        if (chessBoard.selfPlaneNumOnIndex(generalGridIndex) == 2) {     // 跳后可以叠子
-            if (this.indexOfTeam == -1) {      // 未在组，生成新组
-                if (chessBoard.teamIndexUsed[color][0]) {
-                    for (Aeroplane p : chessBoard.getMyPlanes(generalGridIndex)) p.indexOfTeam = 1;
-                    chessBoard.teamIndexUsed[color][1] = true;
-                } else {
-                    for (Aeroplane p : chessBoard.getMyPlanes(generalGridIndex)) p.indexOfTeam = 0;
-                    chessBoard.teamIndexUsed[color][0] = true;
-                }
-            }
-            // 已在组内，将新棋加入组；或生成了新组，两个棋都加入
-            this.indexOfTeam = chessBoard.getMyPlanes(generalGridIndex).get(0).indexOfTeam;
-        } else if (chessBoard.selfPlaneNumOnIndex(generalGridIndex) > 2) {
-            if (this.indexOfTeam == -1) {    // 本棋加入组
-                this.indexOfTeam = 0;         // 逻辑上讲，此时只可能有一组，即index=0
-            } else {      // 两组合并成 index=0
-                for (Aeroplane p : chessBoard.getMyPlanes(generalGridIndex)) p.indexOfTeam = 0;
-                chessBoard.teamIndexUsed[color][1] = false;
-            }
-        }
-
-        if (indexOfTeam != -1) {
-            if (generalGridIndex == BoardCoordinate.COLOR_DESTINATION[color])
-                for (Aeroplane p : chessBoard.getPartners(this.indexOfTeam)) {
-                    p.backToHangarWhenFinish();
-                }
-            else for (Aeroplane p : chessBoard.getPartners(this.indexOfTeam)) {
-                p.planeView.moveTo(generalGridIndex);
-            }
         }
     }
 
