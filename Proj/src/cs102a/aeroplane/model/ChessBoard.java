@@ -135,6 +135,31 @@ public class ChessBoard extends JPanel {
     }
 
 
+    public void checkStackForInit() {
+        for (int color = 0; color < 4; color++) {
+            for (int grid = 0; grid < 96; grid++) {
+                LinkedList<Aeroplane> ap = new LinkedList<>();
+                for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[color]) {
+                    if (planes[i].getGeneralGridIndex() == grid) ap.add(planes[i]);
+                }
+                if (ap.size() > 1) {
+                    if (!teamIndexUsed[color][0]) {
+                        for (Aeroplane a : ap) {
+                            a.indexOfTeam = 0;
+                            a.getPlaneView().setIconAsPlaneNum(ap.size());
+                        }
+                    } else {
+                        for (Aeroplane a : ap) {
+                            a.indexOfTeam = 0;
+                            a.getPlaneView().setIconAsPlaneNum(ap.size());
+                        }
+                    }
+                } else if (ap.size() == 1) ap.get(0).indexOfTeam = -1;
+            }
+        }
+    }
+
+
     // 开始回合
     public void beginTurn() {
         nowGamingGUI.getPlayerInfoPanel().refresh();
@@ -172,8 +197,7 @@ public class ChessBoard extends JPanel {
             // 不是起飞点数则只有在外面的飞机可以飞
             if (outsidePlanes.isEmpty()) {
                 System.out.println("skip to next player");
-                new TimeDialog().showDialog(Settings.window, "你骰出了" + rollResult[0] +
-                        "和" + rollResult[1] + "，不满足起飞条件", 3);
+                new TimeDialog().showDialog(Settings.window, "不满足起飞条件，轮到下一玩家", 3);
                 do {
                     nowPlayer = (nowPlayer + 1) % 4;
                 } while (nowPlayer == winner1Index || nowPlayer == winner2Index || nowPlayer == winner3Index);

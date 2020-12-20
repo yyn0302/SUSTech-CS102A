@@ -1,6 +1,7 @@
 package cs102a.aeroplane.frontend.model;
 
 import cs102a.aeroplane.GameInfo;
+import cs102a.aeroplane.frontend.GameGUI;
 import cs102a.aeroplane.model.ChessBoard;
 import cs102a.aeroplane.util.SystemSelect;
 
@@ -117,5 +118,12 @@ public class PlayerInfoPanel extends JPanel {
         }
         nameLabel.setText(GameInfo.getPlayerName()[chessBoard.getNowPlayer()]);
         colorLabel.setText(color);
+
+        int self = chessBoard.rollResult[0];
+        int oppo = chessBoard.rollResult[1];
+
+        GameGUI.selfDiceLabel.setIcon(MatchDicePicture.getImage(self));
+        GameGUI.oppoDiceLabel.setIcon(MatchDicePicture.getImage(oppo));
+
     }
 }
