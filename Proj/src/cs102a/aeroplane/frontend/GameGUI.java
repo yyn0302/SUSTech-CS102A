@@ -84,7 +84,9 @@ public class GameGUI extends JFrame {
         resetButton.addActionListener(e -> {
             Sound.GAMING_THEME1.end();
             Sound.GAMING_THEME2.end();
-            new GameGUI().setVisible(true);
+            GameGUI game1=new GameGUI();
+            game1.setVisible(true);
+            game1.getChessBoard().startGame();
             this.dispose();
             System.gc();
         });

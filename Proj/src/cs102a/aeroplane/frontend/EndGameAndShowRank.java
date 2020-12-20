@@ -1,6 +1,7 @@
 package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
+import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
@@ -44,6 +45,8 @@ public class EndGameAndShowRank extends JFrame {
             nowGamingGUI.dispose();
             System.gc();
             Start.popStart();
+            Sound.GAMING_THEME1.end();
+            Sound.GAMING_THEME2.end();
         });
         gridBagLayout.setConstraints(confirmButton, gridBagConstraints);
 

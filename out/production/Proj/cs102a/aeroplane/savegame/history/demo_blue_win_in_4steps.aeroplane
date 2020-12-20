@@ -4,7 +4,7 @@
 @PLAYER=4
 @DICE_NUM=2
 @@
-@NOW_PLAYER=1
+@NOW_PLAYER=0
 @B=0
 @G=1
 @R=1

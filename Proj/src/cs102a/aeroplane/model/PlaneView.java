@@ -35,15 +35,6 @@ public class PlaneView extends JButton {
             }
             aeroplane.steps = chessboard.nowMove;
             aeroplane.tryMovingFront();
-//            aeroplane.tryMovingFront(chessboard.getNowMove());
-
-            if (aeroplane.indexOfTeam != -1)  // 在队伍,移动队员
-                for (Aeroplane a : chessboard.getPlanes()) {
-                    if (a.getColor() == color && a.indexOfTeam == aeroplane.indexOfTeam)
-                        // 驱动所有队内成员一起移动
-                        a.getPlaneView().moveTo(aeroplane.getGeneralGridIndex());
-                }
-
         }
 
         // 做了个移入移出的可选择的提示
@@ -108,7 +99,6 @@ public class PlaneView extends JButton {
     }
 
     // 输入飞机叠子数量，将此飞机设置为对应的图片
-    // 其他被叠飞机另外设置invisible
     public void setIconAsPlaneNum(int numOfStackedPlanes) {
         this.numOfStackedPlanes = numOfStackedPlanes;
         StringBuilder themeSelectedIconPath = new StringBuilder();
@@ -135,13 +125,9 @@ public class PlaneView extends JButton {
     }
 
     public void moveTo(int generalIndex) {
-        if (generalIndex != -1)
-            this.setBounds(xOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][0] - BoardCoordinate.GRID_SIZE / 2,
-                    yOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][1] - BoardCoordinate.GRID_SIZE / 2,
-                    BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
-        else this.finish();
-        if(aeroplane.indexOfTeam != -1)for(Aeroplane a:chessboard.getPartners(aeroplane.indexOfTeam))
-            a.getPlaneView().setIconAsPlaneNum(chessboard.getPartners(aeroplane.indexOfTeam).size());
+        this.setBounds(xOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][0] - BoardCoordinate.GRID_SIZE / 2,
+                yOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][1] - BoardCoordinate.GRID_SIZE / 2,
+                BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
         System.out.println("moving " + this.number + " to general index " + generalIndex);
     }
 

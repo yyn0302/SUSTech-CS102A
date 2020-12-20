@@ -375,7 +375,7 @@ public class ChessBoard extends JPanel {
         }
     }
 
-    private boolean checkGameEnd() {
+    boolean checkGameEnd() {
         return state == GameState.GAME_END;
     }
 
