@@ -43,8 +43,8 @@ public class ChessBoard extends JPanel {
         this.setSize(800, 800);
         this.setOpaque(false);
 
-        this.xOffSet=xOffSet;
-        this.yOffSet=yOffSet;
+        this.xOffSet = xOffSet;
+        this.yOffSet = yOffSet;
 
         this.winner1Index = -1;
         this.winner2Index = -1;
@@ -93,7 +93,6 @@ public class ChessBoard extends JPanel {
         };
 
 
-
         // TODO: 2020/12/16 如果是联网模式，还要初始化myCamp
 //        if (GameInfo.isIsOnlineGame()) ?
 // FIXME: 2020/12/18 在线模式
@@ -122,25 +121,28 @@ public class ChessBoard extends JPanel {
         }
     }
 
-    private void rollAndApply() {
+    public void rollAndApply() {
         rollResult[0] = Dice.roll();
         rollResult[1] = Dice.roll();
-        System.err.println("nowPlayer " + nowPlayer);
+        System.err.println("\nnowPlayer " + nowPlayer);
         ArrayList<Integer> outsidePlanes = new ArrayList<>();
         // 是否全在机场
         for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
             if (!(planes[i].isInHangar() && planes[i].notFinished())) {
                 outsidePlanes.add(i);       // 添加在外面的飞机
+                System.out.println("outside added:" + i);
             }
         }
 
         boolean ableToTakeOff = rollResult[0] == 6 || rollResult[1] == 6;
+        System.out.println("able to take off:" + ableToTakeOff);
         if (ableToTakeOff) {
-            SetStep.askPlayerStep(nowGamingGUI,this,rollResult,true);
+            SetStep.askPlayerStep(nowGamingGUI, this, rollResult, true);
             // 是起飞的点数则当前回合的所有飞机都可飞
         } else {
             // 不是起飞点数则只有在外面的飞机可以飞
             if (outsidePlanes.isEmpty()) {
+                System.out.println("skip to next player");
                 new TimeDialog().showDialog(Settings.window, "你骰出了" + rollResult[0] +
                         "和" + rollResult[1] + "，不满足起飞条件", 3);
                 do {
@@ -148,7 +150,7 @@ public class ChessBoard extends JPanel {
                 } while (nowPlayer == winner1Index || nowPlayer == winner2Index || nowPlayer == winner3Index);
                 beginTurn();
             } else {
-                SetStep.askPlayerStep(nowGamingGUI,this,rollResult,false);
+                SetStep.askPlayerStep(nowGamingGUI, this, rollResult, false);
             }
         }
 
@@ -156,7 +158,7 @@ public class ChessBoard extends JPanel {
 //        if (playerType[nowPlayer] == GameState.COMPUTER) ComputerAgent.selectAndClick();
     }
 
-    public void continueAfterAsk () {
+    public void continueAfterAsk() {
         System.err.println(nowMove);
         for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
             if (planes[i].notFinished())
@@ -164,7 +166,7 @@ public class ChessBoard extends JPanel {
         }
     }
 
-    public void continueAfterAskFalse () {
+    public void continueAfterAskFalse() {
         System.err.println(nowMove);
         ArrayList<Integer> outsidePlanes = new ArrayList<>();
         // 是否全在机场

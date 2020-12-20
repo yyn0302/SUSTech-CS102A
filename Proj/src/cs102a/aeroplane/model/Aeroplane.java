@@ -40,10 +40,10 @@ public class Aeroplane {
         if (planeView.getState() == PlaneState.IN_HANGAR) {
             selfPathIndex = 0;
             generalGridIndex = COLOR_PATH[color][0];
-            chessBoard.nowMove--;   // 为了接下来还是他
         } else {
             // 不过终点，先移动再判断特殊规则
-            if (selfPathIndex + steps < BoardCoordinate.PATH_LENGTH) {
+            if (selfPathIndex+steps < BoardCoordinate.PATH_LENGTH) {
+                System.out.println("moving front");
                 // 判断这一步会不会碰上其他方
                 generalGridIndex = COLOR_PATH[color][selfPathIndex + steps];
                 selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
@@ -125,6 +125,7 @@ public class Aeroplane {
                 }
             }
         }
+        System.out.println("move to general index "+generalGridIndex);
         move();
     }
 
