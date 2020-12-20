@@ -109,7 +109,7 @@ public class GameGUI extends JFrame {
         JButton changeCheatMode = new JButton(!GameInfo.isIsCheatMode()?"正常":"作弊");
         changeCheatMode.setOpaque(false);
         changeCheatMode.setBorder(null);
-        changeCheatMode.setForeground(Color.BLACK);
+        changeCheatMode.setForeground(Color.white);
         changeCheatMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         changeCheatMode.setBounds(818, 130, 60, 30);
         changeCheatMode.addActionListener(e -> {
@@ -122,7 +122,7 @@ public class GameGUI extends JFrame {
             }
             changeCheatMode.setOpaque(false);
             changeCheatMode.setBorder(null);
-            changeCheatMode.setForeground(Color.BLACK);
+            changeCheatMode.setForeground(Color.white);
             changeCheatMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         });
 
