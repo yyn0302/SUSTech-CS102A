@@ -20,7 +20,7 @@ public class ChessBoard extends JPanel {
     private int xOffSet;
     private int yOffSet;
     private int[] playerSteps;                              // 截止胜利走了多少步
-    int[] rollResult;                                       // 骰子点数
+    public int[] rollResult;                                       // 骰子点数
     private ArrayList<Integer> movedPlanes;                 // 记录一个人摇多次时，移动过哪些棋子
     private int state;                                      // 状态（游戏未开始，游戏已开始，游戏结束）  // 重置游戏后先进入GAME_READY，完成后GAME_START
     private int nowPlayer;                                  // 当前回合
@@ -123,13 +123,13 @@ public class ChessBoard extends JPanel {
     }
 
     public void rollAndApply() {
-        rollResult[0] = Dice.roll();
-        rollResult[1] = Dice.roll();
+        rollResult = new int[]{Dice.roll(), Dice.roll()};
+
         System.err.println("\nnowPlayer " + nowPlayer);
         ArrayList<Integer> outsidePlanes = new ArrayList<>();
         // 是否全在机场
         for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
-            if (!(planes[i].isInHangar() && planes[i].notFinished())) {
+            if (!planes[i].isInHangar() && planes[i].notFinished() && !outsidePlanes.contains(i)) {
                 outsidePlanes.add(i);       // 添加在外面的飞机
                 System.out.println("outside added:" + i);
             }
@@ -137,7 +137,7 @@ public class ChessBoard extends JPanel {
 
         boolean ableToTakeOff = rollResult[0] == 6 || rollResult[1] == 6;
         System.out.println("able to take off:" + ableToTakeOff);
-        if (ableToTakeOff||GameInfo.isIsCheatMode()) {
+        if (ableToTakeOff || GameInfo.isIsCheatMode()) {
             SetStep.askPlayerStep(nowGamingGUI, this, rollResult, true);
             // 是起飞的点数则当前回合的所有飞机都可飞
         } else {
@@ -161,7 +161,7 @@ public class ChessBoard extends JPanel {
 
     public void continueAfterAsk() {
         System.err.println(nowMove);
-        for(Aeroplane p:planes){
+        for (Aeroplane p : planes) {
             for (ActionListener actionListener : p.getPlaneView().getActionListeners()) {
                 p.getPlaneView().removeActionListener(actionListener);
             }
@@ -174,7 +174,7 @@ public class ChessBoard extends JPanel {
 
     public void continueAfterAskFalse() {
         System.err.println(nowMove);
-        for(Aeroplane p:planes){
+        for (Aeroplane p : planes) {
             for (ActionListener actionListener : p.getPlaneView().getActionListeners()) {
                 p.getPlaneView().removeActionListener(actionListener);
             }
@@ -184,7 +184,7 @@ public class ChessBoard extends JPanel {
         ArrayList<Integer> outsidePlanes = new ArrayList<>();
         // 是否全在机场
         for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
-            if (!(planes[i].isInHangar() && planes[i].notFinished())) {
+            if (!(planes[i].isInHangar() && planes[i].notFinished() && !outsidePlanes.contains(i))) {
                 outsidePlanes.add(i);       // 添加在外面的飞机
             }
         }
@@ -196,10 +196,11 @@ public class ChessBoard extends JPanel {
 
 
     // 结束回合
-    public void endTurn() {
+    public boolean endTurn() {
         // 检查游戏是否结束
         if (checkGameEnd()) {
             endGame();
+            return false;
         } else {
             // 先确定当前玩家有没有赢
             boolean flag = true;
@@ -209,35 +210,48 @@ public class ChessBoard extends JPanel {
                     break;
                 }
             }
-            if (flag) recordOnePlayerEnd();
-            else {
-//                if (!isTakingOff) {
-                if (rollResult[0] + rollResult[1] >= 10) {
-                    if (continueRoll < 3) {
-                        continueRoll++;
-                        beginTurn();
-                    } else {
+            if (flag) {
+                recordOnePlayerEnd();
+                return true;
+            } else {
+                if (continueRoll >= 2) {
+                    for (int i : movedPlanes) {
                         for (Aeroplane p : planes) {
-                            for (int i : movedPlanes) {
-                                if (p.getNumber() == i) {
-                                    p.backToHangarForInit();
-                                    break;
-                                }
+                            if (p.getNumber() == i) {
+                                p.backToHangarForInit();
+                                break;
                             }
                         }
-                        continueRoll = 0;
-                        movedPlanes.clear();
                     }
-                } else {
-                    // 否则下一个回合为顺时针下一阵营
-                    do {
-                        nowPlayer = (nowPlayer + 1) % 4;
-                    } while (nowPlayer == winner1Index || nowPlayer == winner2Index || nowPlayer == winner3Index);
-                    beginTurn();
+                    movedPlanes.clear();
+
                 }
-//                } else beginTurn();
+                return true;
             }
         }
+    }
+
+    public void continueEndTurn() {
+        if (rollResult[0] + rollResult[1] >= 10) {
+            continueRoll++;
+            if (continueRoll >= 2) {
+                continueRoll = 0;
+                do {
+                    nowPlayer = (nowPlayer + 1) % 4;
+                } while (nowPlayer == winner1Index || nowPlayer == winner2Index || nowPlayer == winner3Index);
+            }
+
+        } else {
+            // 否则下一个回合为顺时针下一阵营
+            continueRoll = 0;
+            movedPlanes.clear();
+            do {
+                nowPlayer = (nowPlayer + 1) % 4;
+            } while (nowPlayer == winner1Index || nowPlayer == winner2Index || nowPlayer == winner3Index);
+        }
+
+        beginTurn();
+
     }
 
     // 结束游戏

@@ -34,7 +34,8 @@ public class PlaneView extends JButton {
             for (Aeroplane p : chessboard.getPlanes()) {
                 p.getPlaneView().setEnabled(false);
             }
-            aeroplane.tryMovingFront(chessboard.getNowMove());
+            aeroplane.tryMovingFront();
+//            aeroplane.tryMovingFront(chessboard.getNowMove());
 
             if (aeroplane.indexOfTeam != -1)  // 在队伍,移动队员
                 for (Aeroplane a : chessboard.getPlanes()) {

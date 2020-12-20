@@ -17,11 +17,16 @@ public class MusicPlayer {
 
     public MusicPlayer(String musicPath) {
         this.file = new File(musicPath);
+        playSoundThread = new playSoundThread();
     }
 
     // 播放音乐
     public void play() {
+//        playSoundThread = new playSoundThread();
+//        if (!playSoundThread.isAlive()) {
         playSoundThread = new playSoundThread();
+//        }
+
         playSoundThread.start();
     }
 
@@ -29,7 +34,8 @@ public class MusicPlayer {
     public void over() {
         isPlaying = false;
         if (playSoundThread != null) {
-            playSoundThread = null;
+            playSoundThread.stop();
+            System.gc();
         }
     }
 

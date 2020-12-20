@@ -5,9 +5,8 @@ import cs102a.aeroplane.frontend.SetStep;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.presets.Sound;
+import cs102a.aeroplane.util.Dice;
 import cs102a.aeroplane.util.Timer;
-
-import java.awt.event.ActionListener;
 
 import static cs102a.aeroplane.presets.BoardCoordinate.COLOR_PATH;
 
@@ -20,6 +19,9 @@ public class Aeroplane {
     private int selfPathIndex;              // 自己该走完的57格
     private int generalGridIndex;           // 飞机所在位置0~97，-1为完成路径
     public int indexOfTeam;                 // 当加入team时记录这个team在chessboard的index方便访问，不在队为-1
+
+    public int steps;
+
 
     public Aeroplane(ChessBoard chessBoard, int color, int number, int itsHangar, int xOffSet, int yOffSet) {
         this.chessBoard = chessBoard;
@@ -36,10 +38,11 @@ public class Aeroplane {
 
 
     /**
-     * @param steps 选择向前移动的步数
+     * //     * @param steps 选择向前移动的步数
+     *
      * @apiNote 自动判定移动过去后有无特殊事件（如跳子，撞机）发生，包括负责播放音效
      */
-    public void tryMovingFront(int steps) {
+    public void tryMovingFront() {
         this.planeView.setIconAsPlaneNum(chessBoard.getPartners(indexOfTeam).size());
 
         // 如果能在机场，无论骰出多少，直接走到起飞处
@@ -48,6 +51,7 @@ public class Aeroplane {
             generalGridIndex = COLOR_PATH[color][0];
             planeView.setState(PlaneState.ON_BOARD);
             planeView.moveTo(generalGridIndex);
+            chessBoard.rollResult = new int[]{Dice.roll(), Dice.roll()};
             SetStep.askPlayerStep(chessBoard, number);
             return;
         } else {
@@ -119,7 +123,7 @@ public class Aeroplane {
                             for (Aeroplane aero : chessBoard.getPartners(1)) aero.indexOfTeam = 0;
                         }
                     }
-                }else if (onSameColorGrid(generalGridIndex)) {
+                } else if (onSameColorGrid(generalGridIndex)) {
                     if (isJetGrid(generalGridIndex) == -1) {
                         planeView.moveTo(generalGridIndex);
                         Timer.delay(100);
@@ -168,7 +172,7 @@ public class Aeroplane {
                 }
             }
         }
-        System.out.println("move to general index " + generalGridIndex);
+        System.out.println("moving " + this.number + " to general index " + generalGridIndex);
         move();
     }
 
@@ -221,8 +225,12 @@ public class Aeroplane {
         else planeView.moveTo(generalGridIndex);
 
         // 结束回合
-        chessBoard.endTurn();
         chessBoard.getMovedPlanes().add(this.number);
+//        chessBoard.endTurn();
+//        chessBoard.endTurn();
+//        chessBoard.endTurn();
+        if (chessBoard.endTurn())
+            chessBoard.continueEndTurn();
     }
 
     /**
@@ -294,14 +302,4 @@ public class Aeroplane {
     public boolean isInHangar() {
         return planeView.getState() == PlaneState.IN_HANGAR;
     }
-
-
-//    public static void main(String[] args) {
-//        JFrame battleFrame = new JFrame("Battle");
-//        battleFrame.setSize(300, 250);
-//        battleFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-//        battleFrame.setLocationRelativeTo(null);
-//        battleFrame.setAlwaysOnTop(true);
-//        battleFrame.setResizable(false);
-//    }
 }

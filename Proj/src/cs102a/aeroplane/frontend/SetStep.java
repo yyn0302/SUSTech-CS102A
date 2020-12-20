@@ -4,7 +4,6 @@ import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
 import cs102a.aeroplane.frontend.model.MatchDicePicture;
 import cs102a.aeroplane.model.ChessBoard;
-import cs102a.aeroplane.util.Dice;
 import cs102a.aeroplane.util.SystemSelect;
 
 import javax.swing.*;
@@ -19,7 +18,7 @@ public class SetStep {
 //    public static GameGUI nowGamingGUI;
 
     // 弹窗，只有设置好步数才能关闭
-    public static void askPlayerStep(GameGUI nowGamingGUI,ChessBoard chessBoard, int[] rollResult, boolean flag) {
+    public static void askPlayerStep(GameGUI nowGamingGUI, ChessBoard chessBoard, int[] rollResult, boolean flag) {
         JFrame setStepFrame = new JFrame("选择棋子要走的步数");
         nowGamingGUI.getPlayerInfoPanel().refresh();
         setStepFrame.setSize(300, 250);
@@ -46,7 +45,7 @@ public class SetStep {
             confirmButton.addActionListener(e -> {
                 SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(choiceComboBox.getSelectedItem()).toString());
                 setStepFrame.dispose();
-                chessBoard.nowMove=stepSelected;
+                chessBoard.nowMove = stepSelected;
                 if (flag) chessBoard.continueAfterAsk();
                 else chessBoard.continueAfterAskFalse();
             });
@@ -89,9 +88,10 @@ public class SetStep {
             confirmButton.addActionListener(e -> {
                 SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(choiceComboBox.getSelectedItem()).toString());
                 setStepFrame.dispose();
-                chessBoard.nowMove=stepSelected;
+                chessBoard.nowMove = stepSelected;
                 if (flag) chessBoard.continueAfterAsk();
                 else chessBoard.continueAfterAskFalse();
+
             });
 
 
@@ -139,7 +139,6 @@ public class SetStep {
 
         // 作弊模式直接选择步数
         if (GameInfo.isIsCheatMode()) {
-
             JComboBox<Integer> choiceComboBox = new JComboBox<>();
             for (int i = 1; i <= 12; i++) {
                 choiceComboBox.addItem(i);
@@ -155,9 +154,28 @@ public class SetStep {
             confirmButton.addActionListener(e -> {
                 SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(choiceComboBox.getSelectedItem()).toString());
                 setStepFrame.dispose();
-                chessBoard.nowMove=stepSelected;
-                System.err.println("nowMovePlane: "+nowMovingNumber);
-                chessBoard.getPlanes()[nowMovingNumber].tryMovingFront(stepSelected);
+                chessBoard.nowMove = stepSelected;
+                System.err.println("nowMovePlane: " + nowMovingNumber);
+                chessBoard.rollResult[0] = stepSelected;
+                chessBoard.rollResult[1] = 0;
+
+
+                chessBoard.getPlanes()[nowMovingNumber].steps = stepSelected;
+                chessBoard.getPlanes()[nowMovingNumber].tryMovingFront();
+//                chessBoard.getPlanes()[nowMovingNumber].tryMovingFront(stepSelected);
+
+//
+//                if(chessBoard.endTurn())
+//                    chessBoard.continueEndTurn();
+//
+
+//                chessBoard.setNowPlayer(chessBoard.getNowPlayer()+1);
+//                chessBoard.endTurn();
+//                chessBoard.endTurn();
+//                chessBoard.endTurn();
+//                chessBoard.endTurn();
+//                chessBoard.endTurn();
+
             });
 
 
@@ -179,8 +197,8 @@ public class SetStep {
         }
         //显示骰子，显示下拉菜单让用户选择
         else {
-            int self = Dice.roll();
-            int oppo = Dice.roll();
+            int self = chessBoard.rollResult[0];
+            int oppo = chessBoard.rollResult[1];
             JLabel selfDiceLabel = new JLabel();
             JLabel oppoDiceLabel = new JLabel();
             selfDiceLabel.setOpaque(false);
@@ -190,7 +208,7 @@ public class SetStep {
             selfDiceLabel.setHorizontalAlignment(SwingConstants.CENTER);
             oppoDiceLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-            JComboBox<Integer> choiceComboBox = getPossibleChoice(new int[]{self,oppo});
+            JComboBox<Integer> choiceComboBox = getPossibleChoice(new int[]{self, oppo});
             choiceComboBox.setOpaque(false);
 
             JButton confirmButton = new JButton("确定");
@@ -198,9 +216,12 @@ public class SetStep {
             confirmButton.addActionListener(e -> {
                 SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(choiceComboBox.getSelectedItem()).toString());
                 setStepFrame.dispose();
-                chessBoard.nowMove=stepSelected;
-                System.err.println("nowMovePlane: "+nowMovingNumber);
-                chessBoard.getPlanes()[nowMovingNumber].tryMovingFront(stepSelected);
+                chessBoard.nowMove = stepSelected;
+                System.err.println("nowMovePlane: " + nowMovingNumber);
+
+                chessBoard.getPlanes()[nowMovingNumber].steps = stepSelected;
+                chessBoard.getPlanes()[nowMovingNumber].tryMovingFront();
+
             });
 
 

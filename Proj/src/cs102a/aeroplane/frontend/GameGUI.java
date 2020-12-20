@@ -82,6 +82,8 @@ public class GameGUI extends JFrame {
         returnButton.setOpaque(false);
 
         resetButton.addActionListener(e -> {
+            Sound.GAMING_THEME1.end();
+            Sound.GAMING_THEME2.end();
             new GameGUI().setVisible(true);
             this.dispose();
             System.gc();
