@@ -139,10 +139,6 @@ public class PlaneView extends JButton {
                 BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
     }
 
-    public int getItsHangar() {
-        return itsHangar;
-    }
-
     public void readyToBeSelected() {
         this.addMouseListener(ableToMoveTipListener);
         this.setEnabled(true);

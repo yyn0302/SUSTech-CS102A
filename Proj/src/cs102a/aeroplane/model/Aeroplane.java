@@ -5,6 +5,7 @@ import cs102a.aeroplane.frontend.SetStep;
 import cs102a.aeroplane.presets.BoardCoordinate;
 import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.presets.Sound;
+import cs102a.aeroplane.util.Timer;
 
 import java.awt.event.ActionListener;
 
@@ -57,6 +58,7 @@ public class Aeroplane {
                 generalGridIndex = COLOR_PATH[color][selfPathIndex + steps];
                 selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
                 if (chessBoard.hasOtherPlane(generalGridIndex)) {
+                    planeView.moveTo(generalGridIndex);
                     // 不是自己格子，battle
                     if (!onSameColorGrid(generalGridIndex)) {
                         if (indexOfTeam == -1) {    // 一对多
@@ -80,10 +82,20 @@ public class Aeroplane {
                         // 且跳到下一个同色格子，赶走这个格子的对方
                         if (isJetGrid(generalGridIndex) == -1) {
                             generalGridIndex = getNextGridWhenOnSelfColorGrid(generalGridIndex);
+                            selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
+
+                            planeView.moveTo(generalGridIndex);
+                            Timer.delay(100);
+
                             for (Aeroplane p : chessBoard.getOppoPlanes(generalGridIndex)) p.backToHangarDueToCrash();
                             Sound.JUMP.play(false);
                         } else {
                             generalGridIndex = isJetGrid(selfPathIndex);
+                            selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
+
+                            planeView.moveTo(generalGridIndex);
+                            Timer.delay(100);
+
                             for (Aeroplane p : chessBoard.getOppoPlanes(BoardCoordinate.COLOR_JET[color][1]))
                                 p.backToHangarDueToCrash();
                             for (Aeroplane p : chessBoard.getOppoPlanes(generalGridIndex)) p.backToHangarDueToCrash();
@@ -106,6 +118,28 @@ public class Aeroplane {
                         } else {      // 两组合并成 index=0
                             for (Aeroplane aero : chessBoard.getPartners(1)) aero.indexOfTeam = 0;
                         }
+                    }
+                }else if (onSameColorGrid(generalGridIndex)) {
+                    if (isJetGrid(generalGridIndex) == -1) {
+                        planeView.moveTo(generalGridIndex);
+                        Timer.delay(100);
+
+                        generalGridIndex = getNextGridWhenOnSelfColorGrid(generalGridIndex);
+                        selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
+
+                        for (Aeroplane p : chessBoard.getOppoPlanes(generalGridIndex)) p.backToHangarDueToCrash();
+                        Sound.JUMP.play(false);
+                    } else {
+                        planeView.moveTo(generalGridIndex);
+                        Timer.delay(100);
+
+                        generalGridIndex = isJetGrid(generalGridIndex);
+                        selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
+
+                        for (Aeroplane p : chessBoard.getOppoPlanes(BoardCoordinate.COLOR_JET[color][1]))
+                            p.backToHangarDueToCrash();
+                        for (Aeroplane p : chessBoard.getOppoPlanes(generalGridIndex)) p.backToHangarDueToCrash();
+                        Sound.JET.play(false);
                     }
                 }
             } else {

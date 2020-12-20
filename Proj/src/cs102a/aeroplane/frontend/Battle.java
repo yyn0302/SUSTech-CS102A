@@ -111,7 +111,6 @@ public class Battle {
 
     public static boolean isWinner() {
         popBattleFrame();
-        System.gc();
         return isWinInBattle;
     }
 }

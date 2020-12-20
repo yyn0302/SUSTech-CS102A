@@ -81,11 +81,10 @@ public class GameGUI extends JFrame {
         saveButton.setOpaque(false);
         returnButton.setOpaque(false);
 
-        // FIXME: 2020/12/18 不知道对不对
         resetButton.addActionListener(e -> {
-            chessBoard = null;
+            new GameGUI().setVisible(true);
+            this.dispose();
             System.gc();
-            chessBoard = new ChessBoard(0, 0, this);
         });
         saveButton.addActionListener(e -> {
             GameSaver.save(chessBoard);
@@ -99,7 +98,7 @@ public class GameGUI extends JFrame {
             Sound.GAMING_THEME2.end();
         });
 
-        JButton changeCheatMode = new JButton("正常");
+        JButton changeCheatMode = new JButton(!GameInfo.isIsCheatMode()?"正常":"作弊");
         changeCheatMode.setOpaque(false);
         changeCheatMode.setBorder(null);
         changeCheatMode.setForeground(Color.WHITE);
@@ -127,7 +126,6 @@ public class GameGUI extends JFrame {
         bombButton.setOpaque(false);
         takeOffButton.setOpaque(false);
 
-        // FIXME: 2020/12/18 不知道对不对
         vipButton.addActionListener(e -> {
             GoodsList.makeMeWin.use(chessBoard);
         });

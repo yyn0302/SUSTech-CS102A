@@ -137,7 +137,7 @@ public class ChessBoard extends JPanel {
 
         boolean ableToTakeOff = rollResult[0] == 6 || rollResult[1] == 6;
         System.out.println("able to take off:" + ableToTakeOff);
-        if (ableToTakeOff) {
+        if (ableToTakeOff||GameInfo.isIsCheatMode()) {
             SetStep.askPlayerStep(nowGamingGUI, this, rollResult, true);
             // 是起飞的点数则当前回合的所有飞机都可飞
         } else {

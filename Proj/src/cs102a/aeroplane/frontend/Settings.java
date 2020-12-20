@@ -52,6 +52,7 @@ public class Settings extends JFrame {
         modeLabel.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 20));
         modeLabel.setForeground(Color.WHITE);
         modeLabel.setOpaque(false);
+        modeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 
         JButton changeCheatMode = new JButton("-> 作弊模式");
@@ -224,10 +225,17 @@ public class Settings extends JFrame {
         rowPanel2.add(cnt);
         rowPanel2.setOpaque(false);
 
+        JPanel isCheatModePanel = new JPanel();
+        isCheatModePanel.setLayout(new GridLayout(1, 2, 10, 0));
+        isCheatModePanel.add(modeLabel);
+        isCheatModePanel.add(changeCheatMode);
+        isCheatModePanel.setOpaque(false);
+
         JPanel backgroundPanel = new BackgroundPanel(new ImageIcon(path + "setting.jpg").getImage());
         backgroundPanel.setOpaque(false);
-        backgroundPanel.setLayout(new GridLayout(5, 1, 10, 10));
+        backgroundPanel.setLayout(new GridLayout(6, 1, 10, 10));
         backgroundPanel.add(rowPanel1);
+        backgroundPanel.add(isCheatModePanel);
         backgroundPanel.add(onlinePanel);
         backgroundPanel.add(rowPanel2);
         backgroundPanel.add(enterSuperModePanel);
