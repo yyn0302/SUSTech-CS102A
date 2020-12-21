@@ -84,6 +84,7 @@ public class Start {
         startFrame.setResizable(false);
         startFrame.setVisible(true);
         startFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
     }
 
     public static void popStart() {
