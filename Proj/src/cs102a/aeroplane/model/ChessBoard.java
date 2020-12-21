@@ -164,7 +164,8 @@ public class ChessBoard extends JPanel {
     }
 
     public void rollAndApply() {
-        if (!GameInfo.isIsCheatMode()) rollResult = new int[]{Dice.roll(), Dice.roll()};
+        if (!GameInfo.isIsCheatMode())
+            rollResult = new int[]{Dice.roll(), Dice.roll()};
 
         System.err.println("\nnowPlayer " + nowPlayer);
         ArrayList<Integer> outsidePlanes = new ArrayList<>();
@@ -249,7 +250,7 @@ public class ChessBoard extends JPanel {
                 endGame();
                 return false;
             }
-            if (continueRoll >= 2) {
+            if (continueRoll >= 3) {
                 for (int i : movedPlanes) {
                     for (Aeroplane p : planes) {
                         if (p.getNumber() == i) {
@@ -267,10 +268,12 @@ public class ChessBoard extends JPanel {
 
     public void continueEndTurn() {
         System.out.println(rollResult[0] + ", " + rollResult[1]);
-        if (rollResult[0] + rollResult[1] >= 10) {
+        if (((rollResult[0] + rollResult[1] >= 10) && !GameInfo.isIsCheatMode()) ||
+                GameInfo.isIsCheatMode() && nowMove >= 10) {
             continueRoll++;
             if (continueRoll >= 3) {
                 continueRoll = 0;
+                for (int i : movedPlanes) planes[i].backToHangarDueToCrash();
                 do {
                     nowPlayer = (nowPlayer + 1) % 4;
                 } while (nowPlayer == winner1Index || nowPlayer == winner2Index || nowPlayer == winner3Index);
@@ -340,7 +343,8 @@ public class ChessBoard extends JPanel {
     // 判断index上有没有其他方的棋子
     public boolean hasOtherPlane(int index) {
         for (Aeroplane plane : planes)
-            if (plane.getGeneralGridIndex() == index && plane.getColor() != nowPlayer - 1) return true;
+            if (plane.getGeneralGridIndex() == index && plane.getColor() != nowPlayer) return true;
+//            if (plane.getGeneralGridIndex() == index && plane.getColor() != nowPlayer - 1) return true;
         return false;
     }
 

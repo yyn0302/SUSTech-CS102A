@@ -79,8 +79,7 @@ public class GameLoader {
                 for (int i = 0; i < 16; i++) {
                     splitTemp = sc.nextLine().split("P");
                     try {
-                        chessBoard.getPlanes()[i].checkStack();
-//                        chessBoard.getPlanes()[i].setGeneralGridIndexAndMove(Integer.parseInt(splitTemp[splitTemp.length - 1]));
+                        chessBoard.getPlanes()[i].setGeneralGridIndexAndMove(Integer.parseInt(splitTemp[splitTemp.length - 1]));
                     } catch (AssertionError e) {
                         System.err.print(e.getMessage());
                         break;
@@ -88,8 +87,7 @@ public class GameLoader {
                     planeCnt++;
                 }
                 if (planeCnt < 16) throw new SecurityException("呀勒？有效飞机个数怎么不对");
-                for (int i = 0; i < 16; i++)
-                    chessBoard.getPlanes()[i].checkStack();
+                chessBoard.checkStackForInit();
                 game.setVisible(true);
             } catch (NumberFormatException e) {
                 throw new Exception("先辈，读档失败了 QAQ");
