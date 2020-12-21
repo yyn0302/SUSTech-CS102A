@@ -128,6 +128,57 @@ public class SetStep {
 
         setStepFrame.setVisible(true);
     }
+    public static void askPlayerStep(GameGUI nowGamingGUI, ChessBoard chessBoard, boolean flag) {
+        JFrame setStepFrame = new JFrame("选择棋子要走的步数");
+        nowGamingGUI.getPlayerInfoPanel().refresh();
+        setStepFrame.setSize(300, 250);
+        setStepFrame.setAlwaysOnTop(true);
+        setStepFrame.setResizable(false);
+        setStepFrame.setLocationRelativeTo(null);
+        setStepFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        // 作弊模式直接选择步数
+        if (GameInfo.isIsCheatMode()) {
+
+            JComboBox<Integer> choiceComboBox = new JComboBox<>();
+            for (int i = 1; i <= 12; i++) {
+                choiceComboBox.addItem(i);
+                choiceComboBox.addItemListener(e -> SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(choiceComboBox.getSelectedItem()).toString()));
+            }
+            choiceComboBox.setOpaque(false);
+
+            JButton confirmButton = new JButton("确定");
+            confirmButton.setOpaque(false);
+            confirmButton.setBorder(null);
+            confirmButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 24));
+            confirmButton.setForeground(Color.blue);
+            confirmButton.addActionListener(e -> {
+                SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(choiceComboBox.getSelectedItem()).toString());
+                setStepFrame.dispose();
+                chessBoard.nowMove = stepSelected;
+                if (flag) chessBoard.continueAfterAsk();
+                else chessBoard.continueAfterAskFalse();
+            });
+
+
+            JPanel choicePanel = new JPanel(new GridLayout(1, 1));
+            choicePanel.add(choiceComboBox);
+            choicePanel.setOpaque(false);
+
+            JPanel basePanel = new JPanel(new GridLayout(2, 1));
+            basePanel.setPreferredSize(new Dimension(150, 150));
+            basePanel.add(choicePanel);
+            basePanel.add(confirmButton);
+            basePanel.setOpaque(false);
+
+            String picPath = SystemSelect.getImagePath();
+            JPanel picPanel = new BackgroundPanel((new ImageIcon(picPath + "setStep.jpg").getImage()));
+            picPanel.add(basePanel);
+
+            setStepFrame.add(picPanel);
+        }
+        setStepFrame.setVisible(true);
+    }
 
     public static void askPlayerStep(ChessBoard chessBoard, int nowMovingNumber) {
         JFrame setStepFrame = new JFrame("选择棋子要走的步数");

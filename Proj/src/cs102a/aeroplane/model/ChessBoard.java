@@ -118,6 +118,7 @@ public class ChessBoard extends JPanel {
         for (int color = 0; color < 4; color++) {
             teamIndexUsed[color][0] = false;
             for (int grid = 0; grid < 96; grid++) {
+                if (grid <= 18 && grid != 4 && grid != 9 && grid != 14) continue;
                 LinkedList<Aeroplane> ap = new LinkedList<>();
                 for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[color]) {
                     if (planes[i].getGeneralGridIndex() == grid) ap.add(planes[i]);
@@ -126,13 +127,15 @@ public class ChessBoard extends JPanel {
                     if (!teamIndexUsed[color][0]) {
                         for (Aeroplane a : ap) {
                             a.indexOfTeam = 0;
-                            a.getPlaneView().setIconAsPlaneNum(ap.size());
+                            if (a.getGeneralGridIndex() != -1)
+                                a.getPlaneView().setIconAsPlaneNum(ap.size());
                         }
                         teamIndexUsed[color][0] = true;
                     } else {
                         for (Aeroplane a : ap) {
                             a.indexOfTeam = 1;
-                            a.getPlaneView().setIconAsPlaneNum(ap.size());
+                            if (a.getGeneralGridIndex() != -1)
+                                a.getPlaneView().setIconAsPlaneNum(ap.size());
                         }
                         teamIndexUsed[color][1] = true;
                     }
@@ -164,9 +167,9 @@ public class ChessBoard extends JPanel {
     }
 
     public void rollAndApply() {
-        if (!GameInfo.isIsCheatMode())
+//        if (!GameInfo.isIsCheatMode())
             rollResult = new int[]{Dice.roll(), Dice.roll()};
-
+//else SetStep.askPlayerStep(nowGamingGUI,this,true);
         System.err.println("\nnowPlayer " + nowPlayer);
         ArrayList<Integer> outsidePlanes = new ArrayList<>();
         // 是否全在机场
@@ -177,7 +180,9 @@ public class ChessBoard extends JPanel {
         }
 
         boolean ableToTakeOff = rollResult[0] == 6 || rollResult[1] == 6;
+//        if (ableToTakeOff) {
         if (ableToTakeOff || GameInfo.isIsCheatMode()) {
+            // FIXME: 2020/12/21
             SetStep.askPlayerStep(nowGamingGUI, this, rollResult, true);
             // 是起飞的点数则当前回合的所有飞机都可飞
         } else {

@@ -134,9 +134,10 @@ public class Aeroplane {
         checkAllView();
     }
 
-    public void checkAllView(){
+    public void checkAllView() {
         for (Aeroplane a : chessBoard.getPlanes()) {
-            a.getPlaneView().setIconAsPlaneNum(chessBoard.selfPlaneNumOnIndex(a.getGeneralGridIndex()));
+            if (a.getState() != PlaneState.IN_HANGAR && a.getState() != PlaneState.FINISH)
+                a.getPlaneView().setIconAsPlaneNum(chessBoard.selfPlaneNumOnIndex(a.getGeneralGridIndex()));
         }
 
     }
