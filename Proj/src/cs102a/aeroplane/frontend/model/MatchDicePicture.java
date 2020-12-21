@@ -17,7 +17,7 @@ public class MatchDicePicture {
         ImageIcon pic6 = new ImageIcon(path + "dice_6.png");
 
         switch (point) {
-            default:
+            case 1:
                 return pic1;
             case 2:
                 return pic2;
@@ -27,7 +27,7 @@ public class MatchDicePicture {
                 return pic4;
             case 5:
                 return pic5;
-            case 6:
+            default:
                 return pic6;
         }
     }
