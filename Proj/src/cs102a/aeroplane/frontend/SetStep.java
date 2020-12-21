@@ -11,13 +11,16 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class SetStep {
 
     public static int stepSelected;
 //    public static GameGUI nowGamingGUI;
-
+public static boolean needFly;
     // 弹窗，只有设置好步数才能关闭
     public static void askPlayerStep(GameGUI nowGamingGUI, ChessBoard chessBoard, int[] rollResult, boolean flag) {
         JFrame setStepFrame = new JFrame("选择棋子要走的步数");
@@ -130,55 +133,10 @@ public class SetStep {
         setStepFrame.setVisible(true);
     }
 
-    public static boolean askIfFly(GameGUI nowGamingGUI, ChessBoard chessBoard) {
-
-        ArrayBlockingQueue<Boolean> queue = new ArrayBlockingQueue<>(1);
-        SwingUtilities.invokeLater(() -> {
-            JFrame setStepFrame = new JFrame("是否起飞");
-            nowGamingGUI.getPlayerInfoPanel().refresh();
-            setStepFrame.setSize(300, 250);
-            setStepFrame.setAlwaysOnTop(true);
-            setStepFrame.setResizable(false);
-            setStepFrame.setLocationRelativeTo(null);
-            setStepFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
-            // 作弊模式直接选择步数
-            JButton confirmButton = new JButton("是");
-            confirmButton.setOpaque(false);
-            confirmButton.setBorder(null);
-            confirmButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 24));
-            confirmButton.setForeground(Color.blue);
-            confirmButton.addActionListener(e -> {
-                queue.offer(true);
-                setStepFrame.dispose();
-            });
-            JButton noFlyButton = new JButton("否");
-            noFlyButton.setOpaque(false);
-            noFlyButton.setBorder(null);
-            noFlyButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 24));
-            noFlyButton.setForeground(Color.blue);
-            noFlyButton.addActionListener(e -> {
-                queue.offer(false);
-                setStepFrame.dispose();
-            });
-            JPanel basePanel = new JPanel(new GridLayout(1, 2));
-            basePanel.setPreferredSize(new Dimension(150, 150));
-            basePanel.add(confirmButton);
-            basePanel.add(noFlyButton);
-            basePanel.setOpaque(false);
-
-            String picPath = SystemSelect.getImagePath();
-            JPanel picPanel = new BackgroundPanel((new ImageIcon(picPath + "setStep.jpg").getImage()));
-            picPanel.add(basePanel);
-
-            setStepFrame.add(picPanel);
-            setStepFrame.setVisible(true);
-        });
-        try {
-            return queue.take();
-        } catch (InterruptedException e) {
-            return false;
-        }
+    public static boolean askIfFly() {
+        needFly = true;
+        new TimeDial1().showDialog(Settings.window,"默认允许起飞，在接下来的界面选择任意数即可",2);
+        return needFly;
     }
 
 
@@ -326,5 +284,54 @@ public class SetStep {
         stepChoices.addItemListener(e -> SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(stepChoices.getSelectedItem()).toString()));
         stepSelected = -1;
         return stepChoices;
+    }
+}
+
+class TimeDial1 {
+
+    private JDialog dialog = new JDialog();
+
+    private int seconds;
+
+    /**
+     * @param jFrameOfButton 程序主窗口（按钮所在）
+     * @param message        对话框主体消息
+     * @param closeInSec     以秒记的自动关闭时间，可以提前按按钮关闭
+     */
+    public void showDialog(JFrame jFrameOfButton, String message, int closeInSec) {
+        dialog.setLayout(null);
+
+        seconds = closeInSec;
+        JLabel label = new JLabel(message, JLabel.CENTER);
+        label.setBounds(80, 10, 200, 20);
+
+        ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
+
+        JButton confirm = new JButton("不起飞");
+        confirm.setBounds(140, 120, 50, 60);
+        confirm.addActionListener(e -> {
+            SetStep.needFly = false;
+            TimeDial1.this.dialog.dispose();
+        });
+
+        dialog = new JDialog(jFrameOfButton, true);
+        dialog.setTitle("给你" + seconds + "秒，看好啦");
+        dialog.setLayout(new GridLayout(2, 1));
+        dialog.add(label);
+        dialog.add(confirm);
+
+        s.scheduleAtFixedRate(() -> {
+            TimeDial1.this.seconds--;
+            if (TimeDial1.this.seconds == 0) {
+                TimeDial1.this.dialog.dispose();
+                System.gc();
+            } else {
+                dialog.setTitle("给你" + seconds + "秒，看好啦");
+            }
+        }, 1, 1, TimeUnit.SECONDS);
+
+        dialog.setSize(new Dimension(250, 100));
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }
 }

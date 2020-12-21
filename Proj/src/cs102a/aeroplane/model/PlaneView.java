@@ -139,6 +139,8 @@ public class PlaneView extends JButton {
                         yOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][1] - BoardCoordinate.GRID_SIZE / 2,
                         BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
                 a.getPlaneView().setIconAsPlaneNum(chessboard.selfPlaneNumOnIndex(generalIndex));
+                a.setGeneralGridIndex(generalIndex);
+                a.setSelfPathIndex(a.getSelfPathIndexFromGeneralIndex(generalIndex));
             }
         }
         System.out.println("moving " + this.number + " to general index " + generalIndex);

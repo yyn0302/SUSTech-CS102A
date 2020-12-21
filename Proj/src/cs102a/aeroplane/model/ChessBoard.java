@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
+import static cs102a.aeroplane.presets.PlaneState.FINISH;
+
 public class ChessBoard extends JPanel {
     private Aeroplane[] planes;                             // 16架飞机
     private int xOffSet;
@@ -186,9 +188,14 @@ public class ChessBoard extends JPanel {
 //                ableToTakeOff = rollResult[0] == 6 || rollResult[1] == 6;
 //            } else {
 ////            SetStep.askIfFly(nowGamingGUI, this);
-                ableToTakeOff = rollResult[0] + rollResult[1] >= 10;
+        if (!GameInfo.isIsCheatMode())
+            ableToTakeOff = rollResult[0] + rollResult[1] >= 10;
+        else {
+            if (outsidePlanes.isEmpty()) ableToTakeOff = SetStep.askIfFly();
+            else ableToTakeOff = true;
+        }
 //        }
-        if (ableToTakeOff || GameInfo.isIsCheatMode()) {
+        if (ableToTakeOff) {
 //        if (ableToTakeOff) {
 
 
@@ -199,8 +206,9 @@ public class ChessBoard extends JPanel {
             // 不是起飞点数则只有在外面的飞机可以飞
             if (outsidePlanes.isEmpty()) {
                 System.out.println("skip to next player");
-                new TimeDialog().showDialog(Settings.window, "你骰出了" + rollResult[0] +
-                        "和" + rollResult[1] + "，不满足起飞条件", 3);
+                if (!GameInfo.isIsCheatMode())
+                    new TimeDialog().showDialog(Settings.window, "你骰出了" + rollResult[0] +
+                            "和" + rollResult[1] + "，不满足起飞条件", 3);
                 do {
                     nowPlayer = (nowPlayer + 1) % 4;
                 } while (nowPlayer == winner1Index || nowPlayer == winner2Index || nowPlayer == winner3Index);
@@ -323,6 +331,7 @@ public class ChessBoard extends JPanel {
 
     //    public void battleInTeam(int indexOfMyTeam, int indexOfTargetGrid) {
     public void battleInTeam(int indexOfTargetGrid) {
+
         System.out.println("========\nBattling in group");
 //        while (planesInTeam(indexOfMyTeam) > 0 && hasOtherPlane(indexOfTargetGrid)) {
         while (hasMyPlane(indexOfTargetGrid) && hasOtherPlane(indexOfTargetGrid)) {
@@ -332,6 +341,7 @@ public class ChessBoard extends JPanel {
 
                 try {
                     getOppoPlanes(indexOfTargetGrid).get(0).backToHangarDueToCrash();
+//                    planes[0].checkAllView();
                     System.out.println("oppo back");
 
                 } catch (IndexOutOfBoundsException e) {
@@ -341,20 +351,24 @@ public class ChessBoard extends JPanel {
 
                 try {
                     getMyPlanes(indexOfTargetGrid).get(0).backToHangarDueToCrash();
+//                    planes[0].checkAllView();
                     System.out.println("me back");
                 } catch (IndexOutOfBoundsException e) {
                     break;
                 }
             }
         }
+        planes[0].checkAllView1();
 
-        checkStackForInit();
-        for (Aeroplane p : planes) {
-            System.err.println(p.getNumber() + " (" + p.getGeneralGridIndex() + ", " + p.indexOfTeam + ")");
-        }
-        for (Aeroplane p : planes) {
-            p.getPlaneView().setIconAsPlaneNum(getMyPlanes(indexOfTargetGrid).size());
-        }
+//        checkStackForInit();  这个重要
+
+//        for (Aeroplane p : planes) {
+//            System.err.println(p.getNumber() + " (" + p.getGeneralGridIndex() + ", " + p.indexOfTeam + ")");
+//        }
+//        for (Aeroplane p : planes) {
+//            if (p.getState() != FINISH)
+//                p.getPlaneView().setIconAsPlaneNum(getMyPlanes(p.getGeneralGridIndex()).size());
+//        }
 
     }
 
@@ -422,11 +436,31 @@ public class ChessBoard extends JPanel {
     // 获取index上的飞机数目
     public int selfPlaneNumOnIndex(int index) {
         int planeNum = 0;
+//        for (int i:BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
+//            if (planes[i].getGeneralGridIndex() == index) {
+//                planeNum++;
+//            }
+//        }
         for (Aeroplane plane : planes) {
             if (plane.getGeneralGridIndex() == index) {
                 planeNum++;
             }
         }
+        return planeNum;
+    }
+    // 获取index上的飞机数目
+    public int realSelfPlaneNumOnIndex(int index,int myColor) {
+        int planeNum = 0;
+        for (int i:BoardCoordinate.COLOR_PLANE_NUMBER[myColor]) {
+            if (planes[i].getGeneralGridIndex() == index) {
+                planeNum++;
+            }
+        }
+//        for (Aeroplane plane : planes) {
+//            if (plane.getGeneralGridIndex() == index) {
+//                planeNum++;
+//            }
+//        }
         return planeNum;
     }
 

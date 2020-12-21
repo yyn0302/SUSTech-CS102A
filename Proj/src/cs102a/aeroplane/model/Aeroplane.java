@@ -74,6 +74,8 @@ public class Aeroplane {
                                 }
                             }
                         } else {     // 多对n
+                            this.planeView.moveTo(generalGridIndex);
+                            checkAllView1();
                             chessBoard.battleInTeam(this.generalGridIndex);
                             if (getState() == PlaneState.IN_HANGAR) return;
                         }
@@ -138,6 +140,15 @@ public class Aeroplane {
         for (Aeroplane a : chessBoard.getPlanes()) {
             if (a.getState() != PlaneState.IN_HANGAR && a.getState() != PlaneState.FINISH)
                 a.getPlaneView().setIconAsPlaneNum(chessBoard.selfPlaneNumOnIndex(a.getGeneralGridIndex()));
+            if (a.getState() == PlaneState.FINISH) a.getPlaneView().setEnabled(false);
+        }
+
+    }
+
+    public void checkAllView1() {
+        for (Aeroplane a : chessBoard.getPlanes()) {
+            if (a.getState() != PlaneState.IN_HANGAR && a.getState() != PlaneState.FINISH)
+                a.getPlaneView().setIconAsPlaneNum(chessBoard.realSelfPlaneNumOnIndex(a.getGeneralGridIndex(),a.color));
             if (a.getState() == PlaneState.FINISH) a.getPlaneView().setEnabled(false);
         }
 
@@ -312,6 +323,14 @@ public class Aeroplane {
 
     public int getGeneralGridIndex() {
         return generalGridIndex;
+    }
+
+    public void setGeneralGridIndex(int generalGridIndex) {
+        this.generalGridIndex = generalGridIndex;
+    }
+
+    public void setSelfPathIndex(int selfPathIndex) {
+        this.selfPathIndex = selfPathIndex;
     }
 
     public boolean isInHangar() {

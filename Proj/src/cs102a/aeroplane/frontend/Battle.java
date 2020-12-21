@@ -29,6 +29,7 @@ public class Battle {
             return self > oppo;
 
         } else {
+            isWinner = true;
             new TimeDial().showDialog(Settings.window, "不选择，默认赢", 2);
             Timer.delay(0);
             return isWinner;
