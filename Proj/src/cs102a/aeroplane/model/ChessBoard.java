@@ -329,16 +329,19 @@ public class ChessBoard extends JPanel {
 //            if (!hasMyPlane(indexOfTargetGrid) && hasOtherPlane(indexOfTargetGrid)) break;
 //            if (hasMyPlane(indexOfTargetGrid) && !hasOtherPlane(indexOfTargetGrid)) break;
             if (Battle.isWinner()) {
+
                 try {
-                    getMyPlanes(indexOfTargetGrid).get(0).backToHangarDueToCrash();
-                    System.out.println("me back");
+                    getOppoPlanes(indexOfTargetGrid).get(0).backToHangarDueToCrash();
+                    System.out.println("oppo back");
+
                 } catch (IndexOutOfBoundsException e) {
                     break;
                 }
             } else {
+
                 try {
-                    getOppoPlanes(indexOfTargetGrid).get(0).backToHangarDueToCrash();
-                    System.out.println("oppo back");
+                    getMyPlanes(indexOfTargetGrid).get(0).backToHangarDueToCrash();
+                    System.out.println("me back");
                 } catch (IndexOutOfBoundsException e) {
                     break;
                 }
@@ -346,10 +349,12 @@ public class ChessBoard extends JPanel {
         }
 
         checkStackForInit();
-        for (Aeroplane p : planes)
+        for (Aeroplane p : planes) {
             System.err.println(p.getNumber() + " (" + p.getGeneralGridIndex() + ", " + p.indexOfTeam + ")");
-        for (Aeroplane p : planes)
+        }
+        for (Aeroplane p : planes) {
             p.getPlaneView().setIconAsPlaneNum(getMyPlanes(indexOfTargetGrid).size());
+        }
 
     }
 
