@@ -25,7 +25,7 @@ public class Start {
         startButton.setForeground(Color.YELLOW);
         startButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 26));
         startButton.addActionListener(e -> {
-            GameGUI game=new GameGUI();
+            GameGUI game = new GameGUI();
             game.setVisible(true);
             game.getChessBoard().startGame();
         });
@@ -37,7 +37,7 @@ public class Start {
         continueButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 26));
         continueButton.addActionListener(e -> {
             LoadHistory loadHistory = new LoadHistory("读档");
-            loadHistory.window.setVisible(true);
+            loadHistory.setVisible(true);
         });
 
         JButton storeButton = new JButton("道具商店");

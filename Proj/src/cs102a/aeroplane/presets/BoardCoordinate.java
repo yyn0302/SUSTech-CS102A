@@ -43,9 +43,6 @@ public class BoardCoordinate {
             {12, 13, 14, 15}    // 黄
     };
 
-    // 所有格子数
-    public static final int GIRD_NUM = 97;
-
     // 圆圈路径上的各色方块编号数组
     public static final int[][] COLOR_GRID = {
             {21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61, 65, 69},   // 蓝
@@ -60,14 +57,6 @@ public class BoardCoordinate {
             {50, 92, 62},      // 绿
             {63, 74, 23},      // 红
             {24, 80, 36}       // 黄
-    };
-
-    // 各色的机场位置编号数组
-    public static final int[][] COLOR_AIRPORT = {
-            {0, 1, 2, 3},       // 蓝
-            {5, 6, 7, 8},       // 绿
-            {10, 11, 12, 13},   // 红
-            {15, 16, 17, 18}    // 黄
     };
 
     // 各色的可能出现的位置的编号

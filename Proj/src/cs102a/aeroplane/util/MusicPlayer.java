@@ -22,11 +22,7 @@ public class MusicPlayer {
 
     // 播放音乐
     public void play() {
-//        playSoundThread = new playSoundThread();
-//        if (!playSoundThread.isAlive()) {
         playSoundThread = new playSoundThread();
-//        }
-
         playSoundThread.start();
     }
 

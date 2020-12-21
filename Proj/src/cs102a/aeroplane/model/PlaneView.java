@@ -30,7 +30,7 @@ public class PlaneView extends JButton {
         // 选择此飞机，禁止其他点击，飞到相应位置
         public void mousePressed(MouseEvent e) {
             System.out.println("Click plane " + number);
-            System.out.println(String.format("now index %d", aeroplane.getGeneralGridIndex()));
+            System.out.printf("now index %d%n", aeroplane.getGeneralGridIndex());
             for (Aeroplane p : chessboard.getPlanes()) {
                 p.getPlaneView().setEnabled(false);
             }

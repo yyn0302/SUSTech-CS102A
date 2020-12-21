@@ -16,23 +16,17 @@ import java.awt.*;
 
 public class GameGUI extends JFrame {
 
-    public ChessBoard chessBoard;
-
     public static ImageIcon background;
-
-    // TODO: 2020/12/18 当棋子出现偏移时修改xy方向偏置
-
     public static PlayerInfoPanel playerInfoPanel;
 
+    // TODO: 2020/12/18 当棋子出现偏移时修改xy方向偏置
+    public static JLabel selfDiceLabel;
+    public static JLabel oppoDiceLabel;
+    public ChessBoard chessBoard;
     String path = SystemSelect.getImagePath();
-
     JButton resetButton = new JButton("重置");
     JButton saveButton = new JButton("保存");
     JButton returnButton = new JButton("返回");
-
-    public static JLabel selfDiceLabel;
-    public static JLabel oppoDiceLabel;
-
     ImageIcon bomb = new ImageIcon(path + "bomb.jpg");
     ImageIcon boeing = new ImageIcon(path + "boeing.jpg");
     ImageIcon VIP = new ImageIcon(path + "vip.jpg");
@@ -88,7 +82,7 @@ public class GameGUI extends JFrame {
         resetButton.addActionListener(e -> {
             Sound.GAMING_THEME1.end();
             Sound.GAMING_THEME2.end();
-            GameGUI game1=new GameGUI();
+            GameGUI game1 = new GameGUI();
             game1.setVisible(true);
             game1.getChessBoard().startGame();
             this.dispose();
@@ -106,7 +100,7 @@ public class GameGUI extends JFrame {
             Sound.GAMING_THEME2.end();
         });
 
-        JButton changeCheatMode = new JButton(!GameInfo.isIsCheatMode()?"正常":"作弊");
+        JButton changeCheatMode = new JButton(!GameInfo.isIsCheatMode() ? "正常" : "作弊");
         changeCheatMode.setOpaque(false);
         changeCheatMode.setBorder(null);
         changeCheatMode.setForeground(Color.BLACK);
@@ -147,21 +141,15 @@ public class GameGUI extends JFrame {
         bombButton.setOpaque(false);
         takeOffButton.setOpaque(false);
 
-        vipButton.addActionListener(e -> {
-            GoodsList.makeMeWin.use(chessBoard);
-        });
-        bombButton.addActionListener(e -> {
-            GoodsList.bomb.use(chessBoard);
-        });
-        takeOffButton.addActionListener(e -> {
-            GoodsList.takeOffAnyway.use(chessBoard);
-        });
+        vipButton.addActionListener(e -> GoodsList.makeMeWin.use(chessBoard));
+        bombButton.addActionListener(e -> GoodsList.bomb.use(chessBoard));
+        takeOffButton.addActionListener(e -> GoodsList.takeOffAnyway.use(chessBoard));
 
         playerInfoPanel = new PlayerInfoPanel(chessBoard);
         playerInfoPanel.setBounds(820, 0, 60, 130);
         playerInfoPanel.setOpaque(false);
-//加入边缘的按钮
 
+        //加入边缘的按钮
         backgroundPanel.add(resetButton);
         backgroundPanel.add(saveButton);
         backgroundPanel.add(returnButton);

@@ -10,7 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -19,8 +18,8 @@ import java.util.concurrent.TimeUnit;
 public class SetStep {
 
     public static int stepSelected;
-//    public static GameGUI nowGamingGUI;
-public static boolean needFly;
+    public static boolean needFly;
+
     // 弹窗，只有设置好步数才能关闭
     public static void askPlayerStep(GameGUI nowGamingGUI, ChessBoard chessBoard, int[] rollResult, boolean flag) {
         JFrame setStepFrame = new JFrame("选择棋子要走的步数");
@@ -135,7 +134,7 @@ public static boolean needFly;
 
     public static boolean askIfFly() {
         needFly = true;
-        new TimeDial1().showDialog(Settings.window,"默认允许起飞，在接下来的界面选择任意数即可",2);
+        new TimeDial1().showDialog(Settings.window, "默认允许起飞，在接下来的界面选择任意数即可", 2);
         return needFly;
     }
 

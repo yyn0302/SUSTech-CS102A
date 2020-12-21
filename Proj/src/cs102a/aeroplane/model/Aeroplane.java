@@ -15,11 +15,10 @@ public class Aeroplane {
     private final int color;
     private final ChessBoard chessBoard;    // 传递句柄给PlaneView
     private final PlaneView planeView;
+    public int indexOfTeam;                 // 当加入team时记录这个team在chessboard的index方便访问，不在队为-1
+    public int steps;
     private int selfPathIndex;              // 自己该走完的57格
     private int generalGridIndex;           // 飞机所在位置0~97，-1为完成路径
-    public int indexOfTeam;                 // 当加入team时记录这个team在chessboard的index方便访问，不在队为-1
-
-    public int steps;
 
 
     public Aeroplane(ChessBoard chessBoard, int color, int number, int itsHangar, int xOffSet, int yOffSet) {
@@ -87,7 +86,6 @@ public class Aeroplane {
                         // 且跳到下一个同色格子，赶走这个格子的对方
                         if (isJetGrid(generalGridIndex) == -1) {
 
-                            // FIXME: 2020/12/20 这里可能有问题
                             generalGridIndex = getNextGridWhenOnSelfColorGrid(generalGridIndex);
                             selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
 
@@ -124,13 +122,11 @@ public class Aeroplane {
                 }
 
             } else {
-                // FIXME: 2020/12/16 检查数学计算有没有出错
                 // 回来的路上不可能碰上别人
                 generalGridIndex = COLOR_PATH[color][2 * BoardCoordinate.PATH_LENGTH - selfPathIndex - steps - 2];
                 selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
             }
         }
-//        checkStack();
         move();
         chessBoard.checkStackForInit();
         checkAllView();
@@ -148,31 +144,10 @@ public class Aeroplane {
     public void checkAllView1() {
         for (Aeroplane a : chessBoard.getPlanes()) {
             if (a.getState() != PlaneState.IN_HANGAR && a.getState() != PlaneState.FINISH)
-                a.getPlaneView().setIconAsPlaneNum(chessBoard.realSelfPlaneNumOnIndex(a.getGeneralGridIndex(),a.color));
+                a.getPlaneView().setIconAsPlaneNum(chessBoard.realSelfPlaneNumOnIndex(a.getGeneralGridIndex(), a.color));
             if (a.getState() == PlaneState.FINISH) a.getPlaneView().setEnabled(false);
         }
 
-    }
-
-    public void checkStack() {
-        if (chessBoard.selfPlaneNumOnIndex(generalGridIndex) == 2) {     // 跳后可以叠子
-            if (chessBoard.teamIndexUsed[color][0]) {
-                for (Aeroplane p : chessBoard.getMyPlanes(generalGridIndex)) p.indexOfTeam = 1;
-                chessBoard.teamIndexUsed[color][1] = true;
-            } else {
-                for (Aeroplane p : chessBoard.getMyPlanes(generalGridIndex)) p.indexOfTeam = 0;
-                chessBoard.teamIndexUsed[color][0] = true;
-            }
-        } else if (chessBoard.selfPlaneNumOnIndex(generalGridIndex) > 2) {
-            if (this.indexOfTeam == -1) {    // 本棋加入组
-                this.indexOfTeam = 0;         // 逻辑上讲，此时只可能有一组，即index=0
-            } else {      // 两组合并成 index=0
-                for (Aeroplane p : chessBoard.getMyPlanes(generalGridIndex)) p.indexOfTeam = 0;
-                chessBoard.teamIndexUsed[color][1] = false;
-            }
-        }
-        for (Aeroplane p : chessBoard.getPartners(this.indexOfTeam))
-            p.getPlaneView().setIconAsPlaneNum(chessBoard.getPartners(this.indexOfTeam).size());
     }
 
     /**
@@ -190,7 +165,6 @@ public class Aeroplane {
             setState(PlaneState.FINISH);
             planeView.finish();
             this.backToHangarWhenFinish();
-            return;
         } else if (generalGridIndex == itsHangar) setState(PlaneState.IN_HANGAR);
         else {
             planeView.moveTo(generalGridIndex);
@@ -234,9 +208,6 @@ public class Aeroplane {
                     p.backToHangarWhenFinish();
                 }
             else for (Aeroplane p : chessBoard.getPartners(this.indexOfTeam)) {
-//                p.planeView.setBounds(BoardCoordinate.GRID_CENTER_OFFSET[generalGridIndex][0] - BoardCoordinate.GRID_SIZE / 2,
-//                         BoardCoordinate.GRID_CENTER_OFFSET[generalGridIndex][1] - BoardCoordinate.GRID_SIZE / 2,
-//                        BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
                 p.setGeneralGridIndexAndMove(generalGridIndex);
                 if (chessBoard.checkGameEnd())
                     chessBoard.endGame();
@@ -288,7 +259,6 @@ public class Aeroplane {
     protected void backToHangarWhenFinish() {
         this.selfPathIndex = -1;
         this.generalGridIndex = itsHangar;
-//        this.planeView.setIconAsPlaneNum(1);
         planeView.finish();
         Sound.FINISH_ONE_PLANE.play(false);
     }

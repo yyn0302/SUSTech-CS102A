@@ -14,7 +14,7 @@ import java.awt.*;
 // pip.refresh();
 public class PlayerInfoPanel extends JPanel {
 
-    private static String path = SystemSelect.getImagePath();
+    private static final String path = SystemSelect.getImagePath();
 
     private static final ImageIcon pic1 = new ImageIcon(path + "player1.jpg");
     private static final ImageIcon pic2 = new ImageIcon(path + "player2.jpg");

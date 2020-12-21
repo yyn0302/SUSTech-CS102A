@@ -8,9 +8,8 @@ import java.awt.*;
 
 public class EnterSuperMode extends JFrame {
 
-    public static EnterSuperMode window = new EnterSuperMode("输入权限密码");
-
     private static final String PWD = "020924";
+    public static EnterSuperMode window = new EnterSuperMode("输入权限密码");
     private static boolean isRightPwd = false;
 
 
@@ -30,9 +29,7 @@ public class EnterSuperMode extends JFrame {
 
         JPanel upPanel = new JPanel();
         upPanel.setLayout(new GridLayout(1, 1, 0, 0));
-//        upPanel.add(new JLabel());
         upPanel.add(pwd);
-//        upPanel.add(new JLabel());
 
 
         JButton confirm = new JButton("确定");

@@ -38,8 +38,6 @@ public class Connect extends JFrame {
         upPanel.setLayout(new GridLayout(2, 1, 0, 0));
         upPanel.add(localIP);
         upPanel.add(serverIp);
-//        upPanel.add(new JLabel());
-
 
         JButton confirm = new JButton("确定");
         confirm.addActionListener(e -> {
@@ -64,7 +62,6 @@ public class Connect extends JFrame {
         base.add(downPanel);
 
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-//        this.setResizable(false);
         this.add(base);
     }
 }

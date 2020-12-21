@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-// Reference: https://blog.csdn.net/fansongy/article/details/7767129
 public class Client extends Server {
 
     protected InputStream inputStream;
@@ -32,6 +31,10 @@ public class Client extends Server {
 
     }
 
+    public static void uploadChanges() {
+
+    }
+
     // 获取本机连接端口，以此大小给本地分配 myColor
     public int getLocalPort() {
         try {
@@ -39,10 +42,6 @@ public class Client extends Server {
         } catch (Exception e) {
             return -1;
         }
-    }
-
-    public static void uploadChanges() {
-
     }
 
     public void notifyNewWinner() {

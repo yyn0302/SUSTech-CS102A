@@ -91,8 +91,6 @@ public class GameLoader {
                 game.setVisible(true);
             } catch (NumberFormatException e) {
                 throw new Exception("先辈，读档失败了 QAQ");
-            } catch (SecurityException se) {
-                throw se;
             }
 
             game.getChessBoard().startGame();

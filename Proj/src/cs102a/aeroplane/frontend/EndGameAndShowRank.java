@@ -59,7 +59,6 @@ public class EndGameAndShowRank extends JFrame {
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.gridheight = 1;
         JLabel number1 = new JLabel(new ImageIcon(path + "第一名.png"));
-//        number1.setPreferredSize(new Dimension(200, 150));
         gridBagLayout.setConstraints(number1, gridBagConstraints);
 
         //第一名的第二个label
@@ -88,7 +87,6 @@ public class EndGameAndShowRank extends JFrame {
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.gridheight = 1;
         JLabel number2 = new JLabel(new ImageIcon(path + "第二名.png"));
-//        number2.setPreferredSize(new Dimension(200, 150));
         gridBagLayout.setConstraints(number2, gridBagConstraints);
 
         //第二名的第二个label
@@ -117,7 +115,6 @@ public class EndGameAndShowRank extends JFrame {
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.gridheight = 1;
         JLabel number3 = new JLabel(new ImageIcon(path + "第三名.png"));
-//        number3.setPreferredSize(new Dimension(200, 150));
         gridBagLayout.setConstraints(number3, gridBagConstraints);
 
         //第三名的第二个label
@@ -146,7 +143,6 @@ public class EndGameAndShowRank extends JFrame {
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.gridheight = 1;
         JLabel number4 = new JLabel(new ImageIcon(path + "第四名.png"));
-//        number4.setPreferredSize(new Dimension(200, 150));
         gridBagLayout.setConstraints(number4, gridBagConstraints);
 
         //第四名的第二个label

@@ -12,9 +12,8 @@ import java.awt.*;
 public abstract class Goods {
 
     private final float price;
+    private final int[] storeCnt = {2, 2, 2, 2};
     public int asPlayer;       // 记录本页的购买等信息/活动与此用户相关
-    private int[] storeCnt = {2, 2, 2, 2};
-
     public JFrame itemDetail = new JFrame();
     JLabel possessionLabel;
 

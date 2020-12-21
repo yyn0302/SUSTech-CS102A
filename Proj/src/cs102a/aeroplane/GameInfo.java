@@ -5,20 +5,15 @@ import cs102a.aeroplane.online.Server;
 
 public class GameInfo {
 
+    private static final String serverIp = null;
+    private static final String[] playerName = {"A", "B", "C", "D"};
     public static Client localClient;
     public static Server localServer = new Server();
-
-
     private static boolean superUser = false;
     private static boolean isCheatMode = false;
     private static int theme = 1;
     private static int HumanPlayerCnt = 4;
-
     private static boolean isOnlineGame = false;
-    private static String serverIp = null;
-
-    private static String[] playerName = {"A", "B", "C", "D"};
-
 
     public static String[] getPlayerName() {
         return playerName;
@@ -32,12 +27,12 @@ public class GameInfo {
         GameInfo.superUser = superUser;
     }
 
-    public static void setIsCheatMode(boolean isCheatMode) {
-        GameInfo.isCheatMode = isCheatMode;
-    }
-
     public static boolean isIsCheatMode() {
         return isCheatMode;
+    }
+
+    public static void setIsCheatMode(boolean isCheatMode) {
+        GameInfo.isCheatMode = isCheatMode;
     }
 
     public static int getHumanPlayerCnt() {

@@ -13,14 +13,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class LoadHistory {
+public class LoadHistory extends JFrame {
 
-    public static JFrame window = new JFrame();
-    private ArrayList<String> nameList = new ArrayList<>();
+    private final ArrayList<String> nameList = new ArrayList<>();
     private String historySelected;
 
     public LoadHistory(String title) {
-        window.setTitle(title);
+        this.setTitle(title);
 
         JPanel panel = new BackgroundPanel(new ImageIcon(SystemSelect.getImagePath() + "loadFile.jpg").getImage());
         JPanel mainPanel = new JPanel();
@@ -28,7 +27,7 @@ public class LoadHistory {
         mainPanel.setPreferredSize(new Dimension(400, 240));
 
         JLabel chooseLabel = new JLabel("选择一个存档", JLabel.CENTER);
-        chooseLabel.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 40));
+        chooseLabel.setFont(new Font("微软雅黑", Font.BOLD, 40));
 
         getFiles();
         JComboBox<String> chooseList = new JComboBox<>();
@@ -49,11 +48,11 @@ public class LoadHistory {
         confirmButton.setOpaque(false);
         confirmButton.setBorder(null);
         confirmButton.setForeground(Color.yellow);
-        confirmButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 20));
+        confirmButton.setFont(new Font("微软雅黑", Font.BOLD, 20));
         confirmButton.addActionListener(e -> {
             if (historySelected != null && !historySelected.equals("没有游戏档案哦")) {
                 GameLoader.setFileName(historySelected);
-                window.setVisible(false);
+                this.setVisible(false);
                 try {
                     GameLoader.tryToLoad();
                 } catch (Exception em) {
@@ -62,14 +61,14 @@ public class LoadHistory {
                 }
             } else {
                 TimeDialog td = new TimeDialog();
-                td.showDialog(window, "不能读档哦", 2);
-                window.setVisible(false);
+                td.showDialog(this, "不能读档哦", 2);
+                this.setVisible(false);
                 Start.popStart();
             }
             confirmButton.setOpaque(false);
             confirmButton.setBorder(null);
             confirmButton.setForeground(Color.yellow);
-            confirmButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 20));
+            confirmButton.setFont(new Font("微软雅黑", Font.BOLD, 20));
         });
 
         mainPanel.add(chooseLabel);
@@ -77,11 +76,11 @@ public class LoadHistory {
         mainPanel.add(confirmButton);
         mainPanel.setOpaque(false);
         panel.add(mainPanel);
-        window.add(panel);
-        window.setSize(600, 300);
-        window.setLocationRelativeTo(null);
-        window.setResizable(false);
-        window.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        this.add(panel);
+        this.setSize(600, 300);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     public void getFiles() {

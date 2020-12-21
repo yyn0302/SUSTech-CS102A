@@ -25,9 +25,9 @@ public class Server implements Closeable {
     // 建立房间 -> 实例化Server -> 展示ip供其他人加入
     public Server() {
         try {
-            serverSocket = new ServerSocket(serverPort,4);     // 等待连接的队列最长4，多余的直接挤出
+            serverSocket = new ServerSocket(serverPort, 4);     // 等待连接的队列最长4，多余的直接挤出
         } catch (IOException e) {
-            new TimeDialog().showDialog(Settings.window,e.getMessage(),10);
+            new TimeDialog().showDialog(Settings.window, e.getMessage(), 10);
         }
     }
 
@@ -73,6 +73,7 @@ public class Server implements Closeable {
         }
     }
 //写
+
     /**
      * @return 获取游戏相关状态变更/结束等广播
      * @description: 将信息写入输出流

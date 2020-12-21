@@ -4,8 +4,8 @@ import cs102a.aeroplane.GameInfo;
 
 public class Wallet {
 
-    private static float[] discountAsPercent = {0.80f, 1.00f, 0.90f, 0.95f};
-    private static float[] balance = {100, 200, 300, 400};
+    private static final float[] discountAsPercent = {0.80f, 1.00f, 0.90f, 0.95f};
+    private static final float[] balance = {100, 200, 300, 400};
 
 
     public static float getDiscountAsPercent(int user) {

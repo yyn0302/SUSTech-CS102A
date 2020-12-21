@@ -39,12 +39,12 @@ public class GameSaver {
         String stepInfo = String.format(
                 "@@\n" +
                         "@NOW_PLAYER=%d\n" +
-                        "@B=%d\n"+
-                        "@G=%d\n"+
-                        "@R=%d\n"+
-                        "@Y=%d\n"+
-                        "@W1=%d\n"+
-                        "@W2=%d\n"+
+                        "@B=%d\n" +
+                        "@G=%d\n" +
+                        "@R=%d\n" +
+                        "@Y=%d\n" +
+                        "@W1=%d\n" +
+                        "@W2=%d\n" +
                         "@@\n" +
                         "1P%d\n" +
                         "2P%d\n" +
