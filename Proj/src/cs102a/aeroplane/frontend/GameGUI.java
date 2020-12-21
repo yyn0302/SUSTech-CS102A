@@ -2,6 +2,7 @@ package cs102a.aeroplane.frontend;
 
 import cs102a.aeroplane.GameInfo;
 import cs102a.aeroplane.frontend.model.BackgroundPanel;
+import cs102a.aeroplane.frontend.model.MatchDicePicture;
 import cs102a.aeroplane.frontend.model.PlayerInfoPanel;
 import cs102a.aeroplane.frontend.model.TimeDialog;
 import cs102a.aeroplane.gamemall.GoodsList;
@@ -21,13 +22,16 @@ public class GameGUI extends JFrame {
 
     // TODO: 2020/12/18 当棋子出现偏移时修改xy方向偏置
 
-    private PlayerInfoPanel playerInfoPanel;
+    public static PlayerInfoPanel playerInfoPanel;
 
     String path = SystemSelect.getImagePath();
 
     JButton resetButton = new JButton("重置");
     JButton saveButton = new JButton("保存");
     JButton returnButton = new JButton("返回");
+
+    public static JLabel selfDiceLabel;
+    public static JLabel oppoDiceLabel;
 
     ImageIcon bomb = new ImageIcon(path + "bomb.jpg");
     ImageIcon boeing = new ImageIcon(path + "boeing.jpg");
@@ -74,9 +78,9 @@ public class GameGUI extends JFrame {
         playerInfoPanel = new PlayerInfoPanel(chessBoard);
 
         //util面板
-        resetButton.setBounds(818, 560, 60, 60);
-        saveButton.setBounds(818, 630, 60, 60);
-        returnButton.setBounds(818, 700, 60, 60);
+        resetButton.setBounds(818, 590, 60, 60);
+        saveButton.setBounds(818, 650, 60, 60);
+        returnButton.setBounds(818, 710, 60, 60);
         resetButton.setOpaque(false);
         saveButton.setOpaque(false);
         returnButton.setOpaque(false);
@@ -107,7 +111,7 @@ public class GameGUI extends JFrame {
         changeCheatMode.setBorder(null);
         changeCheatMode.setForeground(Color.BLACK);
         changeCheatMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
-        changeCheatMode.setBounds(818, 180, 60, 30);
+        changeCheatMode.setBounds(818, 130, 60, 30);
         changeCheatMode.addActionListener(e -> {
             if (!GameInfo.isIsCheatMode()) {
                 changeCheatMode.setText("作弊");
@@ -122,10 +126,23 @@ public class GameGUI extends JFrame {
             changeCheatMode.setFont(new java.awt.Font("微软雅黑", Font.PLAIN, 16));
         });
 
+        int self = chessBoard.rollResult[0];
+        int oppo = chessBoard.rollResult[1];
+        selfDiceLabel = new JLabel();
+        oppoDiceLabel = new JLabel();
+        selfDiceLabel.setOpaque(false);
+        oppoDiceLabel.setOpaque(false);
+        selfDiceLabel.setIcon(MatchDicePicture.getImage(self));
+        oppoDiceLabel.setIcon(MatchDicePicture.getImage(oppo));
+        selfDiceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        oppoDiceLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        vipButton.setBounds(818, 310, 60, 60);
-        bombButton.setBounds(818, 380, 60, 60);
-        takeOffButton.setBounds(818, 450, 60, 60);
+        selfDiceLabel.setBounds(800, 180, 100, 100);
+        oppoDiceLabel.setBounds(800, 280, 100, 100);
+
+        vipButton.setBounds(818, 385, 60, 60);
+        bombButton.setBounds(818, 450, 60, 60);
+        takeOffButton.setBounds(818, 515, 60, 60);
         vipButton.setOpaque(false);
         bombButton.setOpaque(false);
         takeOffButton.setOpaque(false);
@@ -141,7 +158,7 @@ public class GameGUI extends JFrame {
         });
 
         playerInfoPanel = new PlayerInfoPanel(chessBoard);
-        playerInfoPanel.setBounds(820, 30, 60, 130);
+        playerInfoPanel.setBounds(820, 0, 60, 130);
         playerInfoPanel.setOpaque(false);
 //加入边缘的按钮
 
@@ -153,6 +170,8 @@ public class GameGUI extends JFrame {
         backgroundPanel.add(takeOffButton);
         backgroundPanel.add(playerInfoPanel);
         backgroundPanel.add(changeCheatMode);
+        backgroundPanel.add(selfDiceLabel);
+        backgroundPanel.add(oppoDiceLabel);
         backgroundPanel.setOpaque(false);
 
 
