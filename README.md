@@ -10,6 +10,8 @@ It scored 100 + bonus part 🤪
 
 Although its main logic code is totally a pile of B.S.[^1]
 
+[^1]: It just works, but I don't know why!
+
 
 (I can't even believe anyone is willing to read it),
 some modules may still have some value for your reference.
@@ -34,8 +36,6 @@ you may still get a high score.
 
 ![img1](https://github.com/HeZean/CS102A_2020F_Proj/tree/main/Proj/src/cs102a/aeroplane/resources/res/1.png)
 
-![img1](https://github.com/HeZean/CS102A_2020F_Proj/tree/main/Proj/src/cs102a/aeroplane/resources/res/2.png)
+![img2](https://github.com/HeZean/CS102A_2020F_Proj/tree/main/Proj/src/cs102a/aeroplane/resources/res/2.png)
 
-![img1](https://github.com/HeZean/CS102A_2020F_Proj/tree/main/Proj/src/cs102a/aeroplane/resources/res/3.png)
-
-[^1]: It just works, but I don't know why!
+![img3](https://github.com/HeZean/CS102A_2020F_Proj/tree/main/Proj/src/cs102a/aeroplane/resources/res/3.png)
