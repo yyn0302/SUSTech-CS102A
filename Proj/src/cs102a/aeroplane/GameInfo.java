@@ -1,6 +1,14 @@
 package cs102a.aeroplane;
 
+import cs102a.aeroplane.online.Client;
+import cs102a.aeroplane.online.Server;
+
 public class GameInfo {
+
+    public static Client localClient;
+    public static Server localServer = new Server();
+
+
     private static boolean superUser = false;
     private static boolean isCheatMode = false;
     private static int theme = 1;
@@ -8,14 +16,6 @@ public class GameInfo {
 
     private static boolean isOnlineGame = false;
     private static String serverIp = null;
-
-    public static String getServerIp() {
-        return serverIp;
-    }
-
-    public static void setServerIp(String serverIp) {
-        GameInfo.serverIp = serverIp;
-    }
 
     private static String[] playerName = {"A", "B", "C", "D"};
 

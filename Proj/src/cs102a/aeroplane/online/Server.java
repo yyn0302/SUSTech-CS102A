@@ -1,5 +1,8 @@
 package cs102a.aeroplane.online;
 
+import cs102a.aeroplane.frontend.Settings;
+import cs102a.aeroplane.frontend.model.TimeDialog;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,9 +25,9 @@ public class Server implements Closeable {
     // 建立房间 -> 实例化Server -> 展示ip供其他人加入
     public Server() {
         try {
-            serverSocket = new ServerSocket(serverPort, 4);     // 等待连接的队列最长4，多余的直接挤出
+            serverSocket = new ServerSocket(serverPort,4);     // 等待连接的队列最长4，多余的直接挤出
         } catch (IOException e) {
-            e.printStackTrace();
+            new TimeDialog().showDialog(Settings.window,e.getMessage(),10);
         }
     }
 
@@ -33,7 +36,7 @@ public class Server implements Closeable {
      * TODO 在作为服务器的机器上将本地址显示出来，提示其他用户输入此ip进行连接
      * @throws UnknownHostException 本机网络异常
      */
-    static public String getLocalIP() throws Exception {
+    public static String getLocalIP() throws Exception {
         try {
             return InetAddress.getLocalHost().toString();
         } catch (UnknownHostException e) {
@@ -74,7 +77,7 @@ public class Server implements Closeable {
      * @return 获取游戏相关状态变更/结束等广播
      * @description: 将信息写入输出流
      */
-    public String fetchMsg() {
+    public String sendMsg() {
         ArrayList<Byte> msg = new ArrayList<>();
 
         try {

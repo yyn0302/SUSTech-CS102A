@@ -1,6 +1,7 @@
 package cs102a.aeroplane.online;
 
-import cs102a.aeroplane.GameInfo;
+import cs102a.aeroplane.frontend.Settings;
+import cs102a.aeroplane.frontend.model.TimeDialog;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -8,8 +9,6 @@ import java.net.Socket;
 
 // Reference: https://blog.csdn.net/fansongy/article/details/7767129
 public class Client extends Server {
-
-    public Client localClient=new Client(GameInfo.getServerIp());
 
     protected InputStream inputStream;
     protected OutputStream outputStream;
@@ -24,11 +23,9 @@ public class Client extends Server {
             inputStream = socket.getInputStream();
             outputStream = socket.getOutputStream();
         } catch (Exception e) {
-            e.printStackTrace();
+            new TimeDialog().showDialog(Settings.window, e.getMessage(), 5);
         }
     }
-//写
-//    FIXME:2020/12/12
 
     public static void getAndApplyChange() {
 //        加标识符
