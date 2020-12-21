@@ -34,8 +34,8 @@ you may still get a high score.
 
 
 
-![img1](https://github.com/HeZean/CS102A_2020F_Proj/tree/main/Proj/src/cs102a/aeroplane/resources/res/1.png)
+![](https://github.com/HeZean/CS102A_2020F_Proj/tree/main/Proj/src/cs102a/aeroplane/resources/res/1.png)
 
-![img2](https://github.com/HeZean/CS102A_2020F_Proj/tree/main/Proj/src/cs102a/aeroplane/resources/res/2.png)
+![](https://github.com/HeZean/CS102A_2020F_Proj/tree/main/Proj/src/cs102a/aeroplane/resources/res/2.png)
 
-![img3](https://github.com/HeZean/CS102A_2020F_Proj/tree/main/Proj/src/cs102a/aeroplane/resources/res/3.png)
+![](https://github.com/HeZean/CS102A_2020F_Proj/tree/main/Proj/src/cs102a/aeroplane/resources/res/3.png)
