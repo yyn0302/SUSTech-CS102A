@@ -126,9 +126,21 @@ public class PlaneView extends JButton {
     }
 
     public void moveTo(int generalIndex) {
+        if (generalIndex == -1) {
+            aeroplane.backToHangarWhenFinish();
+            return;
+        }
         this.setBounds(xOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][0] - BoardCoordinate.GRID_SIZE / 2,
                 yOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][1] - BoardCoordinate.GRID_SIZE / 2,
                 BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
+        if (aeroplane.indexOfTeam != -1) {
+            for (Aeroplane a : chessboard.getPartners(aeroplane.indexOfTeam)) {
+                a.getPlaneView().setBounds(xOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][0] - BoardCoordinate.GRID_SIZE / 2,
+                        yOffSet + BoardCoordinate.GRID_CENTER_OFFSET[generalIndex][1] - BoardCoordinate.GRID_SIZE / 2,
+                        BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
+                a.getPlaneView().setIconAsPlaneNum(chessboard.selfPlaneNumOnIndex(generalIndex));
+            }
+        }
         System.out.println("moving " + this.number + " to general index " + generalIndex);
     }
 

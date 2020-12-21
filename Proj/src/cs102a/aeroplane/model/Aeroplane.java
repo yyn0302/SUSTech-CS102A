@@ -68,6 +68,8 @@ public class Aeroplane {
                                     p.backToHangarDueToCrash();
                                 } else {
                                     this.backToHangarDueToCrash();
+                                    checkAllView();
+                                    chessBoard.continueEndTurn();
                                     return;
                                 }
                             }
@@ -126,8 +128,18 @@ public class Aeroplane {
                 selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
             }
         }
-        checkStack();
+//        checkStack();
         move();
+        chessBoard.checkStackForInit();
+        checkAllView();
+    }
+
+    public void checkAllView() {
+        for (Aeroplane a : chessBoard.getPlanes()) {
+            if (a.getState() != PlaneState.IN_HANGAR && a.getState() != PlaneState.FINISH)
+                a.getPlaneView().setIconAsPlaneNum(chessBoard.selfPlaneNumOnIndex(a.getGeneralGridIndex()));
+        }
+
     }
 
     public void checkStack() {
@@ -210,7 +222,10 @@ public class Aeroplane {
                     p.backToHangarWhenFinish();
                 }
             else for (Aeroplane p : chessBoard.getPartners(this.indexOfTeam)) {
-                p.planeView.moveTo(generalGridIndex);
+//                p.planeView.setBounds(BoardCoordinate.GRID_CENTER_OFFSET[generalGridIndex][0] - BoardCoordinate.GRID_SIZE / 2,
+//                         BoardCoordinate.GRID_CENTER_OFFSET[generalGridIndex][1] - BoardCoordinate.GRID_SIZE / 2,
+//                        BoardCoordinate.GRID_SIZE, BoardCoordinate.GRID_SIZE);
+                p.setGeneralGridIndexAndMove(generalGridIndex);
                 if (chessBoard.checkGameEnd())
                     chessBoard.endGame();
             }
@@ -261,7 +276,7 @@ public class Aeroplane {
     protected void backToHangarWhenFinish() {
         this.selfPathIndex = -1;
         this.generalGridIndex = itsHangar;
-        this.planeView.setIconAsPlaneNum(1);
+//        this.planeView.setIconAsPlaneNum(1);
         planeView.finish();
         Sound.FINISH_ONE_PLANE.play(false);
     }

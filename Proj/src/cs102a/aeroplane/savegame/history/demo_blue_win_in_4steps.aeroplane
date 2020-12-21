@@ -4,7 +4,7 @@
 @PLAYER=4
 @DICE_NUM=2
 @@
-@NOW_PLAYER=0
+@NOW_PLAYER=1
 @B=0
 @G=1
 @R=1
@@ -13,9 +13,9 @@
 @W2=-1
 @@
 1P76
-2P75
-3P74
-4P73
+2P-1
+3P-1
+4P-1
 5P5
 6P6
 7P7
