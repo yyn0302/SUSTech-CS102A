@@ -10,7 +10,6 @@ import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.util.Dice;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -165,7 +164,7 @@ public class ChessBoard extends JPanel {
     }
 
     public void rollAndApply() {
-        rollResult = new int[]{Dice.roll(), Dice.roll()};
+        if (!GameInfo.isIsCheatMode()) rollResult = new int[]{Dice.roll(), Dice.roll()};
 
         System.err.println("\nnowPlayer " + nowPlayer);
         ArrayList<Integer> outsidePlanes = new ArrayList<>();
@@ -202,9 +201,7 @@ public class ChessBoard extends JPanel {
     public void continueAfterAsk() {
         System.err.println(nowMove);
         for (Aeroplane p : planes) {
-            for (ActionListener actionListener : p.getPlaneView().getActionListeners()) {
-                p.getPlaneView().removeActionListener(actionListener);
-            }
+            p.getPlaneView().setEnabled(false);
         }
         for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer]) {
             if (planes[i].notFinished())
@@ -215,10 +212,7 @@ public class ChessBoard extends JPanel {
     public void continueAfterAskFalse() {
         System.err.println(nowMove);
         for (Aeroplane p : planes) {
-            for (ActionListener actionListener : p.getPlaneView().getActionListeners()) {
-                p.getPlaneView().removeActionListener(actionListener);
-            }
-
+            p.getPlaneView().setEnabled(false);
         }
 
         ArrayList<Integer> outsidePlanes = new ArrayList<>();
@@ -259,7 +253,7 @@ public class ChessBoard extends JPanel {
                 for (int i : movedPlanes) {
                     for (Aeroplane p : planes) {
                         if (p.getNumber() == i) {
-                            p.backToHangarForInit();
+                            p.backToHangarDueToCrash();
                             break;
                         }
                     }
@@ -272,6 +266,7 @@ public class ChessBoard extends JPanel {
     }
 
     public void continueEndTurn() {
+        System.out.println(rollResult[0] + ", " + rollResult[1]);
         if (rollResult[0] + rollResult[1] >= 10) {
             continueRoll++;
             if (continueRoll >= 3) {
@@ -305,7 +300,7 @@ public class ChessBoard extends JPanel {
         endGameAndShowRank.setVisible(true);
     }
 
-//    public void battleInTeam(int indexOfMyTeam, int indexOfTargetGrid) {
+    //    public void battleInTeam(int indexOfMyTeam, int indexOfTargetGrid) {
     public void battleInTeam(int indexOfTargetGrid) {
         System.out.println("========\nBattling in group");
 //        while (planesInTeam(indexOfMyTeam) > 0 && hasOtherPlane(indexOfTargetGrid)) {
@@ -345,7 +340,7 @@ public class ChessBoard extends JPanel {
     // 判断index上有没有其他方的棋子
     public boolean hasOtherPlane(int index) {
         for (Aeroplane plane : planes)
-            if (plane.getGeneralGridIndex() == index && plane.getColor() != nowPlayer-1) return true;
+            if (plane.getGeneralGridIndex() == index && plane.getColor() != nowPlayer - 1) return true;
         return false;
     }
 
@@ -363,7 +358,7 @@ public class ChessBoard extends JPanel {
      */
     public int planesInTeam(int teamNumber) {
         int cnt = 0;
-        for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer-1])
+        for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer - 1])
             if (planes[i].indexOfTeam == teamNumber) cnt++;
         return cnt;
     }
