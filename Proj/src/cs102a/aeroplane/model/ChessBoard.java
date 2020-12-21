@@ -168,7 +168,7 @@ public class ChessBoard extends JPanel {
 
     public void rollAndApply() {
 //        if (!GameInfo.isIsCheatMode())
-            rollResult = new int[]{Dice.roll(), Dice.roll()};
+        rollResult = new int[]{Dice.roll(), Dice.roll()};
 //else SetStep.askPlayerStep(nowGamingGUI,this,true);
         System.err.println("\nnowPlayer " + nowPlayer);
         ArrayList<Integer> outsidePlanes = new ArrayList<>();
@@ -179,9 +179,19 @@ public class ChessBoard extends JPanel {
             }
         }
 
-        boolean ableToTakeOff = rollResult[0] == 6 || rollResult[1] == 6;
-//        if (ableToTakeOff) {
+
+        boolean ableToTakeOff;
+//
+//            if (!GameInfo.isIsCheatMode()) {
+//                ableToTakeOff = rollResult[0] == 6 || rollResult[1] == 6;
+//            } else {
+////            SetStep.askIfFly(nowGamingGUI, this);
+                ableToTakeOff = rollResult[0] + rollResult[1] >= 10;
+//        }
         if (ableToTakeOff || GameInfo.isIsCheatMode()) {
+//        if (ableToTakeOff) {
+
+
             // FIXME: 2020/12/21
             SetStep.askPlayerStep(nowGamingGUI, this, rollResult, true);
             // 是起飞的点数则当前回合的所有飞机都可飞
@@ -306,6 +316,9 @@ public class ChessBoard extends JPanel {
         // FIXME: 2020/12/18 在线模式
         EndGameAndShowRank endGameAndShowRank = new EndGameAndShowRank(nowGamingGUI);
         endGameAndShowRank.setVisible(true);
+        nowGamingGUI.dispose();
+        Sound.GAMING_THEME1.end();
+        Sound.GAMING_THEME2.end();
     }
 
     //    public void battleInTeam(int indexOfMyTeam, int indexOfTargetGrid) {

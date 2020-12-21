@@ -138,6 +138,7 @@ public class Aeroplane {
         for (Aeroplane a : chessBoard.getPlanes()) {
             if (a.getState() != PlaneState.IN_HANGAR && a.getState() != PlaneState.FINISH)
                 a.getPlaneView().setIconAsPlaneNum(chessBoard.selfPlaneNumOnIndex(a.getGeneralGridIndex()));
+            if (a.getState() == PlaneState.FINISH) a.getPlaneView().setEnabled(false);
         }
 
     }

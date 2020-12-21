@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.ArrayBlockingQueue;
 
 
 public class SetStep {
@@ -128,47 +129,42 @@ public class SetStep {
 
         setStepFrame.setVisible(true);
     }
-    public static void askPlayerStep(GameGUI nowGamingGUI, ChessBoard chessBoard, boolean flag) {
-        JFrame setStepFrame = new JFrame("选择棋子要走的步数");
-        nowGamingGUI.getPlayerInfoPanel().refresh();
-        setStepFrame.setSize(300, 250);
-        setStepFrame.setAlwaysOnTop(true);
-        setStepFrame.setResizable(false);
-        setStepFrame.setLocationRelativeTo(null);
-        setStepFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
-        // 作弊模式直接选择步数
-        if (GameInfo.isIsCheatMode()) {
+    public static boolean askIfFly(GameGUI nowGamingGUI, ChessBoard chessBoard) {
 
-            JComboBox<Integer> choiceComboBox = new JComboBox<>();
-            for (int i = 1; i <= 12; i++) {
-                choiceComboBox.addItem(i);
-                choiceComboBox.addItemListener(e -> SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(choiceComboBox.getSelectedItem()).toString()));
-            }
-            choiceComboBox.setOpaque(false);
+        ArrayBlockingQueue<Boolean> queue = new ArrayBlockingQueue<>(1);
+        SwingUtilities.invokeLater(() -> {
+            JFrame setStepFrame = new JFrame("是否起飞");
+            nowGamingGUI.getPlayerInfoPanel().refresh();
+            setStepFrame.setSize(300, 250);
+            setStepFrame.setAlwaysOnTop(true);
+            setStepFrame.setResizable(false);
+            setStepFrame.setLocationRelativeTo(null);
+            setStepFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
-            JButton confirmButton = new JButton("确定");
+            // 作弊模式直接选择步数
+            JButton confirmButton = new JButton("是");
             confirmButton.setOpaque(false);
             confirmButton.setBorder(null);
             confirmButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 24));
             confirmButton.setForeground(Color.blue);
             confirmButton.addActionListener(e -> {
-                SetStep.stepSelected = Integer.parseInt(Objects.requireNonNull(choiceComboBox.getSelectedItem()).toString());
+                queue.offer(true);
                 setStepFrame.dispose();
-                chessBoard.nowMove = stepSelected;
-                if (flag) chessBoard.continueAfterAsk();
-                else chessBoard.continueAfterAskFalse();
             });
-
-
-            JPanel choicePanel = new JPanel(new GridLayout(1, 1));
-            choicePanel.add(choiceComboBox);
-            choicePanel.setOpaque(false);
-
-            JPanel basePanel = new JPanel(new GridLayout(2, 1));
+            JButton noFlyButton = new JButton("否");
+            noFlyButton.setOpaque(false);
+            noFlyButton.setBorder(null);
+            noFlyButton.setFont(new java.awt.Font("微软雅黑", Font.BOLD, 24));
+            noFlyButton.setForeground(Color.blue);
+            noFlyButton.addActionListener(e -> {
+                queue.offer(false);
+                setStepFrame.dispose();
+            });
+            JPanel basePanel = new JPanel(new GridLayout(1, 2));
             basePanel.setPreferredSize(new Dimension(150, 150));
-            basePanel.add(choicePanel);
             basePanel.add(confirmButton);
+            basePanel.add(noFlyButton);
             basePanel.setOpaque(false);
 
             String picPath = SystemSelect.getImagePath();
@@ -176,9 +172,15 @@ public class SetStep {
             picPanel.add(basePanel);
 
             setStepFrame.add(picPanel);
+            setStepFrame.setVisible(true);
+        });
+        try {
+            return queue.take();
+        } catch (InterruptedException e) {
+            return false;
         }
-        setStepFrame.setVisible(true);
     }
+
 
     public static void askPlayerStep(ChessBoard chessBoard, int nowMovingNumber) {
         JFrame setStepFrame = new JFrame("选择棋子要走的步数");
