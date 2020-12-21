@@ -137,7 +137,6 @@ public class SetStep {
         setStepFrame.setLocationRelativeTo(null);
         setStepFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
-        GameGUI.playerInfoPanel.refresh();
         // 作弊模式直接选择步数
         if (GameInfo.isIsCheatMode()) {
             JComboBox<Integer> choiceComboBox = new JComboBox<>();

@@ -184,7 +184,8 @@ public class ChessBoard extends JPanel {
             // 不是起飞点数则只有在外面的飞机可以飞
             if (outsidePlanes.isEmpty()) {
                 System.out.println("skip to next player");
-                new TimeDialog().showDialog(Settings.window, "不满足起飞条件，轮到下一玩家", 3);
+                new TimeDialog().showDialog(Settings.window, "你骰出了" + rollResult[0] +
+                        "和" + rollResult[1] + "，不满足起飞条件", 3);
                 do {
                     nowPlayer = (nowPlayer + 1) % 4;
                 } while (nowPlayer == winner1Index || nowPlayer == winner2Index || nowPlayer == winner3Index);
