@@ -81,7 +81,7 @@ public class Aeroplane {
                                 p.getPlaneView().setIconAsPlaneNum(chessBoard.getPartners(this.indexOfTeam).size());
 
                         } else {     // 多对n
-                            chessBoard.battleInTeam(this.indexOfTeam, this.generalGridIndex);
+                            chessBoard.battleInTeam( this.generalGridIndex);
 //                            if (getState() == PlaneState.IN_HANGAR) return;
                             move();
                         }
@@ -93,7 +93,6 @@ public class Aeroplane {
                         // 且跳到下一个同色格子，赶走这个格子的对方
                         if (isJetGrid(generalGridIndex) == -1) {
 
-                            // FIXME: 2020/12/20 这里可能有问题
                             generalGridIndex = getNextGridWhenOnSelfColorGrid(generalGridIndex);
                             selfPathIndex = getSelfPathIndexFromGeneralIndex(generalGridIndex);
 

@@ -8,7 +8,6 @@ import cs102a.aeroplane.presets.GameState;
 import cs102a.aeroplane.presets.PlaneState;
 import cs102a.aeroplane.presets.Sound;
 import cs102a.aeroplane.util.Dice;
-import cs102a.aeroplane.util.Timer;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -305,22 +304,35 @@ public class ChessBoard extends JPanel {
         endGameAndShowRank.setVisible(true);
     }
 
-    public void battleInTeam(int indexOfMyTeam, int indexOfTargetGrid) {
-        while (hasMyPlane(indexOfTargetGrid) || hasOtherPlane(indexOfTargetGrid)) {
-            if (!hasMyPlane(indexOfTargetGrid) && hasOtherPlane(indexOfTargetGrid)) break;
-            if (hasMyPlane(indexOfTargetGrid) && !hasOtherPlane(indexOfTargetGrid)) break;
-            if (Battle.isWinner())
-                getMyPlanes(indexOfTargetGrid).get(0).backToHangarDueToCrash();
-            else
-                getOppoPlanes(indexOfTargetGrid).get(0).backToHangarDueToCrash();
-            for (Aeroplane p : planes)
-                p.getPlaneView().setIconAsPlaneNum(this.getPartners(indexOfMyTeam).size());
-
-            Timer.delay(100);
+//    public void battleInTeam(int indexOfMyTeam, int indexOfTargetGrid) {
+    public void battleInTeam(int indexOfTargetGrid) {
+        System.out.println("========\nBattling in group");
+//        while (planesInTeam(indexOfMyTeam) > 0 && hasOtherPlane(indexOfTargetGrid)) {
+        while (hasMyPlane(indexOfTargetGrid) && hasOtherPlane(indexOfTargetGrid)) {
+//            if (!hasMyPlane(indexOfTargetGrid) && hasOtherPlane(indexOfTargetGrid)) break;
+//            if (hasMyPlane(indexOfTargetGrid) && !hasOtherPlane(indexOfTargetGrid)) break;
+            if (Battle.isWinner()) {
+                try {
+                    getMyPlanes(indexOfTargetGrid).get(0).backToHangarDueToCrash();
+                    System.out.println("me back");
+                } catch (IndexOutOfBoundsException e) {
+                    break;
+                }
+            } else {
+                try {
+                    getOppoPlanes(indexOfTargetGrid).get(0).backToHangarDueToCrash();
+                    System.out.println("oppo back");
+                } catch (IndexOutOfBoundsException e) {
+                    break;
+                }
+            }
         }
+
         checkStackForInit();
         for (Aeroplane p : planes)
             System.err.println(p.getNumber() + " (" + p.getGeneralGridIndex() + ", " + p.indexOfTeam + ")");
+        for (Aeroplane p : planes)
+            p.getPlaneView().setIconAsPlaneNum(getMyPlanes(indexOfTargetGrid).size());
 
     }
 
@@ -332,21 +344,25 @@ public class ChessBoard extends JPanel {
     // 判断index上有没有其他方的棋子
     public boolean hasOtherPlane(int index) {
         for (Aeroplane plane : planes)
-            if (plane.getGeneralGridIndex() == index && plane.getColor() != nowPlayer) return true;
+            if (plane.getGeneralGridIndex() == index && plane.getColor() != nowPlayer-1) return true;
         return false;
     }
 
     // 判断index上有没有我方的棋子
     public boolean hasMyPlane(int index) {
-        for (Aeroplane plane : planes)
-            if (plane.getGeneralGridIndex() == index && plane.getColor() == nowPlayer-1) return true;
+        for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer])
+            if (planes[i].getGeneralGridIndex() == index) return true;
         return false;
     }
 
-    // 判断当前组内还有没有棋子
+    /**
+     * 判断当前组内还有没有棋子
+     *
+     * @deprecated 不能确定index
+     */
     public int planesInTeam(int teamNumber) {
         int cnt = 0;
-        for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer])
+        for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer-1])
             if (planes[i].indexOfTeam == teamNumber) cnt++;
         return cnt;
     }
