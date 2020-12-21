@@ -103,26 +103,6 @@ public class ChessBoard extends JPanel {
         if (GameInfo.getTheme() == 1) Sound.GAMING_THEME1.play(true);
         else Sound.GAMING_THEME2.play(true);
 
-//        // 初始化飞机
-//        planes = new Aeroplane[]{
-//                new Aeroplane(this, PlaneState.BLUE, 0, 0, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.BLUE, 1, 1, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.BLUE, 2, 2, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.BLUE, 3, 3, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.GREEN, 4, 5, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.GREEN, 5, 6, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.GREEN, 6, 7, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.GREEN, 7, 8, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.RED, 8, 10, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.RED, 9, 11, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.RED, 10, 12, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.RED, 11, 13, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.YELLOW, 12, 15, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.YELLOW, 13, 16, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.YELLOW, 14, 17, xOffSet, yOffSet),
-//                new Aeroplane(this, PlaneState.YELLOW, 15, 18, xOffSet, yOffSet)
-//        };
-//
 //
 //        // TODO: 2020/12/16 如果是联网模式，还要初始化myCamp
 ////        if (GameInfo.isIsOnlineGame()) ?
@@ -132,6 +112,38 @@ public class ChessBoard extends JPanel {
 //        // 随机决定哪方先开始
 //        nowPlayer = new Random().nextInt(4);
         beginTurn();
+    }
+
+
+    public void checkStackForInit() {
+        for (int color = 0; color < 4; color++) {
+            teamIndexUsed[color][0] = false;
+            for (int grid = 0; grid < 96; grid++) {
+                LinkedList<Aeroplane> ap = new LinkedList<>();
+                for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[color]) {
+                    if (planes[i].getGeneralGridIndex() == grid) ap.add(planes[i]);
+                }
+                if (ap.size() > 1) {
+                    if (!teamIndexUsed[color][0]) {
+                        for (Aeroplane a : ap) {
+                            a.indexOfTeam = 0;
+                            a.getPlaneView().setIconAsPlaneNum(ap.size());
+                        }
+                        teamIndexUsed[color][0] = true;
+                    } else {
+                        for (Aeroplane a : ap) {
+                            a.indexOfTeam = 1;
+                            a.getPlaneView().setIconAsPlaneNum(ap.size());
+                        }
+                        teamIndexUsed[color][1] = true;
+                    }
+                } else if (ap.size() == 1) {
+                    ap.get(0).indexOfTeam = -1;
+                }
+            }
+        }
+        for (Aeroplane p : planes)
+            System.err.println(p.getNumber() + " (" + p.getGeneralGridIndex() + ", " + p.indexOfTeam + ")");
     }
 
 
@@ -239,7 +251,11 @@ public class ChessBoard extends JPanel {
                 }
             }
             if (flag) recordOnePlayerEnd();
-            else if (continueRoll >= 3) {
+            if (checkGameEnd()) {
+                endGame();
+                return false;
+            }
+            if (continueRoll >= 2) {
                 for (int i : movedPlanes) {
                     for (Aeroplane p : planes) {
                         if (p.getNumber() == i) {
@@ -289,12 +305,36 @@ public class ChessBoard extends JPanel {
         endGameAndShowRank.setVisible(true);
     }
 
-    public void battleInTeam(int indexOfMyTeam, int indexOfTargetGrid) {
-        while (planesInTeam(indexOfMyTeam) > 0 || hasOtherPlane(indexOfTargetGrid)) {
-            if (Battle.isWinner())
-                getOppoPlanes(indexOfTargetGrid).get(getOppoPlanes(indexOfTargetGrid).size() - 1).backToHangarDueToCrash();
-            else getPartners(indexOfMyTeam).get(getPartners(indexOfMyTeam).size() - 1).backToHangarDueToCrash();
+//    public void battleInTeam(int indexOfMyTeam, int indexOfTargetGrid) {
+    public void battleInTeam(int indexOfTargetGrid) {
+        System.out.println("========\nBattling in group");
+//        while (planesInTeam(indexOfMyTeam) > 0 && hasOtherPlane(indexOfTargetGrid)) {
+        while (hasMyPlane(indexOfTargetGrid) && hasOtherPlane(indexOfTargetGrid)) {
+//            if (!hasMyPlane(indexOfTargetGrid) && hasOtherPlane(indexOfTargetGrid)) break;
+//            if (hasMyPlane(indexOfTargetGrid) && !hasOtherPlane(indexOfTargetGrid)) break;
+            if (Battle.isWinner()) {
+                try {
+                    getMyPlanes(indexOfTargetGrid).get(0).backToHangarDueToCrash();
+                    System.out.println("me back");
+                } catch (IndexOutOfBoundsException e) {
+                    break;
+                }
+            } else {
+                try {
+                    getOppoPlanes(indexOfTargetGrid).get(0).backToHangarDueToCrash();
+                    System.out.println("oppo back");
+                } catch (IndexOutOfBoundsException e) {
+                    break;
+                }
+            }
         }
+
+        checkStackForInit();
+        for (Aeroplane p : planes)
+            System.err.println(p.getNumber() + " (" + p.getGeneralGridIndex() + ", " + p.indexOfTeam + ")");
+        for (Aeroplane p : planes)
+            p.getPlaneView().setIconAsPlaneNum(getMyPlanes(indexOfTargetGrid).size());
+
     }
 
 
@@ -305,21 +345,25 @@ public class ChessBoard extends JPanel {
     // 判断index上有没有其他方的棋子
     public boolean hasOtherPlane(int index) {
         for (Aeroplane plane : planes)
-            if (plane.getGeneralGridIndex() == index && plane.getColor() != nowPlayer) return true;
+            if (plane.getGeneralGridIndex() == index && plane.getColor() != nowPlayer-1) return true;
         return false;
     }
 
     // 判断index上有没有我方的棋子
     public boolean hasMyPlane(int index) {
-        for (Aeroplane plane : planes)
-            if (plane.getGeneralGridIndex() == index && plane.getColor() == nowPlayer) return true;
+        for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer])
+            if (planes[i].getGeneralGridIndex() == index) return true;
         return false;
     }
 
-    // 判断当前组内还有没有棋子
+    /**
+     * 判断当前组内还有没有棋子
+     *
+     * @deprecated 不能确定index
+     */
     public int planesInTeam(int teamNumber) {
         int cnt = 0;
-        for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer])
+        for (int i : BoardCoordinate.COLOR_PLANE_NUMBER[nowPlayer-1])
             if (planes[i].indexOfTeam == teamNumber) cnt++;
         return cnt;
     }
