@@ -50,5 +50,5 @@ you may still get a high score.
 ![GameLoader](https://github.com/HeZean/SUSTech-CS102A/blob/main/SUSTech-CS102A-P/Proj/src/cs102a/aeroplane/resources/res/3.png)
 
 
-[^1]: It just works, but I don't know why!
+[^1]: It just works, but I don't know why!  
 [^2]: I can't even believe anyone is willing to read it!
