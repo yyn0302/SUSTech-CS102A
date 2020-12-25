@@ -23,8 +23,7 @@ This is the final project of the CS102A course of SUSTech `2020F`
 
 It scored 100 + bonus part
 
-Although its main logic code is totally a pile of B.S.[^1] 
-(I can't even believe anyone is willing to read it),
+Although its main logic code is totally a pile of B.S.[^1] [^2],
 some modules may still have some value for your reference.
 
 Anyway, the most practical advice I can give you is,
@@ -52,3 +51,4 @@ you may still get a high score.
 
 
 [^1]: It just works, but I don't know why!
+[^2]: I can't even believe anyone is willing to read it!
